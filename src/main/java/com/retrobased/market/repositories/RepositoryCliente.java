@@ -1,0 +1,13 @@
+package com.retrobased.market.repositories;
+
+import com.retrobased.market.entities.Cliente;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface RepositoryCliente extends JpaRepository<Cliente,Integer> {
+    List<Cliente> findByEmail(String email);
+    boolean existsByEmail(String email);
+}
