@@ -6,15 +6,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@Data
 @Entity
 @Table(name = "\"Prodotto\"")
 public class Prodotto {
@@ -36,5 +30,8 @@ public class Prodotto {
 
     @Column(name = "nome", nullable = false, length = Integer.MAX_VALUE)
     private String nome;
+
+    @Column(name = "codice_a_barre", nullable = false, length = Integer.MAX_VALUE)
+    private String codice_a_barre;
 
 }

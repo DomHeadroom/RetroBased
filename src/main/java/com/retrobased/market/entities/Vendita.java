@@ -1,15 +1,9 @@
 package com.retrobased.market.entities;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@Data
 @Entity
 @Table(name = "\"Vendita\"")
 public class Vendita {

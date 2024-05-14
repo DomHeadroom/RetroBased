@@ -1,18 +1,12 @@
 package com.retrobased.market.entities;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@Data
 @Entity
 @Table(name = "\"Cliente\"")
 public class Cliente {

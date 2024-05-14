@@ -9,6 +9,8 @@ import java.util.List;
 
 @Repository
 public interface RepositoryProdotto  extends JpaRepository<Prodotto,Integer> {
+    boolean existsByCodice_a_barre(String barCode);
+
     @Query("SELECT p " +
             "FROM Prodotto p " +
             "WHERE (p.nome LIKE ?1 OR ?1 IS NULL) AND " +
