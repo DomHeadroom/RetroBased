@@ -16,4 +16,12 @@ public interface RepositoryProdotto  extends JpaRepository<Prodotto,Integer> {
             "WHERE (p.nome LIKE ?1 OR ?1 IS NULL) AND " +
             "      (p.descrizione LIKE ?2 OR ?2 IS NULL)")
     List<Prodotto> advancedSearch(String name, String description);
+
+
+    @Query("SELECT tp.idProdotto " +
+            "FROM TagProdotto tp " +
+            "WHERE tp.idTag == ?1"
+    )
+    List<Prodotto> findByTag(Integer id);
+
 }
