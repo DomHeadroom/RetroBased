@@ -31,4 +31,6 @@ public interface RepositoryCliente extends JpaRepository<Cliente,Integer> {
             "FROM OggettoCarrello o " +
             "WHERE o.idCliente == ?1")
     List<Prodotto> findCartItemsByUser(Integer id);
+
+    boolean existById(Integer idCart);
 }

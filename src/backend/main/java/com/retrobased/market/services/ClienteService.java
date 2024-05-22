@@ -16,7 +16,7 @@ public class ClienteService {
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Cliente registerUser(Cliente user) throws MailUserAlreadyExistsException {
-        if ( userRepo.existsByEmail(user.getEmail()) ) {
+        if (userRepo.existsByEmail(user.getEmail())) {
             throw new MailUserAlreadyExistsException();
         }
         return userRepo.save(user);

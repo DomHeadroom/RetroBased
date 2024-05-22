@@ -8,8 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RepositoryProdotto  extends JpaRepository<Prodotto,Integer> {
-    boolean existsByCodice_a_barre(String barCode);
+public interface RepositoryProdotto extends JpaRepository<Prodotto, Integer> {
 
     @Query("SELECT p " +
             "FROM Prodotto p " +
@@ -17,11 +16,12 @@ public interface RepositoryProdotto  extends JpaRepository<Prodotto,Integer> {
             "      (p.descrizione LIKE ?2 OR ?2 IS NULL)")
     List<Prodotto> advancedSearch(String name, String description);
 
-
     @Query("SELECT tp.idProdotto " +
             "FROM TagProdotto tp " +
             "WHERE tp.idTag == ?1"
     )
     List<Prodotto> findByTag(Integer id);
+
+    Integer getQuantità(Integer id);
 
 }
