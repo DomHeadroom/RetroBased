@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ProdottoService {
+public class ServiceProdotto {
     @Autowired
     private RepositoryProdotto prodRepo;
 
