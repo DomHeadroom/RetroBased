@@ -1,9 +1,6 @@
 package com.retrobased.market.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -14,6 +11,7 @@ import java.time.LocalDate;
 public class StatusOrdine {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "\"desc\"", nullable = false, length = Integer.MAX_VALUE)

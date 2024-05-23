@@ -1,9 +1,6 @@
 package com.retrobased.market.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import lombok.Data;
@@ -14,6 +11,7 @@ import lombok.Data;
 public class Prodotto {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "prezzo", nullable = false)

@@ -9,6 +9,7 @@ import lombok.Data;
 public class Vendita {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "prezzo", nullable = false)

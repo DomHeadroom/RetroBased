@@ -8,6 +8,8 @@ import com.retrobased.market.support.exceptions.ProductNotExist;
 import com.retrobased.market.support.exceptions.ProductQuantityNotAvailable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OggettoCarrelloService {
@@ -18,6 +20,7 @@ public class OggettoCarrelloService {
     @Autowired
     private RepositoryCliente repoCliente;
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void increaseQuantity(Integer idCliente, Integer idProd, Integer value) throws ArgumentValueNotValid, ProductQuantityNotAvailable, ProductNotExist {
         if (!repoProd.existsById(idProd))
             throw new ProductNotExist();
@@ -35,6 +38,7 @@ public class OggettoCarrelloService {
         repoCart.changeQuantity(idCliente, idProd, value);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void decreaseQuantity(Integer idCliente, Integer idProd, Integer value) throws ArgumentValueNotValid, ProductNotExist {
         if (!repoProd.existsById(idProd))
             throw new ProductNotExist();
@@ -53,6 +57,7 @@ public class OggettoCarrelloService {
         repoCart.changeQuantity(idCliente, idProd, value);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void removeProdotto(Integer idCliente, Integer idProd) throws ArgumentValueNotValid, ProductNotExist {
         if(!repoProd.existsById(idProd))
             throw new ProductNotExist();

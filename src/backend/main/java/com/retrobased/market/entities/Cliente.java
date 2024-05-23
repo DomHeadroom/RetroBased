@@ -1,10 +1,7 @@
 package com.retrobased.market.entities;
 
+import jakarta.persistence.*;
 import lombok.Data;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 @Data
 @Entity
@@ -12,6 +9,7 @@ import jakarta.persistence.Table;
 public class Cliente {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "nome", nullable = false, length = Integer.MAX_VALUE)

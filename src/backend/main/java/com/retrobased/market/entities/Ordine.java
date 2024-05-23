@@ -1,7 +1,6 @@
 package com.retrobased.market.entities;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import lombok.Data;
 
@@ -11,6 +10,7 @@ import lombok.Data;
 public class Ordine {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

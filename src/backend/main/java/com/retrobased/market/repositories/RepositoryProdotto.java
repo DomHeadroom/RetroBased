@@ -24,4 +24,6 @@ public interface RepositoryProdotto extends JpaRepository<Prodotto, Integer> {
 
     Integer getQuantità(Integer id);
 
+    boolean existsById(Integer id);
+
 }
