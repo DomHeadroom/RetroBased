@@ -1,4 +1,5 @@
 HELP.md
+src/frontend/RetroBaseFrontend/README.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -20,4 +21,24 @@ target/
 *.ipr
 
 ### VS Code ###
-.vscode/
+src/frontend/RetroBaseFrontend/.vscode/
+
+# Node
+src/frontend/RetroBaseFrontend/node_modules
+src/frontend/RetroBaseFrontend/npm-debug.log
+src/frontend/RetroBaseFrontend/yarn-error.log
+
+# Compiled output
+src/frontend/RetroBaseFrontend/dist
+src/frontend/RetroBaseFrontend/tmp
+src/frontend/RetroBaseFrontend/out-tsc
+src/frontend/RetroBaseFrontend/bazel-out
+
+# Miscellaneous
+src/frontend/RetroBaseFrontend/.angular/cache
+src/frontend/RetroBaseFrontend/.sass-cache/
+src/frontend/RetroBaseFrontend/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
