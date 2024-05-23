@@ -38,7 +38,7 @@ src/frontend/RetroBaseFrontend/bazel-out
 src/frontend/RetroBaseFrontend/.angular/cache
 src/frontend/RetroBaseFrontend/.sass-cache/
 src/frontend/RetroBaseFrontend/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
+src/frontend/RetroBaseFrontend/coverage
+src/frontend/RetroBaseFrontend/libpeerconnection.log
+src/frontend/RetroBaseFrontend/testem.log
+src/frontend/RetroBaseFrontend/typings
