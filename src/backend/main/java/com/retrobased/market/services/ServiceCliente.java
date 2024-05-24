@@ -2,7 +2,7 @@ package com.retrobased.market.services;
 
 import com.retrobased.market.entities.Cliente;
 import com.retrobased.market.repositories.RepositoryCliente;
-import com.retrobased.market.support.exceptions.ClientNotExist;
+import com.retrobased.market.repositories.RepositoryIndirizzoCliente;
 import com.retrobased.market.support.exceptions.MailUserAlreadyExistsException;
 import com.retrobased.market.support.exceptions.ValueCannotBeEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,20 +35,7 @@ public class ServiceCliente {
         return userRepo.save(user);
     }
 
-    public void addAddress(Integer idCliente, String città, String paese, String lineaIndirizzo1, String lineaIndirizzo2, String codicePostale) throws ClientNotExist, ValueCannotBeEmpty {
-        if (!userRepo.existById(idCliente))
-            throw new ClientNotExist();
 
-        if (idCliente == null
-                || città == null
-                || paese == null
-                || lineaIndirizzo1 == null
-                || codicePostale == null
-        )
-            throw new ValueCannotBeEmpty();
-
-
-    }
 
 
 }

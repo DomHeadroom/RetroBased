@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -22,7 +23,7 @@ public interface RepositoryProdotto extends JpaRepository<Prodotto, Integer> {
     )
     List<Prodotto> findByTag(Integer id);
 
-    Integer getQuantità(Integer id);
+    BigDecimal getQuantità(Integer id);
 
     boolean existsById(Integer id);
 

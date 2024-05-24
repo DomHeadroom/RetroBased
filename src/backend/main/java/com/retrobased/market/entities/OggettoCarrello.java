@@ -3,6 +3,8 @@ package com.retrobased.market.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @Entity
 @Table(name = "\"Oggetto_Carrello\"")
@@ -13,7 +15,7 @@ public class OggettoCarrello {
     private Integer id;
 
     @Column(name = "\"quantità\"", nullable = false)
-    private Integer quantità;
+    private BigDecimal quantità;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_prodotto", nullable = false)
