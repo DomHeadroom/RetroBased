@@ -32,7 +32,7 @@ public class ServiceIndirizzoCliente {
         )
             throw new ValueCannotBeEmpty();
 
-        if (!userRepo.existById(address.getIdCliente().getId()))
+        if (userRepo.NotExistById(address.getIdCliente().getId()))
             throw new ClientNotExist();
 
         return addressRepo.save(address);
@@ -51,7 +51,7 @@ public class ServiceIndirizzoCliente {
         if (!idClient.equals(address.getIdCliente().getId()))
             throw new ClientTokenMismatch();
 
-        if (!userRepo.existById(address.getIdCliente().getId()))
+        if (userRepo.NotExistById(address.getIdCliente().getId()))
             throw new ClientNotExist();
 
 

@@ -32,5 +32,5 @@ public interface RepositoryCliente extends JpaRepository<Cliente,Integer> {
             "WHERE o.idCliente == ?1")
     List<Prodotto> findCartItemsByUser(Integer id);
 
-    boolean existById(Integer idCart);
+    boolean NotExistById(Integer idCart);
 }

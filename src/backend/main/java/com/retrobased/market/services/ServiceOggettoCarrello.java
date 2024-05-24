@@ -32,7 +32,7 @@ public class ServiceOggettoCarrello {
         )
             throw new ValueCannotBeEmpty();
 
-        if(!repoCliente.existById(idCliente))
+        if(repoCliente.NotExistById(idCliente))
             throw new ClientNotExist();
 
         if (!repoCart.existsById(objectCart.getId()))
@@ -63,7 +63,7 @@ public class ServiceOggettoCarrello {
         )
             throw new ValueCannotBeEmpty();
 
-        if(!repoCliente.existById(idCliente))
+        if(repoCliente.NotExistById(idCliente))
             throw new ClientNotExist();
 
         if (!repoCart.existsById(objectCart.getId()))
@@ -97,7 +97,7 @@ public class ServiceOggettoCarrello {
         )
             throw new ValueCannotBeEmpty();
 
-        if(!repoCliente.existById(idCliente))
+        if(repoCliente.NotExistById(idCliente))
             throw new ClientNotExist();
 
         if(!repoCart.existsById(objectCart.getId()))
