@@ -110,4 +110,34 @@ public class ServiceOggettoCarrello {
 
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public OggettoCarrello addProdotto(Integer idCliente, OggettoCarrello og ) throws ValueCannotBeEmpty, ClientNotExist, ClientTokenMismatch, ArgumentValueNotValid, ProductNotExist, ProductAlreadyPresent {
+        if(og == null
+                || og.getIdCliente() == null
+                || og.getIdProdotto() == null
+                || og.getQuantità() == null
+        )
+            throw new ValueCannotBeEmpty();
+
+        if(repoCliente.NotExistById(og.getIdCliente().getId()))
+            throw new ClientNotExist();
+
+        if(!og.getIdCliente().getId().equals(idCliente))
+            throw new ClientTokenMismatch();
+
+        if(!repoProd.existsById(og.getIdProdotto().getId()))
+            throw new ProductNotExist();
+
+        if(og.getQuantità().compareTo(BigDecimal.ONE) < 0)
+            throw new ArgumentValueNotValid();
+
+        if(repoCart.existsProdottoByClienteId(og.getIdCliente().getId(), og.getIdProdotto().getId()))
+            throw new ProductAlreadyPresent();
+
+        return repoCart.save(og);
+
+    }
+
+
+
 }

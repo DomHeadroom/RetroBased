@@ -17,7 +17,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
-public class AccountingController {
+public class ControllerAccounting {
     @Autowired
     private ServiceCliente ServiceCliente;
 
@@ -32,5 +32,7 @@ public class AccountingController {
             return new ResponseEntity<>(new ResponseMessage("ERROR_PAYLOAD_EMPTY"), HttpStatus.BAD_REQUEST);
         }
     }
+
+
 
 }
