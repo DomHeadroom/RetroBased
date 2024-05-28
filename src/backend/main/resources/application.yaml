@@ -1,0 +1,12 @@
+spring:
+    security:
+        oauth2:
+            resourceserver:
+                jwt:
+                    jwk-set-uri: http://localhost
+    application:
+        name: RetroBased
+server:
+    compression:
+        enabled: 'true'
+    port: '8081'

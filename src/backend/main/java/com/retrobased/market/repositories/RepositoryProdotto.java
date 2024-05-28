@@ -33,7 +33,7 @@ public interface RepositoryProdotto extends JpaRepository<Prodotto, Integer> {
 
     @Query("SELECT p " +
             "FROM Prodotto p " +
-            "WHERE (p.nome LIKE ?1 OR ?1 IS NULL) AND " +
-            "      (p.descrizione LIKE ?2 OR ?2 IS NULL)")
-    Page<Prodotto> find(String name, String description, Pageable pageable);
+            "WHERE p.nome LIKE ?1 OR " +
+            "      p.descrizione LIKE ?1")
+    Page<Prodotto> find(String name, Pageable pageable);
 }

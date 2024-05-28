@@ -72,18 +72,16 @@ public class ServiceProdotto {
             return pagedResult.getContent();
 
         return new ArrayList<>();
-
     }
 
     @Transactional(readOnly = true)
     public List<Prodotto> searchProducts(String name, int pageNumber, String sortBy) {
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(sortBy));
-        Page<Prodotto> pagedResult = repoProd.find(name, "", paging);
+        Page<Prodotto> pagedResult = repoProd.find(name, paging);
         if (pagedResult.hasContent())
             return pagedResult.getContent();
 
         return new ArrayList<>();
-
     }
 
 }
