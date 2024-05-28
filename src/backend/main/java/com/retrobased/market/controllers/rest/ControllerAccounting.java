@@ -8,20 +8,17 @@ import com.retrobased.market.support.exceptions.ValueCannotBeEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 
 
 @RestController
-@RequestMapping("/user")
 public class ControllerAccounting {
     @Autowired
     private ServiceCliente ServiceCliente;
 
-    @GetMapping("/create")
+    @GetMapping("/register")
     public ResponseEntity register(@RequestBody @Valid Cliente user) {
         try {
             Cliente added = ServiceCliente.registerUser(user);
@@ -31,6 +28,12 @@ public class ControllerAccounting {
         } catch (ValueCannotBeEmpty e) {
             return new ResponseEntity<>(new ResponseMessage("ERROR_PAYLOAD_EMPTY"), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    // TODO RICHIEDERE CREDENZIALI E CHIEDERE IL TOKEN
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody @Valid Cliente user) {
+        return null;
     }
 
 
