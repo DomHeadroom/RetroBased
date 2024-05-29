@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "\"Prodotto Ordinato\"")
 public class ProdottoOrdinato {
     @Id

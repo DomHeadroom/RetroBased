@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface RepositoryOggettoCarrello extends JpaRepository<OggettoCarrello,Integer> {
 
-    boolean existsByIdProdottoAndIdCliente(Integer idProdotto, Integer idCliente);
+    boolean existsByIdClienteAndIdProdotto(Integer idCliente, Integer idProdotto);
 
     boolean existById(Integer id);
 
