@@ -6,7 +6,6 @@ import com.retrobased.market.repositories.RepositoryIndirizzoCliente;
 import com.retrobased.market.support.exceptions.ClientTokenMismatch;
 import com.retrobased.market.support.exceptions.ClientNotExist;
 import com.retrobased.market.support.exceptions.ValueCannotBeEmpty;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,13 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ServiceIndirizzoCliente {
 
-    @Autowired
-    private RepositoryIndirizzoCliente addressRepo;
+    private final RepositoryIndirizzoCliente addressRepo;
 
-    @Autowired
-    private RepositoryCliente userRepo;
+    private final RepositoryCliente userRepo;
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public ServiceIndirizzoCliente(RepositoryIndirizzoCliente addressRepo, RepositoryCliente userRepo) {
+        this.addressRepo = addressRepo;
+        this.userRepo = userRepo;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
     public IndirizzoCliente addAddress(IndirizzoCliente address) throws ClientNotExist, ValueCannotBeEmpty {
         if (address == null
                 || address.getId() == null
@@ -40,7 +42,7 @@ public class ServiceIndirizzoCliente {
     }
 
     // TODO CAMBIARE IDCLIENTE CON TOKEN
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void removeAddress(Integer idClient, IndirizzoCliente address) throws ClientNotExist, ValueCannotBeEmpty, ClientTokenMismatch {
         if (address == null
                 || address.getId() == null

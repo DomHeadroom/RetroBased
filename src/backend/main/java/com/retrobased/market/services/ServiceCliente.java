@@ -2,10 +2,8 @@ package com.retrobased.market.services;
 
 import com.retrobased.market.entities.Cliente;
 import com.retrobased.market.repositories.RepositoryCliente;
-import com.retrobased.market.repositories.RepositoryIndirizzoCliente;
 import com.retrobased.market.support.exceptions.MailUserAlreadyExistsException;
 import com.retrobased.market.support.exceptions.ValueCannotBeEmpty;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ServiceCliente {
-    @Autowired
-    private RepositoryCliente userRepo;
+    private final RepositoryCliente userRepo;
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public ServiceCliente(RepositoryCliente userRepo) {
+        this.userRepo = userRepo;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
     public Cliente registerUser(Cliente user) throws MailUserAlreadyExistsException, ValueCannotBeEmpty {
         if (user == null)
             throw new ValueCannotBeEmpty();

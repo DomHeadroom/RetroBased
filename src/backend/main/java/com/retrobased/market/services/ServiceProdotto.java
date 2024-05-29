@@ -7,7 +7,6 @@ import com.retrobased.market.support.exceptions.IdProductAlreadyUsed;
 
 import com.retrobased.market.support.exceptions.ProductNotExist;
 import com.retrobased.market.support.exceptions.ValueCannotBeEmpty;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,10 +20,13 @@ import java.util.List;
 
 @Service
 public class ServiceProdotto {
-    @Autowired
-    private RepositoryProdotto repoProd;
+    private final RepositoryProdotto repoProd;
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public ServiceProdotto(RepositoryProdotto repoProd) {
+        this.repoProd = repoProd;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
     public Prodotto addProdotto(Prodotto prod) throws IdProductAlreadyUsed, ArgumentValueNotValid, ValueCannotBeEmpty {
         if (prod == null
                 || prod.getId() == null
@@ -49,7 +51,7 @@ public class ServiceProdotto {
         return repoProd.save(prod);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void removeProdotto(Prodotto prod) throws ValueCannotBeEmpty, ProductNotExist {
         if (prod == null
                 || prod.getId() == null
