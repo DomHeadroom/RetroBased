@@ -1,10 +1,14 @@
 package com.retrobased.market.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "\"Prodotto Ordinato\"")
 public class ProdottoOrdinato {
     @Id

@@ -1,11 +1,19 @@
 spring:
+    application:
+        name: RetroBased
+    datasource:
+        url: jdbc:postgresql://localhost:5432/postgres
+        username: postgres
+        password: Sium12
+        driver-class-name: org.postgresql.Driver
+    jpa:
+        database: postgresql
     security:
         oauth2:
             resourceserver:
                 jwt:
                     jwk-set-uri: http://localhost
-    application:
-        name: RetroBased
+
 server:
     compression:
         enabled: 'true'

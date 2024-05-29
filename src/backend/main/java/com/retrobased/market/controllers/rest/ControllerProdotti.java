@@ -31,4 +31,19 @@ public class ControllerProdotti {
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity getAll(
+            @RequestParam(value = "page", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "sort", defaultValue = "id") String sortBy,
+            @RequestParam(value = "keyword") String keyword) {
+
+        List<Prodotto> result = serviceProduct.searchProducts(keyword,pageNumber, sortBy);
+        if (result.isEmpty())
+            return new ResponseEntity<>(new ResponseMessage("No results!"), HttpStatus.OK);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
 }

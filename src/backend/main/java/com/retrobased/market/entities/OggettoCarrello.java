@@ -1,12 +1,16 @@
 package com.retrobased.market.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "\"Oggetto_Carrello\"")
 public class OggettoCarrello {
     @Id

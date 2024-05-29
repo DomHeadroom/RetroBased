@@ -14,11 +14,7 @@ import java.util.List;
 @Repository
 public interface RepositoryOggettoCarrello extends JpaRepository<OggettoCarrello,Integer> {
 
-    @Query("SELECT COUNT(og)" +
-            "FROM OggettoCarrello og " +
-            "WHERE og.idCliente == ?1 AND og.idProdotto ==?2"
-    )
-    boolean existsProdottoByClienteId(Integer Cliente, Integer Prodotto);
+    boolean existsByIdProdottoAndIdCliente(Integer idProdotto, Integer idCliente);
 
     boolean existById(Integer id);
 
@@ -29,11 +25,9 @@ public interface RepositoryOggettoCarrello extends JpaRepository<OggettoCarrello
     )
     void changeQuantity(Integer idCliente, Integer idProdotto, BigDecimal quantity);
 
-    @Query("SELECT og.quantità " +
-            "FROM OggettoCarrello og " +
-            "WHERE og.idCliente == ?1 AND og.idProdotto ==?2"
-    )
-    BigDecimal getQuantityProdotto(Integer idCliente, Integer idProdotto);
+    BigDecimal findQuantitàByIdClienteAndIdProdotto(Integer idCliente, Integer idProdotto);
+
+    void deleteByIdClienteAndIdProdotto(Integer idCliente, Integer idProdotto);
 
     List<Prodotto> getProdottiByIdCliente(Integer id);
 }

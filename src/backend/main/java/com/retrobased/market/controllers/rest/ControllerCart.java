@@ -1,6 +1,7 @@
 package com.retrobased.market.controllers.rest;
 
 import com.retrobased.market.entities.OggettoCarrello;
+import com.retrobased.market.entities.Prodotto;
 import com.retrobased.market.services.ServiceOggettoCarrello;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.*;
@@ -22,7 +23,7 @@ public class ControllerCart {
     private ServiceOggettoCarrello ServiceOgg;
 
     @GetMapping("/add")
-    public ResponseEntity add(@RequestBody @Valid OggettoCarrello og, @RequestBody @Valid Integer idCLiente) {
+    public ResponseEntity add(@RequestBody @Valid Prodotto pro, @RequestBody @Valid Integer idCLiente) {
         try {
             OggettoCarrello added = ServiceOgg.addProdotto(idCLiente, og);
             return new ResponseEntity(added, HttpStatus.OK);
@@ -30,7 +31,7 @@ public class ControllerCart {
             return new ResponseEntity<>(new ResponseMessage("ERROR_PAYLOAD_EMPTY"), HttpStatus.BAD_REQUEST);
         } catch (ProductNotExist e) {
             return new ResponseEntity<>(new ResponseMessage("ERROR_PRODUCT_DONT_EXIST"), HttpStatus.BAD_REQUEST);
-        } catch (ArgumentValueNotValid e) {
+        } catch (ArgumentValueNotValid | ProductQuantityNotAvailable e) {
             return new ResponseEntity<>(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"), HttpStatus.BAD_REQUEST);
         } catch (ProductAlreadyPresent e) {
             return new ResponseEntity<>(new ResponseMessage("ERROR_PRODUCT_ALREADY_IN_CART"), HttpStatus.BAD_REQUEST);

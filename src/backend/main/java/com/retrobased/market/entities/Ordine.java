@@ -2,10 +2,15 @@ package com.retrobased.market.entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "\"Ordine\"")
 public class Ordine {
     @Id
