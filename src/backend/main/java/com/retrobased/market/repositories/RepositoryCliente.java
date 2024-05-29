@@ -16,22 +16,15 @@ public interface RepositoryCliente extends JpaRepository<Cliente,Integer> {
     List<Cliente> findByEmail(String email);
     boolean existsByEmail(String email);
 
-    @Query("SELECT o " +
-            "FROM Ordine o " +
-            "WHERE o.idCliente == ?1")
-    List<Ordine> findOrder(Integer id); // TODO CAMBIARE CON TOKEN
+    List<Ordine> findByIdCliente(Integer idCliente);
 
     @Query("SELECT po.idProdotto " +
-            "FROM Ordine o, ProdottoOrdinato po " +
-            "WHERE o.idCliente == ?1 AND " +
-            "o.id == po.idOrdine.id"
+            "FROM ProdottoOrdinato po JOIN po.idOrdine o " +
+            "WHERE o.idCliente == ?1"
     )
-    List<Prodotto> findOrdedItemsByUser(Integer id); // TODO CAMBIARE CON TOKEN
+    List<Prodotto> findOrderedItemsByUser(Integer id); // TODO CAMBIARE CON TOKEN
 
-    @Query("SELECT o.idProdotto " +
-            "FROM OggettoCarrello o " +
-            "WHERE o.idCliente == ?1")
-    List<Prodotto> findCartItemsByUser(Integer id);
+    List<Prodotto> findProdottoByIdCliente(Integer idCliente);
 
     boolean NotExistById(Integer idCart);
 }
