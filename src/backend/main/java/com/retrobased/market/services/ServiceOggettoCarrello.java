@@ -6,7 +6,6 @@ import com.retrobased.market.repositories.RepositoryCliente;
 import com.retrobased.market.repositories.RepositoryOggettoCarrello;
 import com.retrobased.market.repositories.RepositoryProdotto;
 import com.retrobased.market.support.exceptions.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,101 +14,66 @@ import java.math.BigDecimal;
 
 @Service
 public class ServiceOggettoCarrello {
-    @Autowired
-    private RepositoryOggettoCarrello repoCart;
+    private final RepositoryOggettoCarrello repoCart;
 
-    @Autowired
-    private RepositoryProdotto repoProd;
+    private final RepositoryProdotto repoProd;
 
-    @Autowired
-    private RepositoryCliente repoCliente;
+    private final RepositoryCliente repoCliente;
+
+    public ServiceOggettoCarrello(RepositoryOggettoCarrello repoCart, RepositoryProdotto repoProd, RepositoryCliente repoCliente) {
+        this.repoCart = repoCart;
+        this.repoProd = repoProd;
+        this.repoCliente = repoCliente;
+    }
 
     // TODO CAMBIARE CON OGGETTO CARRELLO E NON ID PRODOTTO
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void increaseQuantity(Integer idCliente, OggettoCarrello objectCart) throws ArgumentValueNotValid, ProductQuantityNotAvailable, ProductNotExist, ValueCannotBeEmpty, ClientNotExist, ClientTokenMismatch {
-        if (idCliente == null
-                || objectCart == null
-                || objectCart.getId() == null
-        )
-            throw new ValueCannotBeEmpty();
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void increaseQuantity(Integer idCliente, Prodotto product, BigDecimal quantity) throws ArgumentValueNotValid, ProductQuantityNotAvailable, ProductNotExist, ValueCannotBeEmpty, ClientNotExist {
+        checkValues(idCliente, product, quantity);
 
         if (repoCliente.NotExistById(idCliente))
             throw new ClientNotExist();
 
-        if (!repoCart.existsById(objectCart.getId()))
+        if (repoProd.existsById(product.getId()))
             throw new ProductNotExist();
 
-        if (!objectCart.getIdCliente().getId().equals(idCliente))
-            throw new ClientTokenMismatch();
-
-        if (!repoCart.existsByIdClienteAndIdProdotto(idCliente, objectCart.getIdProdotto().getId()))
+        if (!repoCart.existsByIdClienteAndIdProdotto(idCliente, product.getId()))
             throw new ProductNotExist();
 
-        if (objectCart.getQuantità().compareTo(BigDecimal.ZERO) <= 0
-                || repoCart.findQuantitàByIdClienteAndIdProdotto(idCliente, objectCart.getIdProdotto().getId()).compareTo(objectCart.getIdProdotto().getQuantità()) > 0
+        if (quantity.compareTo(BigDecimal.ZERO) <= 0
+                || repoCart.findQuantitàByIdClienteAndIdProdotto(idCliente, product.getId()).compareTo(quantity) > 0
         )
             throw new ArgumentValueNotValid();
 
-        if (repoProd.getQuantità(objectCart.getIdProdotto().getId()).compareTo(objectCart.getIdProdotto().getQuantità()) < 0)
+        if (repoProd.getQuantità(product.getId()).compareTo(quantity) < 0)
             throw new ProductQuantityNotAvailable();
 
-        repoCart.changeQuantity(idCliente, objectCart.getIdProdotto().getId(), objectCart.getIdProdotto().getQuantità());
+        repoCart.changeQuantity(idCliente, product.getId(), quantity);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void decreaseQuantity(Integer idCliente, Prodotto po, BigDecimal quantity) throws ArgumentValueNotValid, ProductNotExist, ValueCannotBeEmpty, ClientNotExist, ClientTokenMismatch {
-        if (idCliente == null
-                || po == null
-                || po.getId() == null
-                || quantity == null
-        )
-            throw new ValueCannotBeEmpty();
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void decreaseQuantity(Integer idCliente, Prodotto product, BigDecimal quantity) throws ArgumentValueNotValid, ProductNotExist, ValueCannotBeEmpty, ClientNotExist {
+        checkValues(idCliente, product, quantity);
 
-        if (repoCliente.NotExistById(idCliente))
-            throw new ClientNotExist();
-
-        if (!repoProd.existsById(po.getId()))
-            throw new ProductNotExist();
-        
-        if (!repoCart.existsByIdClienteAndIdProdotto(idCliente, po.getId()))
+        if (!repoCart.existsByIdClienteAndIdProdotto(idCliente, product.getId()))
             throw new ProductNotExist();
 
         if (quantity.compareTo(BigDecimal.ZERO) < 0
-                || repoCart.findQuantitàByIdClienteAndIdProdotto(idCliente, po.getId()).compareTo(quantity) < 0
+                || repoCart.findQuantitàByIdClienteAndIdProdotto(idCliente, product.getId()).compareTo(quantity) < 0
         )
             throw new ArgumentValueNotValid();
 
         if (quantity.compareTo(BigDecimal.ZERO) == 0) {
-            removeProdotto(idCliente, po);
+            removeProdotto(idCliente, product);
             return;
         }
-        repoCart.changeQuantity(idCliente, po.getId(), quantity);
+        repoCart.changeQuantity(idCliente, product.getId(), quantity);
     }
 
-    // TODO IDCLIENTE PRESO DAL TOKEN
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void removeProdotto(Integer idCliente, Prodotto po) throws ValueCannotBeEmpty, ClientNotExist, ClientTokenMismatch, ArgumentValueNotValid, ProductNotExist {
+    private void checkValues(Integer idCliente, Prodotto product, BigDecimal quantity) throws ValueCannotBeEmpty, ClientNotExist, ProductNotExist {
         if (idCliente == null
-                || po == null
-                || po.getId() == null
-        )
-            throw new ValueCannotBeEmpty();
-
-        if (repoCliente.NotExistById(idCliente))
-            throw new ClientNotExist();
-
-        if (!repoCart.existsByIdClienteAndIdProdotto(idCliente, po.getId()))
-            throw new ProductNotExist();
-
-        repoCart.deleteByIdClienteAndIdProdotto(idCliente, po.getId());
-
-    }
-
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public OggettoCarrello addProdotto(Integer idCliente, Prodotto po, BigDecimal quantity) throws ValueCannotBeEmpty, ClientNotExist, ClientTokenMismatch, ArgumentValueNotValid, ProductNotExist, ProductAlreadyPresent, ProductQuantityNotAvailable {
-        if (idCliente == null
-                || po == null
-                || po.getId() == null
+                || product == null
+                || product.getId() == null
                 || quantity == null
         )
             throw new ValueCannotBeEmpty();
@@ -117,24 +81,48 @@ public class ServiceOggettoCarrello {
         if (repoCliente.NotExistById(idCliente))
             throw new ClientNotExist();
 
-        if (!repoProd.existsById(po.getId()))
+        if (!repoProd.existsById(product.getId()))
             throw new ProductNotExist();
+    }
+
+    // TODO IDCLIENTE PRESO DAL TOKEN
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void removeProdotto(Integer idCliente, Prodotto product) throws ValueCannotBeEmpty, ClientNotExist, ProductNotExist {
+        if (idCliente == null
+                || product == null
+                || product.getId() == null
+        )
+            throw new ValueCannotBeEmpty();
+
+        if (repoCliente.NotExistById(idCliente))
+            throw new ClientNotExist();
+
+        if (!repoCart.existsByIdClienteAndIdProdotto(idCliente, product.getId()))
+            throw new ProductNotExist();
+
+        repoCart.deleteByIdClienteAndIdProdotto(idCliente, product.getId());
+
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public OggettoCarrello addProdotto(Integer idCliente, Prodotto product, BigDecimal quantity) throws ValueCannotBeEmpty, ClientNotExist, ClientTokenMismatch, ArgumentValueNotValid, ProductNotExist, ProductAlreadyPresent, ProductQuantityNotAvailable {
+        checkValues(idCliente, product, quantity);
 
         if (quantity.compareTo(BigDecimal.ONE) < 0)
             throw new ArgumentValueNotValid();
 
-        if (repoProd.getQuantità(po.getId()).compareTo(quantity) > 0)
+        if (repoProd.getQuantità(product.getId()).compareTo(quantity) > 0)
             throw new ProductQuantityNotAvailable();
 
-        if (repoCart.existsByIdClienteAndIdProdotto(idCliente, po.getId()))
+        if (repoCart.existsByIdClienteAndIdProdotto(idCliente, product.getId()))
             throw new ProductAlreadyPresent();
 
-        OggettoCarrello ognew = new OggettoCarrello();
-        ognew.setIdProdotto(repoProd.getReferenceById(po.getId()));
-        ognew.setIdCliente(repoCliente.getReferenceById(idCliente));
-        ognew.setQuantità(quantity);
+        OggettoCarrello object = new OggettoCarrello();
+        object.setIdProdotto(repoProd.getReferenceById(product.getId()));
+        object.setIdCliente(repoCliente.getReferenceById(idCliente));
+        object.setQuantità(quantity);
 
-        return repoCart.save(ognew);
+        return repoCart.save(object);
 
     }
 
