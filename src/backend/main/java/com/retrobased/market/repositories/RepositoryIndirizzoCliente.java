@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RepositoryIndirizzoCliente extends JpaRepository<IndirizzoCliente,Integer> {
-
+    boolean existsIndirizzoClienteByIdAndIdCliente(Integer idCliente, Integer idIndirizzo);
 }

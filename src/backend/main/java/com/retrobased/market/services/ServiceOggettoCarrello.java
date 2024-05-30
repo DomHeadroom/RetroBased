@@ -6,6 +6,7 @@ import com.retrobased.market.repositories.RepositoryCliente;
 import com.retrobased.market.repositories.RepositoryOggettoCarrello;
 import com.retrobased.market.repositories.RepositoryProdotto;
 import com.retrobased.market.support.exceptions.*;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,14 +29,8 @@ public class ServiceOggettoCarrello {
 
     // TODO CAMBIARE CON OGGETTO CARRELLO E NON ID PRODOTTO
     @Transactional(propagation = Propagation.REQUIRED)
-    public void increaseQuantity(Integer idCliente, Prodotto product, BigDecimal quantity) throws ArgumentValueNotValid, ProductQuantityNotAvailable, ProductNotExist, ValueCannotBeEmpty, ClientNotExist {
-        checkValues(idCliente, product, quantity);
-
-        if (repoCliente.NotExistById(idCliente))
-            throw new ClientNotExist();
-
-        if (repoProd.existsById(product.getId()))
-            throw new ProductNotExist();
+    public void increaseQuantity(@NonNull Integer idCliente, @NonNull Prodotto product, @NonNull BigDecimal quantity) throws ArgumentValueNotValid, ProductQuantityNotAvailable, ProductNotExist, ValueCannotBeEmpty, ClientNotExist {
+        checkValues(idCliente, product);
 
         if (!repoCart.existsByIdClienteAndIdProdotto(idCliente, product.getId()))
             throw new ProductNotExist();
@@ -52,8 +47,8 @@ public class ServiceOggettoCarrello {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void decreaseQuantity(Integer idCliente, Prodotto product, BigDecimal quantity) throws ArgumentValueNotValid, ProductNotExist, ValueCannotBeEmpty, ClientNotExist {
-        checkValues(idCliente, product, quantity);
+    public void decreaseQuantity(@NonNull Integer idCliente, @NonNull Prodotto product, @NonNull BigDecimal quantity) throws ArgumentValueNotValid, ProductNotExist, ValueCannotBeEmpty, ClientNotExist {
+        checkValues(idCliente, product);
 
         if (!repoCart.existsByIdClienteAndIdProdotto(idCliente, product.getId()))
             throw new ProductNotExist();
@@ -70,12 +65,8 @@ public class ServiceOggettoCarrello {
         repoCart.changeQuantity(idCliente, product.getId(), quantity);
     }
 
-    private void checkValues(Integer idCliente, Prodotto product, BigDecimal quantity) throws ValueCannotBeEmpty, ClientNotExist, ProductNotExist {
-        if (idCliente == null
-                || product == null
-                || product.getId() == null
-                || quantity == null
-        )
+    private void checkValues(Integer idCliente, Prodotto product) throws ValueCannotBeEmpty, ClientNotExist, ProductNotExist {
+        if (product.getId() == null)
             throw new ValueCannotBeEmpty();
 
         if (repoCliente.NotExistById(idCliente))
@@ -87,15 +78,8 @@ public class ServiceOggettoCarrello {
 
     // TODO IDCLIENTE PRESO DAL TOKEN
     @Transactional(propagation = Propagation.REQUIRED)
-    public void removeProdotto(Integer idCliente, Prodotto product) throws ValueCannotBeEmpty, ClientNotExist, ProductNotExist {
-        if (idCliente == null
-                || product == null
-                || product.getId() == null
-        )
-            throw new ValueCannotBeEmpty();
-
-        if (repoCliente.NotExistById(idCliente))
-            throw new ClientNotExist();
+    public void removeProdotto(@NonNull Integer idCliente, @NonNull Prodotto product) throws ValueCannotBeEmpty, ClientNotExist, ProductNotExist {
+        checkValues(idCliente, product);
 
         if (!repoCart.existsByIdClienteAndIdProdotto(idCliente, product.getId()))
             throw new ProductNotExist();
@@ -105,8 +89,8 @@ public class ServiceOggettoCarrello {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public OggettoCarrello addProdotto(Integer idCliente, Prodotto product, BigDecimal quantity) throws ValueCannotBeEmpty, ClientNotExist, ClientTokenMismatch, ArgumentValueNotValid, ProductNotExist, ProductAlreadyPresent, ProductQuantityNotAvailable {
-        checkValues(idCliente, product, quantity);
+    public OggettoCarrello addProdotto(@NonNull Integer idCliente, @NonNull Prodotto product, @NonNull BigDecimal quantity) throws ValueCannotBeEmpty, ClientNotExist, ClientTokenMismatch, ArgumentValueNotValid, ProductNotExist, ProductAlreadyPresent, ProductQuantityNotAvailable {
+        checkValues(idCliente, product);
 
         if (quantity.compareTo(BigDecimal.ONE) < 0)
             throw new ArgumentValueNotValid();
