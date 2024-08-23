@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface RepositoryCliente extends JpaRepository<Cliente,Integer> {
-    List<Cliente> findByEmail(String email);
+    Cliente findByEmail(String email);
     boolean existsByEmail(String email);
 
     List<Ordine> findByIdCliente(Integer idCliente);

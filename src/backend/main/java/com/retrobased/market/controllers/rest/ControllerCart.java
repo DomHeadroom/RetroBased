@@ -20,8 +20,11 @@ import java.math.BigDecimal;
 @RestController
 @RequestMapping("/cart")
 public class ControllerCart {
-    @Autowired
-    private ServiceOggettoCarrello ServiceOgg;
+    private final ServiceOggettoCarrello ServiceOgg;
+
+    public ControllerCart(ServiceOggettoCarrello ServiceOgg) {
+        this.ServiceOgg = ServiceOgg;
+    }
 
     @GetMapping("/add")
     public ResponseEntity add(@RequestBody @Valid Prodotto pro, @RequestBody @Valid Integer idCLiente) {

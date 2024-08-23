@@ -15,8 +15,11 @@ import javax.validation.Valid;
 
 @RestController
 public class ControllerAccounting {
-    @Autowired
-    private ServiceCliente ServiceCliente;
+    private final ServiceCliente ServiceCliente;
+
+    public ControllerAccounting(ServiceCliente ServiceCliente) {
+        this.ServiceCliente = ServiceCliente;
+    }
 
     @GetMapping("/register")
     public ResponseEntity register(@RequestBody @Valid Cliente user) {

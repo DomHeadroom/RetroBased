@@ -16,8 +16,11 @@ import java.util.List;
 @RestController
 public class ControllerProdotti {
 
-    @Autowired
-    private ServiceProdotto serviceProduct;
+    private final ServiceProdotto serviceProduct;
+
+    public ControllerProdotti(ServiceProdotto serviceProduct) {
+        this.serviceProduct = serviceProduct;
+    }
 
     @GetMapping("/filter")
     public ResponseEntity getAll(
