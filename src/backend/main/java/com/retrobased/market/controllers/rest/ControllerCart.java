@@ -27,10 +27,10 @@ public class ControllerCart {
     }
 
     @GetMapping("/add")
-    public ResponseEntity add(@RequestBody @Valid Prodotto pro, @RequestBody @Valid Integer idCLiente) {
+    public ResponseEntity<?> add(@RequestBody @Valid Prodotto pro, @RequestBody @Valid Integer idCLiente) {
         try {
             OggettoCarrello added = ServiceOgg.addProdotto(idCLiente, pro, BigDecimal.ONE);
-            return new ResponseEntity(added, HttpStatus.OK);
+            return new ResponseEntity<>(added, HttpStatus.OK);
         } catch (ValueCannotBeEmpty e) {
             return new ResponseEntity<>(new ResponseMessage("ERROR_PAYLOAD_EMPTY"), HttpStatus.BAD_REQUEST);
         } catch (ProductNotExist e) {
