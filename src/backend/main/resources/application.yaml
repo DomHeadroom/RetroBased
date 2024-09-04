@@ -6,8 +6,6 @@ spring:
         username: postgres
         password: Sium12
         driver-class-name: org.postgresql.Driver
-    jpa:
-        database: postgresql
     security:
         oauth2:
             resourceserver:

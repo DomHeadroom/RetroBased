@@ -22,11 +22,11 @@ public interface RepositoryProdotto extends JpaRepository<Prodotto, Integer> {
 
     @Query("SELECT tp.idProdotto " +
             "FROM TagProdotto tp " +
-            "WHERE tp.idTag == ?1"
+            "WHERE tp.idTag = ?1"
     )
-    List<Prodotto> findByTag(Integer id);
+    List<Prodotto> findByTagId(Integer id);
 
-    BigDecimal getQuantità(Integer id);
+    BigDecimal findQuantitàById(Integer id);
 
     boolean existsById(Integer id);
 
@@ -34,6 +34,6 @@ public interface RepositoryProdotto extends JpaRepository<Prodotto, Integer> {
     @Query("SELECT p " +
             "FROM Prodotto p " +
             "WHERE p.nome LIKE ?1 OR " +
-            "      p.descrizione LIKE ?1")
+            " p.descrizione LIKE ?1")
     Page<Prodotto> find(String name, Pageable pageable);
 }

@@ -40,7 +40,7 @@ public class ServiceOggettoCarrello {
         )
             throw new ArgumentValueNotValid();
 
-        if (repoProd.getQuantità(product.getId()).compareTo(quantity) < 0)
+        if (repoProd.findQuantitàById(product.getId()).compareTo(quantity) < 0)
             throw new ProductQuantityNotAvailable();
 
         repoCart.changeQuantity(idCliente, product.getId(), quantity);
@@ -69,7 +69,7 @@ public class ServiceOggettoCarrello {
         if (product.getId() == null)
             throw new ValueCannotBeEmpty();
 
-        if (repoCliente.NotExistById(idCliente))
+        if (!repoCliente.existsById(idCliente))
             throw new ClientNotExist();
 
         if (!repoProd.existsById(product.getId()))
@@ -95,7 +95,7 @@ public class ServiceOggettoCarrello {
         if (quantity.compareTo(BigDecimal.ONE) < 0)
             throw new ArgumentValueNotValid();
 
-        if (repoProd.getQuantità(product.getId()).compareTo(quantity) > 0)
+        if (repoProd.findQuantitàById(product.getId()).compareTo(quantity) > 0)
             throw new ProductQuantityNotAvailable();
 
         if (repoCart.existsByIdClienteAndIdProdotto(idCliente, product.getId()))
