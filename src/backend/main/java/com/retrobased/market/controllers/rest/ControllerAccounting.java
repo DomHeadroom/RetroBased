@@ -22,8 +22,9 @@ public class ControllerAccounting {
         this.ServiceCliente = ServiceCliente;
     }
 
-    @GetMapping("/register")
+    @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid Cliente user) {
+        System.out.println("Saving user: " + user);
         try {
             Cliente added = ServiceCliente.registerUser(user);
             return new ResponseEntity<>(added, HttpStatus.OK);
