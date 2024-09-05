@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,10 +28,8 @@ public class ServiceProdotto {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Prodotto addProdotto(Prodotto prod) throws IdProductAlreadyUsed, ArgumentValueNotValid, ValueCannotBeEmpty {
-        if (prod == null
-                || prod.getId() == null
-                || prod.getPrezzo() == null
+    public Prodotto addProdotto(@NonNull Prodotto prod) throws IdProductAlreadyUsed, ArgumentValueNotValid, ValueCannotBeEmpty {
+        if (prod.getPrezzo() == null
                 || prod.getQuantità() == null
                 || prod.getVersione() == null
                 || prod.getDescrizione() == null
@@ -52,10 +51,8 @@ public class ServiceProdotto {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void removeProdotto(Prodotto prod) throws ValueCannotBeEmpty, ProductNotExist {
-        if (prod == null
-                || prod.getId() == null
-        )
+    public void removeProdotto(@NonNull Prodotto prod) throws ValueCannotBeEmpty, ProductNotExist {
+        if (prod.getId() == null)
             throw new ValueCannotBeEmpty();
 
         if (!repoProd.existsById(prod.getId()))

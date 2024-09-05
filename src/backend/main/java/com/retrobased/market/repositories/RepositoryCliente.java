@@ -29,5 +29,5 @@ public interface RepositoryCliente extends JpaRepository<Cliente,Long> {
 
     // List<Prodotto> findProdottoByIdCliente(Integer idCliente);
 
-    boolean existsById(Integer idCart);
+    // boolean existsById(Long idCart);
 }

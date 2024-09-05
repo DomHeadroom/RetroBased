@@ -5,7 +5,6 @@ import com.retrobased.market.entities.Prodotto;
 import com.retrobased.market.services.ServiceOggettoCarrello;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

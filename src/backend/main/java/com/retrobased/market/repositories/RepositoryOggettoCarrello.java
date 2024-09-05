@@ -20,7 +20,7 @@ public interface RepositoryOggettoCarrello extends JpaRepository<OggettoCarrello
             "WHERE oc.idCliente.id = ?1 AND oc.idProdotto.id = ?2")
     boolean existsByIdClienteAndIdProdotto(Long idCliente, Long idProdotto);
 
-    boolean existsById(Integer id);
+    boolean existsById(Long id);
 
     @Modifying
     @Query("UPDATE OggettoCarrello og " +
