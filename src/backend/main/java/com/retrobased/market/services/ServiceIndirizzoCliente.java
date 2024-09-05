@@ -25,7 +25,7 @@ public class ServiceIndirizzoCliente {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public IndirizzoCliente addAddress(@NonNull Integer idCliente, @NonNull IndirizzoCliente address) throws ClientNotExist, ValueCannotBeEmpty {
+    public IndirizzoCliente addAddress(@NonNull Long idCliente, @NonNull IndirizzoCliente address) throws ClientNotExist, ValueCannotBeEmpty {
         if (address.getCittà() == null
                 || address.getPaese() == null
                 || address.getLineaIndirizzo1() == null
@@ -45,7 +45,7 @@ public class ServiceIndirizzoCliente {
 
     // TODO CAMBIARE IDCLIENTE CON TOKEN
     @Transactional(propagation = Propagation.REQUIRED)
-    public void removeAddress(@NonNull Integer idClient, @NonNull IndirizzoCliente address) throws ClientNotExist, ValueCannotBeEmpty, ClientTokenMismatch, AddressNotExist {
+    public void removeAddress(@NonNull Long idClient, @NonNull IndirizzoCliente address) throws ClientNotExist, ValueCannotBeEmpty, ClientTokenMismatch, AddressNotExist {
         if (address.getId() == null
                 || address.getIdCliente() == null
         )

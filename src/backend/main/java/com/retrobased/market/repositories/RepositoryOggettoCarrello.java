@@ -18,7 +18,7 @@ public interface RepositoryOggettoCarrello extends JpaRepository<OggettoCarrello
     @Query("SELECT CASE WHEN COUNT(oc) > 0 THEN TRUE ELSE FALSE END " +
             "FROM OggettoCarrello oc " +
             "WHERE oc.idCliente.id = ?1 AND oc.idProdotto.id = ?2")
-    boolean existsByIdClienteAndIdProdotto(Integer idCliente, Integer idProdotto);
+    boolean existsByIdClienteAndIdProdotto(Long idCliente, Long idProdotto);
 
     boolean existsById(Integer id);
 
@@ -27,17 +27,17 @@ public interface RepositoryOggettoCarrello extends JpaRepository<OggettoCarrello
             "SET og.quantità = ?3 " +
             "WHERE og.idCliente = ?1 AND og.idProdotto = ?2"
     )
-    void changeQuantity(Integer idCliente, Integer idProdotto, BigDecimal quantity);
+    void changeQuantity(Long idCliente, Long idProdotto, BigDecimal quantity);
 
     @Query("SELECT og.quantità " +
             "FROM OggettoCarrello og " +
             "WHERE og.idCliente = ?1 AND og.idProdotto = ?2"
     )
-    BigDecimal findQuantitàByIdClienteAndIdProdotto(Integer idCliente, Integer idProdotto);
+    BigDecimal findQuantitàByIdClienteAndIdProdotto(Long idCliente, Long idProdotto);
 
     @Modifying
     @Transactional
     @Query("DELETE FROM OggettoCarrello oc " +
             "WHERE oc.idCliente.id = ?1 AND oc.idProdotto.id = ?2")
-    void deleteByIdClienteAndIdProdotto(Integer idCliente, Integer idProdotto);
+    void deleteByIdClienteAndIdProdotto(Long idCliente, Long idProdotto);
 }

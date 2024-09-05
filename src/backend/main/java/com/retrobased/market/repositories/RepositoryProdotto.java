@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
-public interface RepositoryProdotto extends JpaRepository<Prodotto, Integer> {
+public interface RepositoryProdotto extends JpaRepository<Prodotto, Long> {
 
     @Query("SELECT p " +
             "FROM Prodotto p " +
@@ -24,11 +24,11 @@ public interface RepositoryProdotto extends JpaRepository<Prodotto, Integer> {
             "FROM TagProdotto tp " +
             "WHERE tp.idTag = ?1"
     )
-    List<Prodotto> findByTagId(Integer id);
+    List<Prodotto> findByTagId(Long id);
 
-    BigDecimal findQuantitàById(Integer id);
+    BigDecimal findQuantitàById(Long id);
 
-    boolean existsById(Integer id);
+    boolean existsById(Long id);
 
 
     @Query("SELECT p " +

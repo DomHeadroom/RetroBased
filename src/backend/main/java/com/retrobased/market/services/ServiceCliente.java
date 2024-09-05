@@ -20,19 +20,28 @@ public class ServiceCliente {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public Cliente registerUser(@NonNull Cliente user) throws MailUserAlreadyExistsException, ValueCannotBeEmpty {
+        System.out.println("Dentro register con:" + user);
 
-        if (user.getId() == null
-                || user.getNome() == null
+        if (user.getNome() == null
                 || user.getCognome() == null
                 || user.getEmail() == null
                 || user.getHashPassword() == null
         )
             throw new ValueCannotBeEmpty();
 
-        if (userRepo.existsByEmail(user.getEmail()))
-            throw new MailUserAlreadyExistsException();
+        user.setId(null);
 
-        return userRepo.save(user);
+        System.out.println("Dio");
+
+        if (userRepo.existsByEmail(user.getEmail())) {
+            throw new MailUserAlreadyExistsException();
+        }
+
+        System.out.println("Saving user: " + user);
+        Cliente savedUser = userRepo.save(user);
+        System.out.println("Saved user: " + savedUser);
+
+        return userRepo.save(savedUser);
     }
 
 

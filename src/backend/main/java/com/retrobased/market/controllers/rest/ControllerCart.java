@@ -27,7 +27,7 @@ public class ControllerCart {
     }
 
     @GetMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid Prodotto pro, @RequestBody @Valid Integer idCLiente) {
+    public ResponseEntity<?> add(@RequestBody @Valid Prodotto pro, @RequestBody @Valid Long idCLiente) {
         try {
             OggettoCarrello added = ServiceOgg.addProdotto(idCLiente, pro, BigDecimal.ONE);
             return new ResponseEntity<>(added, HttpStatus.OK);

@@ -2,27 +2,34 @@ package com.retrobased.market.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 @Data
 @Entity
-@NoArgsConstructor
-@Table(name = "\"Cliente\"")
-public class Cliente {
+@Table(name = "Cliente")
+public class Cliente implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "nome", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "cognome", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "cognome", nullable = false)
     private String cognome;
 
-    @Column(name = "email", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "hash_password", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "hash_password", nullable = false)
     private String hashPassword;
+
 }
+

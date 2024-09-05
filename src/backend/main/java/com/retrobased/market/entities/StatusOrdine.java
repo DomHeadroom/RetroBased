@@ -4,17 +4,23 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
 @Entity
 @NoArgsConstructor
 @Table(name = "\"Status_Ordine\"")
-public class StatusOrdine {
+public class StatusOrdine implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "\"desc\"", nullable = false, length = Integer.MAX_VALUE)
     private String desc;

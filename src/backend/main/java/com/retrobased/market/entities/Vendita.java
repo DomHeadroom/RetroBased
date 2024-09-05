@@ -4,15 +4,22 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Data
 @Entity
 @NoArgsConstructor
 @Table(name = "\"Vendita\"")
-public class Vendita {
+public class Vendita implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "prezzo", nullable = false)
     private Integer prezzo;

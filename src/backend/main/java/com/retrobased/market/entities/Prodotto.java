@@ -2,6 +2,8 @@ package com.retrobased.market.entities;
 
 import jakarta.persistence.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import lombok.Data;
@@ -11,11 +13,15 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Table(name = "\"Prodotto\"")
-public class Prodotto {
+public class Prodotto implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "prezzo", nullable = false)
     private BigDecimal prezzo;
