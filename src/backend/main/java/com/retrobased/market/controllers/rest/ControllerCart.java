@@ -1,7 +1,5 @@
 package com.retrobased.market.controllers.rest;
 
-import com.retrobased.market.entities.OggettoCarrello;
-import com.retrobased.market.entities.Prodotto;
 import com.retrobased.market.services.ServiceOggettoCarrello;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.*;

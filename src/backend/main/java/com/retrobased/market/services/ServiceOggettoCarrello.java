@@ -1,8 +1,5 @@
 package com.retrobased.market.services;
 
-import com.retrobased.market.entities.OggettoCarrello;
-import com.retrobased.market.entities.Prodotto;
-import com.retrobased.market.repositories.RepositoryCliente;
 import com.retrobased.market.repositories.RepositoryOggettoCarrello;
 import com.retrobased.market.repositories.RepositoryProdotto;
 import com.retrobased.market.support.exceptions.*;

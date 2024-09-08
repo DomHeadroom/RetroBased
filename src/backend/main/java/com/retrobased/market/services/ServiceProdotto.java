@@ -1,6 +1,5 @@
 package com.retrobased.market.services;
 
-import com.retrobased.market.entities.Prodotto;
 import com.retrobased.market.repositories.RepositoryProdotto;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValid;
 import com.retrobased.market.support.exceptions.IdProductAlreadyUsed;
@@ -22,9 +21,11 @@ import java.util.List;
 @Service
 public class ServiceProdotto {
     private final RepositoryProdotto repoProd;
+    private final RepositoryProdotto repositoryProdotto;
 
-    public ServiceProdotto(RepositoryProdotto repoProd) {
+    public ServiceProdotto(RepositoryProdotto repoProd, RepositoryProdotto repositoryProdotto) {
         this.repoProd = repoProd;
+        this.repositoryProdotto = repositoryProdotto;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -83,4 +84,7 @@ public class ServiceProdotto {
         return new ArrayList<>();
     }
 
+    public Prodotto saveProdotto(Prodotto prodotto) {
+        return repositoryProdotto.save(prodotto);
+    }
 }

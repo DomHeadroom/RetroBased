@@ -1,7 +1,5 @@
 package com.retrobased.market.repositories;
 
-import com.retrobased.market.entities.OggettoCarrello;
-import com.retrobased.market.entities.Prodotto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,11 +7,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 
 @Repository
-public interface RepositoryOggettoCarrello extends JpaRepository<OggettoCarrello,Integer> {
+public interface RepositoryOggettoCarrello extends JpaRepository<OggettoCarrello,Long> {
 
     @Query("SELECT CASE WHEN COUNT(oc) > 0 THEN TRUE ELSE FALSE END " +
             "FROM OggettoCarrello oc " +

@@ -1,6 +1,5 @@
 package com.retrobased.market.repositories;
 
-import com.retrobased.market.entities.Prodotto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

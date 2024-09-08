@@ -1,7 +1,5 @@
 package com.retrobased.market.services;
 
-import com.retrobased.market.entities.IndirizzoCliente;
-import com.retrobased.market.repositories.RepositoryCliente;
 import com.retrobased.market.repositories.RepositoryIndirizzoCliente;
 import com.retrobased.market.support.exceptions.AddressNotExist;
 import com.retrobased.market.support.exceptions.ClientTokenMismatch;

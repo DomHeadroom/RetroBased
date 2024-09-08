@@ -6,7 +6,10 @@ spring:
         username: postgres
         password: Sium12
         driver-class-name: org.postgresql.Driver
-
+    jpa:
+        hibernate:
+            naming:
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 server:
     compression:

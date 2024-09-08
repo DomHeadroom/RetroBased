@@ -1,15 +1,12 @@
 package com.retrobased.market.controllers.rest;
 
-import com.retrobased.market.entities.Prodotto;
 import com.retrobased.market.services.ServiceProdotto;
 import com.retrobased.market.support.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,6 +29,16 @@ public class ControllerProdotti {
             return new ResponseEntity<>(new ResponseMessage("No results!"), HttpStatus.OK);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<?> addProdotto(@RequestBody @Valid Prodotto prodotto) {
+        try {
+            Prodotto newProdotto = serviceProduct.saveProdotto(prodotto);
+            return new ResponseEntity<>(newProdotto, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Errore durante l'aggiunta del prodotto", HttpStatus.BAD_REQUEST);
+        }
     }
 
 //    @GetMapping("/filter")
