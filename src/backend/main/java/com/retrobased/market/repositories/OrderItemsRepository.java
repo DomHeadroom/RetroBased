@@ -4,6 +4,8 @@ import com.retrobased.market.entities.OrderItems;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface OrderItemsRepository extends JpaRepository<OrderItems, String>, JpaSpecificationExecutor<OrderItems> {
+import java.util.UUID;
+
+public interface OrderItemsRepository extends JpaRepository<OrderItems, UUID>, JpaSpecificationExecutor<OrderItems> {
 
 }

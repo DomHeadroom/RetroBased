@@ -1,10 +1,10 @@
 package com.retrobased.market.services;
 
 import com.retrobased.market.repositories.RepositoryIndirizzoCliente;
-import com.retrobased.market.support.exceptions.AddressNotExist;
-import com.retrobased.market.support.exceptions.ClientTokenMismatch;
-import com.retrobased.market.support.exceptions.ClientNotExist;
-import com.retrobased.market.support.exceptions.ValueCannotBeEmpty;
+import com.retrobased.market.support.exceptions.AddressDontExistsException;
+import com.retrobased.market.support.exceptions.ClientTokenMismatchException;
+import com.retrobased.market.support.exceptions.ClientDontExistsException;
+import com.retrobased.market.support.exceptions.ValueCannotBeEmptyException;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,17 +23,17 @@ public class ServiceIndirizzoCliente {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public IndirizzoCliente addAddress(@NonNull Long idCliente, @NonNull IndirizzoCliente address) throws ClientNotExist, ValueCannotBeEmpty {
+    public IndirizzoCliente addAddress(@NonNull Long idCliente, @NonNull IndirizzoCliente address) throws ClientDontExistsException, ValueCannotBeEmptyException {
         if (address.getCittà() == null
                 || address.getPaese() == null
                 || address.getLineaIndirizzo1() == null
                 || address.getCodicePostale() == null
                 || address.getIdCliente() == null
         )
-            throw new ValueCannotBeEmpty();
+            throw new ValueCannotBeEmptyException();
 
         if (!userRepo.existsById(address.getIdCliente().getId()))
-            throw new ClientNotExist();
+            throw new ClientDontExistsException();
 
         address.setIdCliente(userRepo.getReferenceById(idCliente));
 
@@ -43,20 +43,20 @@ public class ServiceIndirizzoCliente {
 
     // TODO CAMBIARE IDCLIENTE CON TOKEN
     @Transactional(propagation = Propagation.REQUIRED)
-    public void removeAddress(@NonNull Long idClient, @NonNull IndirizzoCliente address) throws ClientNotExist, ValueCannotBeEmpty, ClientTokenMismatch, AddressNotExist {
+    public void removeAddress(@NonNull Long idClient, @NonNull IndirizzoCliente address) throws ClientDontExistsException, ValueCannotBeEmptyException, ClientTokenMismatchException, AddressDontExistsException {
         if (address.getId() == null
                 || address.getIdCliente() == null
         )
-            throw new ValueCannotBeEmpty();
+            throw new ValueCannotBeEmptyException();
 
         if (!idClient.equals(address.getIdCliente().getId()))
-            throw new ClientTokenMismatch();
+            throw new ClientTokenMismatchException();
 
         if (!userRepo.existsById(address.getIdCliente().getId()))
-            throw new ClientNotExist();
+            throw new ClientDontExistsException();
 
         if(!addressRepo.existsIndirizzoClienteByIdAndIdCliente(address.getId(), userRepo.getReferenceById(idClient)))
-           throw new AddressNotExist();
+           throw new AddressDontExistsException();
 
         userRepo.deleteById(address.getId());
 

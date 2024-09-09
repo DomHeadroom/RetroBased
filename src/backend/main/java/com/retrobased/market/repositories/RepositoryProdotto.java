@@ -24,15 +24,4 @@ public interface RepositoryProdotto extends JpaRepository<Prodotto, Long> {
             "WHERE tp.idTag = ?1"
     )
     List<Prodotto> findByTagId(Long id);
-
-    BigDecimal findQuantitàById(Long id);
-
-    boolean existsById(Long id);
-
-
-    @Query("SELECT p " +
-            "FROM Prodotto p " +
-            "WHERE p.nome LIKE ?1 OR " +
-            " p.descrizione LIKE ?1")
-    Page<Prodotto> find(String name, Pageable pageable);
 }

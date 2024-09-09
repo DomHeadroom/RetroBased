@@ -38,6 +38,7 @@ public class Products {
 
     @Column(name = "buying_price")
     private BigDecimal buyingPrice;
+    // TODO non sono sicuro questo sia necessario
 
     @Column(name = "quantity", nullable = false)
     private Long quantity;

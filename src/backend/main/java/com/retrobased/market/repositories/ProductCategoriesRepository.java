@@ -4,6 +4,8 @@ import com.retrobased.market.entities.ProductCategories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface ProductCategoriesRepository extends JpaRepository<ProductCategories, String>, JpaSpecificationExecutor<ProductCategories> {
+import java.util.UUID;
+
+public interface ProductCategoriesRepository extends JpaRepository<ProductCategories, UUID>, JpaSpecificationExecutor<ProductCategories> {
 
 }

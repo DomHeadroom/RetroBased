@@ -1,6 +1,7 @@
 package com.retrobased.market.controllers.rest;
 
-import com.retrobased.market.services.ServiceOggettoCarrello;
+import com.retrobased.market.entities.Products;
+import com.retrobased.market.services.ProductsService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.*;
 import org.springframework.http.HttpStatus;
@@ -11,35 +12,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 
 
 @RestController
 @RequestMapping("/cart")
-public class ControllerCart {
-    private final ServiceOggettoCarrello ServiceOgg;
+public class CartController {
+    private final ProductsService productsService;
 
-    public ControllerCart(ServiceOggettoCarrello ServiceOgg) {
-        this.ServiceOgg = ServiceOgg;
+    public CartController(ProductsService productsService) {
+        this.productsService = productsService;
     }
 
     @GetMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid Prodotto pro, @RequestBody @Valid Long idCLiente) {
+    public ResponseEntity<?> addToCart(@RequestBody @Valid Products product) {
         try {
-            OggettoCarrello added = ServiceOgg.addProdotto(idCLiente, pro, BigDecimal.ONE);
+            Products added = productsService.addProducts(product);
             return new ResponseEntity<>(added, HttpStatus.OK);
-        } catch (ValueCannotBeEmpty e) {
-            return new ResponseEntity<>(new ResponseMessage("ERROR_PAYLOAD_EMPTY"), HttpStatus.BAD_REQUEST);
-        } catch (ProductNotExist e) {
-            return new ResponseEntity<>(new ResponseMessage("ERROR_PRODUCT_DONT_EXIST"), HttpStatus.BAD_REQUEST);
-        } catch (ArgumentValueNotValid | ProductQuantityNotAvailable e) {
+        } catch (ValueCannotBeEmptyException e) {
+            return new ResponseEntity<>(new ResponseMessage("ERROR_EMPTY_PAYLOAD"), HttpStatus.BAD_REQUEST);
+        } catch (ArgumentValueNotValidException e) {
             return new ResponseEntity<>(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"), HttpStatus.BAD_REQUEST);
-        } catch (ProductAlreadyPresent e) {
-            return new ResponseEntity<>(new ResponseMessage("ERROR_PRODUCT_ALREADY_IN_CART"), HttpStatus.BAD_REQUEST);
-        } catch (ClientNotExist e) {
-            return new ResponseEntity<>(new ResponseMessage("ERROR_CLIENT_DONT_EXIST"), HttpStatus.BAD_REQUEST);
-        } catch (ClientTokenMismatch e) {
-            return new ResponseEntity<>(new ResponseMessage("ERROR_TOKEN_MISSMATCH"), HttpStatus.BAD_REQUEST);
         }
     }
 
