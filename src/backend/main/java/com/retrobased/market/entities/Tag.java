@@ -19,7 +19,7 @@ public class Tag {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "tag_name", nullable = false)
+    @Column(name = "tag_name", nullable = false, length = 255)
     private String tagName;
 
     @Column(name = "icon")

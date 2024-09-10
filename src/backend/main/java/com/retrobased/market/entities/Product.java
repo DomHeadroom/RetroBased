@@ -63,6 +63,6 @@ public class Product {
     private String note;
 
     @Column(name = "created_at", nullable = false)
-    private Instant createdAt = Instant.now();
+    private OffsetDateTime createdAt = OffsetDateTime.now();
 
 }

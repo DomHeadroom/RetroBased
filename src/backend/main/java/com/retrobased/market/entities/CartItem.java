@@ -1,9 +1,6 @@
 package com.retrobased.market.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -19,13 +16,15 @@ public class CartItem {
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "cart_id")
-    private UUID cartId;
+    @ManyToOne
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 
-    @Column(name = "product_id")
-    private UUID productId;
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
 
     @Column(name = "quantity")
-    private Long quantity;
+    private Long quantity = 1L;
 
 }

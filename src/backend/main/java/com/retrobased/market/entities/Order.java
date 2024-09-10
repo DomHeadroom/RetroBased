@@ -1,9 +1,6 @@
 package com.retrobased.market.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -20,11 +17,13 @@ public class Order {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "customer_id")
-    private UUID customerId;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
-    @Column(name = "addresses_id")
-    private UUID addressesId;
+    @ManyToOne
+    @JoinColumn(name = "addresses_id")
+    private CustomerAddress address;
 
     @Column(name = "order_approved_at")
     private OffsetDateTime orderApprovedAt;
@@ -36,6 +35,6 @@ public class Order {
     private OffsetDateTime orderDeliveredCustomerDate;
 
     @Column(name = "created_at", nullable = false)
-    private OffsetDateTime createdAt;
+    private OffsetDateTime createdAt = OffsetDateTime.now();
 
 }

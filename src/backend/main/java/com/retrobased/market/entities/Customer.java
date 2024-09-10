@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -28,6 +27,6 @@ public class Customer {
     private String email;
 
     @Column(name = "registered_at", nullable = false, updatable = false, insertable = false)
-    private Instant registeredAt = Instant.now();
+    private OffsetDateTime registeredAt = OffsetDateTime.now();
 
 }

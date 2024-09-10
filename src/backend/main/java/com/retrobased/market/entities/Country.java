@@ -1,9 +1,6 @@
 package com.retrobased.market.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -12,19 +9,20 @@ import lombok.Data;
 public class Country {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "countries_seq")
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "iso", nullable = false)
+    @Column(name = "iso", nullable = false, length = 2)
     private String iso;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 80)
     private String name;
 
     @Column(name = "upper_name", nullable = false)
     private String upperName;
 
-    @Column(name = "iso3")
+    @Column(name = "iso3", length = 3)
     private String iso3;
 
 }

@@ -41,10 +41,10 @@ public class Slideshow {
     private Long displayOrder;
 
     @Column(name = "published")
-    private Boolean published;
+    private Boolean published = false;
 
     @Column(name = "clicks", nullable = false)
-    private Long clicks;
+    private Long clicks = 0L;
 
     @Column(name = "styles")
     private String styles;

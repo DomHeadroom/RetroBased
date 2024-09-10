@@ -1,9 +1,6 @@
 package com.retrobased.market.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -32,8 +29,9 @@ public class Seller {
     @Column(name = "address_line2")
     private String addressLine2;
 
-    @Column(name = "country_id", nullable = false)
-    private Long countryId;
+    @ManyToOne
+    @JoinColumn(name = "country_id", nullable = false)
+    private Country country;
 
     @Column(name = "city")
     private String city;
