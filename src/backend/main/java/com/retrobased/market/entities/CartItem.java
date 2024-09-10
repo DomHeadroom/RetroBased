@@ -11,15 +11,21 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "carts")
-public class Cart {
+@Table(name = "cart_items")
+public class CartItem {
 
     @Id
     @UuidGenerator
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "customer_id")
-    private UUID customerId;
+    @Column(name = "cart_id")
+    private UUID cartId;
+
+    @Column(name = "product_id")
+    private UUID productId;
+
+    @Column(name = "quantity")
+    private Long quantity;
 
 }

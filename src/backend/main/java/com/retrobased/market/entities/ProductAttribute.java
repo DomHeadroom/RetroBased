@@ -8,8 +8,8 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "gallery")
-public class Gallery {
+@Table(name = "product_attributes")
+public class ProductAttribute {
 
     @Id
     @UuidGenerator
@@ -17,16 +17,11 @@ public class Gallery {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Column(name = "image", nullable = false)
-    private String image;
-
-    @Column(name = "placeholder", nullable = false)
-    private String placeholder;
-
-    @Column(name = "is_thumbnail", nullable = false)
-    private Boolean isThumbnail  = false;
+    @ManyToOne
+    @JoinColumn(name = "attribute_id", nullable = false)
+    private Attribute attributeId;
 
 }

@@ -7,24 +7,20 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.UUID;
+
 @Data
 @Entity
-@Table(name = "sellers")
-public class Seller {
+@Table(name = "customer_addresses")
+public class CustomerAddress {
 
     @Id
     @UuidGenerator
     @Column(name = "id", updatable = false, nullable = false)
-    private String id;
+    private UUID id;
 
-    @Column(name = "seller_name", nullable = false)
-    private String sellerName;
-
-    @Column(name = "company")
-    private String company;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @Column(name = "customer_id")
+    private UUID customerId;
 
     @Column(name = "address_line1", nullable = false)
     private String addressLine1;
@@ -32,13 +28,13 @@ public class Seller {
     @Column(name = "address_line2")
     private String addressLine2;
 
-    @Column(name = "country_id", nullable = false)
-    private Long countryId;
+    @Column(name = "country", nullable = false)
+    private String country;
 
-    @Column(name = "city")
+    @Column(name = "postal_code", nullable = false)
+    private String postalCode;
+
+    @Column(name = "city", nullable = false)
     private String city;
-
-    @Column(name = "note")
-    private String note;
 
 }

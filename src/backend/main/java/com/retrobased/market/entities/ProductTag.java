@@ -10,15 +10,15 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "product_sellers")
-public class ProductSeller {
+@Table(name = "product_tags")
+public class ProductTag {
+
+    @Id
+    @Column(name = "tag_id", nullable = false)
+    private UUID tagId;
 
     @Id
     @Column(name = "product_id", nullable = false)
     private UUID productId;
-
-    @Id
-    @Column(name = "seller_id", nullable = false)
-    private UUID sellerId;
 
 }

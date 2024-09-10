@@ -1,6 +1,6 @@
 package com.retrobased.market.controllers.rest;
 
-import com.retrobased.market.entities.Customers;
+import com.retrobased.market.entities.Customer;
 import com.retrobased.market.services.CustomerService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.UserMailAlreadyExistsException;
@@ -23,7 +23,7 @@ public class CustomerController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid Customers customer) {
+    public ResponseEntity<?> register(@RequestBody @Valid Customer customer) {
         try {
             customerService.registerUser(customer);
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -36,7 +36,7 @@ public class CustomerController {
 
     // TODO fare metodo singleton per il carrello utente
     @PostMapping("/cart")
-    public ResponseEntity<?> init_cart(@RequestBody @Valid Customers customer) {
+    public ResponseEntity<?> init_cart(@RequestBody @Valid Customer customer) {
         try {
             customerService.registerUser(customer);
             return new ResponseEntity<>(HttpStatus.CREATED);

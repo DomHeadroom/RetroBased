@@ -1,7 +1,7 @@
 package com.retrobased.market.controllers.rest;
 
-import com.retrobased.market.entities.Products;
-import com.retrobased.market.services.ProductsService;
+import com.retrobased.market.entities.Product;
+import com.retrobased.market.services.ProductService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.*;
 import org.springframework.http.HttpStatus;
@@ -17,16 +17,16 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/cart")
 public class CartController {
-    private final ProductsService productsService;
+    private final ProductService productService;
 
-    public CartController(ProductsService productsService) {
-        this.productsService = productsService;
+    public CartController(ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping("/add")
-    public ResponseEntity<?> addToCart(@RequestBody @Valid Products product) {
+    public ResponseEntity<?> addToCart(@RequestBody @Valid Product product) {
         try {
-            Products added = productsService.addProducts(product);
+            Product added = productService.addProduct(product);
             return new ResponseEntity<>(added, HttpStatus.OK);
         } catch (ValueCannotBeEmptyException e) {
             return new ResponseEntity<>(new ResponseMessage("ERROR_EMPTY_PAYLOAD"), HttpStatus.BAD_REQUEST);

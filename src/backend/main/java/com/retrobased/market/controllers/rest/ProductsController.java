@@ -1,7 +1,7 @@
 package com.retrobased.market.controllers.rest;
 
-import com.retrobased.market.entities.Products;
-import com.retrobased.market.services.ProductsService;
+import com.retrobased.market.entities.Product;
+import com.retrobased.market.services.ProductService;
 import com.retrobased.market.support.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +14,9 @@ import java.util.List;
 @RequestMapping("/api/cart")
 public class ProductsController {
 
-    private final ProductsService serviceProduct;
+    private final ProductService serviceProduct;
 
-    public ProductsController(ProductsService serviceProduct) {
+    public ProductsController(ProductService serviceProduct) {
         this.serviceProduct = serviceProduct;
     }
 
@@ -26,7 +26,7 @@ public class ProductsController {
             @RequestParam(value = "sort", defaultValue = "id") String sortBy,
             @RequestParam(value = "keyword") String keyword) {
 
-        List<Products> result = serviceProduct.searchProducts(keyword,pageNumber, sortBy);
+        List<Product> result = serviceProduct.searchProduct(keyword,pageNumber, sortBy);
         if (result.isEmpty())
             return new ResponseEntity<>(new ResponseMessage("No results!"), HttpStatus.OK);
 
@@ -34,9 +34,9 @@ public class ProductsController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addProdotto(@RequestBody @Valid Products prodotto) {
+    public ResponseEntity<?> addProdotto(@RequestBody @Valid Product prodotto) {
         try {
-            Products newProdotto = serviceProduct.saveProducts(prodotto);
+            Product newProdotto = serviceProduct.saveProduct(prodotto);
             return new ResponseEntity<>(newProdotto, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Errore durante l'aggiunta del prodotto", HttpStatus.BAD_REQUEST);
