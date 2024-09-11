@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductService {
@@ -47,14 +48,12 @@ public class ProductService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void removeProduct(@NonNull Product product) throws ValueCannotBeEmptyException, ProductDontExistsException {
-        if (product.getId() == null)
-            throw new ValueCannotBeEmptyException();
+    public void removeProduct(@NonNull UUID productId) throws ProductDontExistsException {
 
-        if (!productRepository.existsById(product.getId()))
+        if (!productRepository.existsById(productId))
             throw new ProductDontExistsException();
 
-        productRepository.deleteById(product.getId());
+        productRepository.deleteById(productId);
 
     }
 

@@ -21,9 +21,9 @@ public class CustomerService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void registerUser(@NonNull Customer user) throws UserMailAlreadyExistsException, ValueCannotBeEmptyException {
 
-        if (user.getFirstName() == null
-                || user.getLastName() == null
-                || user.getEmail() == null
+        if (user.getFirstName() == null ||
+                user.getLastName() == null ||
+                user.getEmail() == null
         )
             throw new ValueCannotBeEmptyException();
 
