@@ -44,7 +44,7 @@ public class CartItemService {
         if (productRepository.findQuantityById(productId) < quantity)
             throw new ProductQuantityNotAvailableException();
 
-        cartItemRepository.changeQuantity(cartId, productId, quantity);
+        cartItemRepository.updateQuantityByCartIdAndProductId(cartId, productId, quantity);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -63,7 +63,7 @@ public class CartItemService {
             removeProdotto(cartId, productId);
             return;
         }
-        cartItemRepository.changeQuantity(idCliente, product.getId(), quantity);
+        cartItemRepository.updateQuantityByCartIdAndProductId(cartId, productId, quantity);
     }
 
     private void checkValues(UUID cartId, UUID productId) throws ValueCannotBeEmptyException, ProductDontExistsException, CartDontExistsException {

@@ -8,7 +8,10 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "cart_items")
+@Table(
+        name = "cart_items",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"cart_id", "product_id"})
+)
 public class CartItem {
 
     @Id
@@ -17,14 +20,14 @@ public class CartItem {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Column(name = "quantity")
+    @Column(name = "quantity", nullable = false)
     private Long quantity = 1L;
 
 }
