@@ -1,6 +1,7 @@
 package com.retrobased.market.controllers.rest;
 
 import com.retrobased.market.entities.Customer;
+import com.retrobased.market.services.CartItemService;
 import com.retrobased.market.services.CustomerService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.UserMailAlreadyExistsException;
@@ -15,7 +16,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/user")
 public class CustomerController {
-    // private final KeycloakUserServiceImpl keycloakUserService
+
     private final CustomerService customerService;
 
     public CustomerController(CustomerService customerService) {
@@ -30,20 +31,7 @@ public class CustomerController {
         } catch (UserMailAlreadyExistsException e) {
             return new ResponseEntity<>(new ResponseMessage("ERROR_EMAIL_ALREADY_REGISTERED"), HttpStatus.BAD_REQUEST);
         } catch (ValueCannotBeEmptyException e) {
-            return new ResponseEntity<>(new ResponseMessage("ERROR_EMPTY_PAYLOAD"), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    // TODO fare metodo singleton per il carrello utente
-    @PostMapping("/cart")
-    public ResponseEntity<?> init_cart(@RequestBody @Valid Customer customer) {
-        try {
-            customerService.registerUser(customer);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (UserMailAlreadyExistsException e) {
-            return new ResponseEntity<>(new ResponseMessage("ERROR_EMAIL_ALREADY_REGISTERED"), HttpStatus.BAD_REQUEST);
-        } catch (ValueCannotBeEmptyException e) {
-            return new ResponseEntity<>(new ResponseMessage("ERROR_EMPTY_PAYLOAD"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseMessage("ERROR_VALUE_CANNOT_BE_EMPTY"), HttpStatus.BAD_REQUEST);
         }
     }
 

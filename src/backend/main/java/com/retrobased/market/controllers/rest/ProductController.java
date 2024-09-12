@@ -3,6 +3,8 @@ package com.retrobased.market.controllers.rest;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.services.ProductService;
 import com.retrobased.market.support.ResponseMessage;
+import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
+import com.retrobased.market.support.exceptions.ValueCannotBeEmptyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +14,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/cart")
-public class ProductsController {
+public class ProductController {
 
-    private final ProductService serviceProduct;
+    private final ProductService productService;
 
-    public ProductsController(ProductService serviceProduct) {
-        this.serviceProduct = serviceProduct;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping("/filter")
@@ -26,21 +28,24 @@ public class ProductsController {
             @RequestParam(value = "sort", defaultValue = "id") String sortBy,
             @RequestParam(value = "keyword") String keyword) {
 
-        List<Product> result = serviceProduct.searchProduct(keyword,pageNumber, sortBy);
+        List<Product> result = productService.searchProduct(keyword,pageNumber, sortBy);
         if (result.isEmpty())
-            return new ResponseEntity<>(new ResponseMessage("No results!"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("NO_RESULTS_FOUND"), HttpStatus.OK);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addProdotto(@RequestBody @Valid Product prodotto) {
+    public ResponseEntity<?> addProdotto(@RequestBody @Valid Product product) {
         try {
-            Product newProdotto = serviceProduct.saveProduct(prodotto);
-            return new ResponseEntity<>(newProdotto, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Errore durante l'aggiunta del prodotto", HttpStatus.BAD_REQUEST);
+            Product newProduct = productService.addProduct(product);
+            return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+        } catch (ArgumentValueNotValidException e) {
+            return new ResponseEntity<>(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"), HttpStatus.BAD_REQUEST);
+        } catch (ValueCannotBeEmptyException e) {
+            return new ResponseEntity<>(new ResponseMessage("ERROR_VALUE_CANNOT_BE_EMPTY"), HttpStatus.BAD_REQUEST);
         }
+        // ArgumentValueNotValidException, ValueCannotBeEmptyException
     }
 
 //    @GetMapping("/filter")

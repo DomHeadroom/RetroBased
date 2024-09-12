@@ -80,7 +80,4 @@ public class ProductService {
         return new ArrayList<>();
     }
 
-    public Product saveProduct(Product Product) {
-        return productRepository.save(Product);
-    }
 }

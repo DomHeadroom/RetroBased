@@ -3,10 +3,8 @@ package com.retrobased.market.services;
 import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.repositories.CustomerAddressRepository;
 import com.retrobased.market.repositories.CustomerRepository;
-import com.retrobased.market.repositories.RepositoryIndirizzoCliente;
 import com.retrobased.market.support.exceptions.AddressDontExistsException;
-import com.retrobased.market.support.exceptions.ClientTokenMismatchException;
-import com.retrobased.market.support.exceptions.ClientDontExistsException;
+import com.retrobased.market.support.exceptions.CustomerDontExistsException;
 import com.retrobased.market.support.exceptions.ValueCannotBeEmptyException;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -28,7 +26,7 @@ public class CustomerAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public CustomerAddress addAddress(@NonNull UUID clientId, @NonNull CustomerAddress address) throws ValueCannotBeEmptyException {
+    public CustomerAddress addAddress(@NonNull UUID customerId, @NonNull CustomerAddress address) throws ValueCannotBeEmptyException, CustomerDontExistsException {
         if (address.getAddressLine1() == null ||
                 address.getCity() == null ||
                 address.getCountry() == null ||
@@ -36,15 +34,11 @@ public class CustomerAddressService {
         )
             throw new ValueCannotBeEmptyException();
 
-        /* TODO aggiungere customer preso dal token
-        address.setCustomer(customerRepository.getReferenceById());
-         */
+        if (!customerRepository.existsById(customerId))
+            throw new CustomerDontExistsException();
 
         CustomerAddress newAddress = new CustomerAddress();
-        /* TODO prendere customer da token
-        customerAddress.setCustomer();
-        */
-
+        newAddress.setCustomer(customerRepository.getReferenceById(customerId));
         newAddress.setCity(address.getCity());
         newAddress.setCountry(address.getCountry());
         newAddress.setPostalCode(address.getPostalCode());
@@ -54,12 +48,13 @@ public class CustomerAddressService {
 
     }
 
-    // TODO CAMBIARE IDCLIENTE CON TOKEN
     @Transactional(propagation = Propagation.REQUIRED)
-    public void removeAddress(@NonNull UUID clientId, @NonNull UUID addressId) throws AddressDontExistsException {
-        // TODO estrarre user da token
+    public void removeAddress(@NonNull UUID customerId, @NonNull UUID addressId) throws AddressDontExistsException, CustomerDontExistsException {
+        if (!customerRepository.existsById(customerId))
+            throw new CustomerDontExistsException();
 
-        if (!customerAddressRepository.existsByIdAndCustomerId(clientId,addressId))
+        if (!customerAddressRepository.existsById(customerId) ||
+                !customerAddressRepository.existsByIdAndCustomerId(customerId,addressId))
             throw new AddressDontExistsException();
 
         customerRepository.deleteById(addressId);
