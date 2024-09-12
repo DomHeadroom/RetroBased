@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cart")
+@RequestMapping("/api/product")
 public class ProductController {
 
     private final ProductService productService;
@@ -22,13 +22,13 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/filter")
-    public ResponseEntity<?> getAll(
+    @GetMapping("/search")
+    public ResponseEntity<?> searchProduct(
             @RequestParam(value = "page", defaultValue = "0") int pageNumber,
             @RequestParam(value = "sort", defaultValue = "id") String sortBy,
             @RequestParam(value = "keyword") String keyword) {
 
-        List<Product> result = productService.searchProduct(keyword,pageNumber, sortBy);
+        List<Product> result = productService.searchProduct(keyword, pageNumber, sortBy);
         if (result.isEmpty())
             return new ResponseEntity<>(new ResponseMessage("NO_RESULTS_FOUND"), HttpStatus.OK);
 
@@ -36,7 +36,7 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addProdotto(@RequestBody @Valid Product product) {
+    public ResponseEntity<?> addProduct(@RequestBody @Valid Product product) {
         try {
             Product newProduct = productService.addProduct(product);
             return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
@@ -45,21 +45,19 @@ public class ProductController {
         } catch (ValueCannotBeEmptyException e) {
             return new ResponseEntity<>(new ResponseMessage("ERROR_VALUE_CANNOT_BE_EMPTY"), HttpStatus.BAD_REQUEST);
         }
-        // ArgumentValueNotValidException, ValueCannotBeEmptyException
     }
 
-//    @GetMapping("/filter")
-//    public ResponseEntity getAll(
-//            @RequestParam(value = "page", defaultValue = "0") int pageNumber,
-//            @RequestParam(value = "sort", defaultValue = "id") String sortBy,
-//            @RequestParam(value = "keyword") String keyword) {
-//
-//        List<Prodotto> result = serviceProduct.searchProducts(keyword,pageNumber, sortBy);
-//        if (result.isEmpty())
-//            return new ResponseEntity<>(new ResponseMessage("No results!"), HttpStatus.OK);
-//
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
+    /*@GetMapping("/filter")
+    public ResponseEntity advancedSearchProduct(
+            @RequestParam(value = "page", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "sort", defaultValue = "id") String sortBy,
+            @RequestParam(value = "keyword") String keyword) {
 
+        List<Prodotto> result = serviceProduct.searchProducts(keyword,pageNumber, sortBy);
+        if (result.isEmpty())
+            return new ResponseEntity<>(new ResponseMessage("No results!"), HttpStatus.OK);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+   }*/
 
 }

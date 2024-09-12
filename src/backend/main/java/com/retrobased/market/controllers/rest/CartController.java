@@ -1,5 +1,6 @@
 package com.retrobased.market.controllers.rest;
 
+import com.retrobased.market.entities.Customer;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.services.ProductService;
 import com.retrobased.market.support.ResponseMessage;
@@ -15,7 +16,7 @@ import javax.validation.Valid;
 
 
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/api/cart")
 public class CartController {
     private final ProductService productService;
 
@@ -35,8 +36,8 @@ public class CartController {
         }
     }
 
-    /*@GetMapping("/cart")
-    public ResponseEntity get(@RequestBody @Valid Cliente user) {
+    /*@GetMapping("/get")
+    public ResponseEntity getItems(@RequestBody @Valid Customer customer) {
         try {
             OggettoCarrello added = ServiceOggettoCarrello.;
             return new ResponseEntity(added, HttpStatus.OK);
