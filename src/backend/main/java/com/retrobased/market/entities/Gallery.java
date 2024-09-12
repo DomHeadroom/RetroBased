@@ -27,6 +27,6 @@ public class Gallery {
     private String placeholder;
 
     @Column(name = "is_thumbnail", nullable = false)
-    private Boolean isThumbnail  = false;
+    private Boolean isThumbnail = false;
 
 }

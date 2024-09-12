@@ -57,7 +57,7 @@ public class CartItemService {
         if (quantity < 0)
             throw new ArgumentValueNotValidException();
 
-        checkValues(customerId,productId);
+        checkValues(customerId, productId);
 
         Cart cart = getUserCart(customerId);
 
@@ -76,7 +76,7 @@ public class CartItemService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void removeProduct(@NonNull UUID customerId, @NonNull UUID productId) throws ProductDontExistsException, CustomerDontExistsException {
-        checkValues(customerId,productId);
+        checkValues(customerId, productId);
 
         Cart cart = getUserCart(customerId);
 
@@ -93,7 +93,7 @@ public class CartItemService {
         if (quantity < 0)
             throw new ArgumentValueNotValidException();
 
-        checkValues(customerId,productId);
+        checkValues(customerId, productId);
 
         if (productRepository.findQuantityById(productId) < quantity)
             throw new ProductQuantityNotAvailableException();
@@ -120,7 +120,7 @@ public class CartItemService {
             throw new ProductDontExistsException();
     }
 
-    private Cart getUserCart(UUID customerId){
+    private Cart getUserCart(UUID customerId) {
         return cartService.getCustomerCart(customerId);
     }
 

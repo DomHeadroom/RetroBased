@@ -54,7 +54,7 @@ public class CustomerAddressService {
             throw new CustomerDontExistsException();
 
         if (!customerAddressRepository.existsById(customerId) ||
-                !customerAddressRepository.existsByIdAndCustomerId(customerId,addressId))
+                !customerAddressRepository.existsByIdAndCustomerId(customerId, addressId))
             throw new AddressDontExistsException();
 
         customerRepository.deleteById(addressId);
