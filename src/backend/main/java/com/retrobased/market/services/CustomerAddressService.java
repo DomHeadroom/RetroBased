@@ -5,7 +5,6 @@ import com.retrobased.market.repositories.CustomerAddressRepository;
 import com.retrobased.market.repositories.CustomerRepository;
 import com.retrobased.market.support.exceptions.AddressDontExistsException;
 import com.retrobased.market.support.exceptions.CustomerDontExistsException;
-import com.retrobased.market.support.exceptions.ValueCannotBeEmptyException;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,14 +25,7 @@ public class CustomerAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public CustomerAddress addAddress(@NonNull UUID customerId, @NonNull CustomerAddress address) throws ValueCannotBeEmptyException, CustomerDontExistsException {
-        if (address.getAddressLine1() == null ||
-                address.getCity() == null ||
-                address.getCountry() == null ||
-                address.getPostalCode() == null
-        )
-            throw new ValueCannotBeEmptyException();
-
+    public CustomerAddress addAddress(@NonNull UUID customerId, @NonNull CustomerAddress address) throws CustomerDontExistsException {
         if (!customerRepository.existsById(customerId))
             throw new CustomerDontExistsException();
 

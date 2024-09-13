@@ -4,9 +4,9 @@ import com.retrobased.market.entities.Product;
 import com.retrobased.market.services.ProductService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
-import com.retrobased.market.support.exceptions.ValueCannotBeEmptyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/product")
+@Validated
 public class ProductController {
 
     private final ProductService productService;
@@ -42,8 +43,6 @@ public class ProductController {
             return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
         } catch (ArgumentValueNotValidException e) {
             return new ResponseEntity<>(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"), HttpStatus.BAD_REQUEST);
-        } catch (ValueCannotBeEmptyException e) {
-            return new ResponseEntity<>(new ResponseMessage("ERROR_VALUE_CANNOT_BE_EMPTY"), HttpStatus.BAD_REQUEST);
         }
     }
 

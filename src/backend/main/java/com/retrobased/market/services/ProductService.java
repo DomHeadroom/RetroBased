@@ -5,7 +5,6 @@ import com.retrobased.market.repositories.ProductRepository;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
 
 import com.retrobased.market.support.exceptions.ProductDontExistsException;
-import com.retrobased.market.support.exceptions.ValueCannotBeEmptyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,16 +27,7 @@ public class ProductService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Product addProduct(@NonNull Product product) throws ArgumentValueNotValidException, ValueCannotBeEmptyException {
-        if (product.getSlug() == null ||
-                product.getProductName() == null ||
-                product.getSalePrice() == null ||
-                product.getQuantity() == null ||
-                product.getShortDescription() == null ||
-                product.getProductDescription() == null
-        )
-            throw new ValueCannotBeEmptyException();
-
+    public Product addProduct(Product product) throws ArgumentValueNotValidException {
         if (product.getQuantity() < 0 ||
                 product.getSalePrice().signum() == -1
         )

@@ -26,18 +26,18 @@ public class Product {
     private UUID id;
 
     @Column(name = "slug", nullable = false, unique = true)
-    @NotBlank(message = "Slug is required")
+    @NotBlank(message = "This field cannot be empty.")
     private String slug;
 
     @Column(name = "product_name", nullable = false)
-    @NotBlank(message = "Product name is required")
+    @NotBlank(message = "This field cannot be empty.")
     private String productName;
 
     @Column(name = "sku")
     private String sku;
 
     @Column(name = "sale_price", nullable = false)
-    @NotNull(message = "Sale price is required")
+    @NotNull(message = "A value is required for this field.")
     private BigDecimal salePrice = BigDecimal.ZERO;
 
     @Column(name = "compare_price")
@@ -48,19 +48,19 @@ public class Product {
     // TODO non sono sicuro questo sia necessario
 
     @Column(name = "quantity", nullable = false)
-    @NotNull(message = "Quantity is required")
+    @NotNull(message = "A value is required for this field.")
     private Long quantity = 0L;
 
     @Column(name = "short_description", nullable = false)
-    @NotBlank(message = "Short description is required")
+    @NotBlank(message = "This field cannot be empty.")
     private String shortDescription;
 
     @Column(name = "product_description", nullable = false)
-    @NotBlank(message = "Product description is required")
+    @NotBlank(message = "This field cannot be empty.")
     private String productDescription;
 
     @Column(name = "product_type", nullable = false)
-    @NotBlank(message = "Product type is required")
+    @NotBlank(message = "This field cannot be empty.")
     private String productType;
 
     @JsonIgnore

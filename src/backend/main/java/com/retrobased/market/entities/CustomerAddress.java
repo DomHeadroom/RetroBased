@@ -22,22 +22,22 @@ public class CustomerAddress {
     private Customer customer;
 
     @Column(name = "address_line1", nullable = false)
-    @NotBlank(message = "Address Line 1 is required")
+    @NotBlank(message = "This field cannot be empty.")
     private String addressLine1;
 
     @Column(name = "address_line2")
     private String addressLine2;
 
     @Column(name = "country", nullable = false)
-    @NotBlank(message = "Country is required")
+    @NotBlank(message = "This field cannot be empty.")
     private String country;
 
     @Column(name = "postal_code", nullable = false)
-    @NotBlank(message = "Postal Code is required")
+    @NotBlank(message = "This field cannot be empty.")
     private String postalCode;
 
     @Column(name = "city", nullable = false)
-    @NotBlank(message = "City is required")
+    @NotBlank(message = "This field cannot be empty.")
     private String city;
 
 }

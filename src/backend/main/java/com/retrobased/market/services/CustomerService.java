@@ -3,8 +3,6 @@ package com.retrobased.market.services;
 import com.retrobased.market.entities.Customer;
 import com.retrobased.market.repositories.CustomerRepository;
 import com.retrobased.market.support.exceptions.UserMailAlreadyExistsException;
-import com.retrobased.market.support.exceptions.ValueCannotBeEmptyException;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,13 +17,7 @@ public class CustomerService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void registerUser(@NonNull Customer user) throws UserMailAlreadyExistsException, ValueCannotBeEmptyException {
-
-        if (user.getFirstName() == null ||
-                user.getLastName() == null ||
-                user.getEmail() == null
-        )
-            throw new ValueCannotBeEmptyException();
+    public void registerUser(Customer user) throws UserMailAlreadyExistsException {
 
         if (userRepo.existsByEmail(user.getEmail())) {
             throw new UserMailAlreadyExistsException();

@@ -29,8 +29,6 @@ public class CartController {
         try {
             Product added = productService.addProduct(product);
             return new ResponseEntity<>(added, HttpStatus.OK);
-        } catch (ValueCannotBeEmptyException e) {
-            return new ResponseEntity<>(new ResponseMessage("ERROR_VALUE_CANNOT_BE_EMPTY"), HttpStatus.BAD_REQUEST);
         } catch (ArgumentValueNotValidException e) {
             return new ResponseEntity<>(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"), HttpStatus.BAD_REQUEST);
         }
