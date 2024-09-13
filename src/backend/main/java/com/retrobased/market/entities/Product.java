@@ -1,5 +1,6 @@
 package com.retrobased.market.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -7,6 +8,8 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -23,15 +26,18 @@ public class Product {
     private UUID id;
 
     @Column(name = "slug", nullable = false, unique = true)
+    @NotBlank(message = "Slug is required")
     private String slug;
 
     @Column(name = "product_name", nullable = false)
+    @NotBlank(message = "Product name is required")
     private String productName;
 
     @Column(name = "sku")
     private String sku;
 
     @Column(name = "sale_price", nullable = false)
+    @NotNull(message = "Sale price is required")
     private BigDecimal salePrice = BigDecimal.ZERO;
 
     @Column(name = "compare_price")
@@ -42,17 +48,22 @@ public class Product {
     // TODO non sono sicuro questo sia necessario
 
     @Column(name = "quantity", nullable = false)
+    @NotNull(message = "Quantity is required")
     private Long quantity = 0L;
 
     @Column(name = "short_description", nullable = false)
+    @NotBlank(message = "Short description is required")
     private String shortDescription;
 
     @Column(name = "product_description", nullable = false)
+    @NotBlank(message = "Product description is required")
     private String productDescription;
 
     @Column(name = "product_type", nullable = false)
+    @NotBlank(message = "Product type is required")
     private String productType;
 
+    @JsonIgnore
     @Column(name = "published", nullable = false)
     private Boolean published = false;
 

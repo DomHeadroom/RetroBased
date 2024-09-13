@@ -15,5 +15,8 @@ public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpec
     @Query("SELECT p FROM Product p WHERE p.productName LIKE :name OR p.productDescription LIKE :name")
     Page<Product> find(@Param("name") String name, Pageable paging);
 
+    @Query("SELECT p FROM Product p WHERE LOWER(p.productName) LIKE LOWER(CONCAT('%', :name, '%')) OR LOWER(p.productDescription) LIKE LOWER(CONCAT('%', :name, '%'))")
+    Page<Product> findByNameIgnoreCase(@Param("name") String name, Pageable paging);
+
     Long findQuantityById(UUID id);
 }

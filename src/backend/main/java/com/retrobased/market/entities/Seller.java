@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 
+import jakarta.validation.constraints.NotBlank;
+
 @Data
 @Entity
 @Table(name = "sellers")
@@ -15,6 +17,7 @@ public class Seller {
     private String id;
 
     @Column(name = "seller_name", nullable = false)
+    @NotBlank(message = "Name is required")
     private String sellerName;
 
     @Column(name = "company")
@@ -24,6 +27,7 @@ public class Seller {
     private String phoneNumber;
 
     @Column(name = "address_line1", nullable = false)
+    @NotBlank(message = "Address line is required")
     private String addressLine1;
 
     @Column(name = "address_line2")
@@ -31,6 +35,7 @@ public class Seller {
 
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = false)
+    @NotBlank(message = "Country is required")
     private Country country;
 
     @Column(name = "city")

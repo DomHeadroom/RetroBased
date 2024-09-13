@@ -1,22 +1,22 @@
 package com.retrobased.market.controllers.rest;
 
-import com.retrobased.market.entities.Customer;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.services.ProductService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 
 @RestController
 @RequestMapping("/api/cart")
+@Validated
 public class CartController {
     private final ProductService productService;
 

@@ -72,7 +72,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<Product> searchProduct(String name, int pageNumber, String sortBy) {
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(sortBy));
-        Page<Product> pagedResult = productRepository.find(name, paging);
+        Page<Product> pagedResult = productRepository.findByNameIgnoreCase(name, paging);
 
         if (pagedResult.hasContent())
             return pagedResult.getContent();
