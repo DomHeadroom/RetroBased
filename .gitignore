@@ -1,5 +1,5 @@
 HELP.md
-src/frontend/RetroBaseFrontend/README.md
+src/frontend/RetroBasedFrontend/README.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -21,24 +21,24 @@ target/
 *.ipr
 
 ### VS Code ###
-src/frontend/RetroBaseFrontend/.vscode/
+src/frontend/RetroBasedFrontend/.vscode/
 
 # Node
-src/frontend/RetroBaseFrontend/node_modules
-src/frontend/RetroBaseFrontend/npm-debug.log
-src/frontend/RetroBaseFrontend/yarn-error.log
+src/frontend/RetroBasedFrontend/node_modules
+src/frontend/RetroBasedFrontend/npm-debug.log
+src/frontend/RetroBasedFrontend/yarn-error.log
 
 # Compiled output
-src/frontend/RetroBaseFrontend/dist
-src/frontend/RetroBaseFrontend/tmp
-src/frontend/RetroBaseFrontend/out-tsc
-src/frontend/RetroBaseFrontend/bazel-out
+src/frontend/RetroBasedFrontend/dist
+src/frontend/RetroBasedFrontend/tmp
+src/frontend/RetroBasedFrontend/out-tsc
+src/frontend/RetroBasedFrontend/bazel-out
 
 # Miscellaneous
-src/frontend/RetroBaseFrontend/.angular/cache
-src/frontend/RetroBaseFrontend/.sass-cache/
-src/frontend/RetroBaseFrontend/connect.lock
-src/frontend/RetroBaseFrontend/coverage
-src/frontend/RetroBaseFrontend/libpeerconnection.log
-src/frontend/RetroBaseFrontend/testem.log
-src/frontend/RetroBaseFrontend/typings
+src/frontend/RetroBasedFrontend/.angular/cache
+src/frontend/RetroBasedFrontend/.sass-cache/
+src/frontend/RetroBasedFrontend/connect.lock
+src/frontend/RetroBasedFrontend/coverage
+src/frontend/RetroBasedFrontend/libpeerconnection.log
+src/frontend/RetroBasedFrontend/testem.log
+src/frontend/RetroBasedFrontend/typings
