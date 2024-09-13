@@ -1,14 +1,20 @@
 package com.retrobased.market.controllers.rest;
 
 import com.retrobased.market.entities.Customer;
+import com.retrobased.market.entities.CustomerAddress;
+import com.retrobased.market.services.CustomerAddressService;
 import com.retrobased.market.services.CustomerService;
 import com.retrobased.market.support.ResponseMessage;
+import com.retrobased.market.support.exceptions.CustomerDontExistsException;
 import com.retrobased.market.support.exceptions.UserMailAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+
+import java.util.UUID;
 
 
 @RestController
@@ -16,9 +22,12 @@ import jakarta.validation.Valid;
 @Validated
 public class CustomerController {
 
+    private final CustomerAddressService customerAddressService;
+
     private final CustomerService customerService;
 
-    public CustomerController(CustomerService customerService) {
+    public CustomerController(CustomerAddressService customerAddressService, CustomerService customerService) {
+        this.customerAddressService = customerAddressService;
         this.customerService = customerService;
     }
 
@@ -32,14 +41,12 @@ public class CustomerController {
         }
     }
 
-    // TODO modificare per permettere aggiunta indirizzo
     @PostMapping("/address")
-    public ResponseEntity<?> addAddress(@RequestBody @Valid Customer address) {
+    public ResponseEntity<?> addAddress(@RequestBody @Valid CustomerAddress address,@RequestParam() @NonNull UUID customerId) {
         try {
-            customerService.registerUser(address);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (UserMailAlreadyExistsException e) {
-            return new ResponseEntity<>(new ResponseMessage("ERROR_EMAIL_ALREADY_REGISTERED"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(customerAddressService.addAddress(customerId,address), HttpStatus.CREATED);
+        } catch (CustomerDontExistsException e) {
+            return new ResponseEntity<>(new ResponseMessage("ERROR_USER_DONT_EXIST"), HttpStatus.BAD_REQUEST);
         }
     }
 
