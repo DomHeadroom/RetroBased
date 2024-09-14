@@ -2,13 +2,20 @@ package com.retrobased.market.services;
 
 import com.retrobased.market.entities.Cart;
 import com.retrobased.market.entities.CartItem;
+import com.retrobased.market.entities.Product;
 import com.retrobased.market.repositories.*;
 import com.retrobased.market.support.exceptions.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -28,6 +35,17 @@ public class CartItemService {
         this.cartService = cartService;
     }
 
+    public List<Product> getCart(UUID customerId, int pageNumber) {
+        Cart customerCart = getCustomerCart(customerId);
+        Pageable paging = PageRequest.of(pageNumber, 20,  Sort.by(Sort.Order.desc("createdAt")));
+        Page<Product> cartItems = cartItemRepository.findProductsByCartId(customerCart.getId(),paging);
+
+        if (cartItems.hasContent())
+            return cartItems.getContent();
+
+        return new ArrayList<>();
+    }
+
     // TODO CAMBIARE CON OGGETTO CARRELLO E NON ID PRODOTTO
     @Transactional(propagation = Propagation.REQUIRED)
     public void increaseQuantity(@NonNull UUID customerId, @NonNull UUID productId, @NonNull Long quantity) throws ArgumentValueNotValidException, ProductQuantityNotAvailableException, ProductDontExistsException, UnableToChangeValueException, CustomerDontExistsException {
@@ -36,7 +54,7 @@ public class CartItemService {
 
         checkValues(customerId, productId);
 
-        Cart cart = getUserCart(customerId);
+        Cart cart = getCustomerCart(customerId);
 
         if (!cartItemRepository.existsByCartIdAndProductId(cart.getId(), productId))
             throw new ProductDontExistsException();
@@ -59,7 +77,7 @@ public class CartItemService {
 
         checkValues(customerId, productId);
 
-        Cart cart = getUserCart(customerId);
+        Cart cart = getCustomerCart(customerId);
 
         if (!cartItemRepository.existsByCartIdAndProductId(cart.getId(), productId))
             throw new ProductDontExistsException();
@@ -78,7 +96,7 @@ public class CartItemService {
     public void removeProduct(@NonNull UUID customerId, @NonNull UUID productId) throws ProductDontExistsException, CustomerDontExistsException {
         checkValues(customerId, productId);
 
-        Cart cart = getUserCart(customerId);
+        Cart cart = getCustomerCart(customerId);
 
         if (!cartItemRepository.existsByCartIdAndProductId(cart.getId(), productId))
             throw new ProductDontExistsException();
@@ -90,7 +108,7 @@ public class CartItemService {
     @Transactional(propagation = Propagation.REQUIRED)
     public CartItem addProductToCart(@NonNull UUID customerId, @NonNull UUID productId, @NonNull Long quantity) throws ArgumentValueNotValidException, ProductAlreadyPresentException, ProductQuantityNotAvailableException, CustomerDontExistsException, ProductDontExistsException {
 
-        if (quantity < 0)
+        if (quantity <= 0)
             throw new ArgumentValueNotValidException();
 
         checkValues(customerId, productId);
@@ -98,7 +116,7 @@ public class CartItemService {
         if (productRepository.findQuantityById(productId) < quantity)
             throw new ProductQuantityNotAvailableException();
 
-        Cart cart = getUserCart(customerId);
+        Cart cart = getCustomerCart(customerId);
 
         if (cartItemRepository.existsByCartIdAndProductId(cart.getId(), productId))
             throw new ProductAlreadyPresentException();
@@ -120,7 +138,7 @@ public class CartItemService {
             throw new ProductDontExistsException();
     }
 
-    private Cart getUserCart(UUID customerId) {
+    private Cart getCustomerCart(UUID customerId) {
         return cartService.getCustomerCart(customerId);
     }
 

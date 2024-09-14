@@ -25,9 +25,9 @@ public class ProductController {
 
     @GetMapping("/search")
     public ResponseEntity<?> searchProduct(
+            @RequestParam(value = "k") String keyword,
             @RequestParam(value = "page", defaultValue = "0") int pageNumber,
-            @RequestParam(value = "sort", defaultValue = "id") String sortBy,
-            @RequestParam(value = "keyword") String keyword) {
+            @RequestParam(value = "s", defaultValue = "id") String sortBy) {
 
         List<Product> result = productService.searchProduct(keyword, pageNumber, sortBy);
         if (result.isEmpty())
@@ -36,6 +36,7 @@ public class ProductController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    // aggiunta di un prodotto al db
     @PostMapping("/add")
     public ResponseEntity<?> addProduct(@RequestBody @Valid Product product) {
         try {

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
@@ -29,5 +30,8 @@ public class CartItem {
 
     @Column(name = "quantity", nullable = false)
     private Long quantity = 1L;
+
+    @Column(name = "created_at", nullable = false, updatable = false, insertable = false)
+    private OffsetDateTime createdAt = OffsetDateTime.now();
 
 }

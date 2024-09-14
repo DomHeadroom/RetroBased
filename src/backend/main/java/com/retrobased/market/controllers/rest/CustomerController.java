@@ -32,7 +32,7 @@ public class CustomerController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid Customer customer) {
+    public ResponseEntity<?> registerCustomer(@RequestBody @Valid Customer customer) {
         try {
             customerService.registerUser(customer);
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -41,8 +41,9 @@ public class CustomerController {
         }
     }
 
+    // TODO cacciare customerId per prenderlo da token
     @PostMapping("/address")
-    public ResponseEntity<?> addAddress(@RequestBody @Valid CustomerAddress address,@RequestParam() @NonNull UUID customerId) {
+    public ResponseEntity<?> addCustomerAddress(@RequestBody @Valid CustomerAddress address,@RequestParam(value = "user") @NonNull UUID customerId) {
         try {
             return new ResponseEntity<>(customerAddressService.addAddress(customerId,address), HttpStatus.CREATED);
         } catch (CustomerDontExistsException e) {
