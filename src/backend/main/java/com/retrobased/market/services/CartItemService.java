@@ -37,8 +37,8 @@ public class CartItemService {
 
     public List<Product> getCart(UUID customerId, int pageNumber) {
         Cart customerCart = getCustomerCart(customerId);
-        Pageable paging = PageRequest.of(pageNumber, 20,  Sort.by(Sort.Order.desc("createdAt")));
-        Page<Product> cartItems = cartItemRepository.findProductsByCartId(customerCart.getId(),paging);
+        Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.desc("createdAt")));
+        Page<Product> cartItems = cartItemRepository.findProductsByCartId(customerCart.getId(), paging);
 
         if (cartItems.hasContent())
             return cartItems.getContent();

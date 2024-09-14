@@ -6,6 +6,7 @@ import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 
 import jakarta.validation.constraints.NotBlank;
+
 import java.util.UUID;
 
 @Data

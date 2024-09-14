@@ -43,9 +43,9 @@ public class CustomerController {
 
     // TODO cacciare customerId per prenderlo da token
     @PostMapping("/address")
-    public ResponseEntity<?> addCustomerAddress(@RequestBody @Valid CustomerAddress address,@RequestParam(value = "user") @NonNull UUID customerId) {
+    public ResponseEntity<?> addCustomerAddress(@RequestBody @Valid CustomerAddress address, @RequestParam(value = "user") @NonNull UUID customerId) {
         try {
-            return new ResponseEntity<>(customerAddressService.addAddress(customerId,address), HttpStatus.CREATED);
+            return new ResponseEntity<>(customerAddressService.addAddress(customerId, address), HttpStatus.CREATED);
         } catch (CustomerDontExistsException e) {
             return new ResponseEntity<>(new ResponseMessage("ERROR_USER_DONT_EXIST"), HttpStatus.BAD_REQUEST);
         }

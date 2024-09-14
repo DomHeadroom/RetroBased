@@ -40,7 +40,7 @@ public class CartController {
     public ResponseEntity<?> addProductToCart(@RequestParam(value = "product") @NotNull UUID productId, @RequestParam(value = "quantity") @NotNull @Min(1) Long quantity) {
         try {
             UUID customerId = null; // TODO cambiare con metodo per estrarre id da token
-            CartItem added = cartItemService.addProductToCart(customerId,productId, quantity);
+            CartItem added = cartItemService.addProductToCart(customerId, productId, quantity);
             return new ResponseEntity<>(added, HttpStatus.OK);
         } catch (ArgumentValueNotValidException | ProductAlreadyPresentException |
                  ProductQuantityNotAvailableException | CustomerDontExistsException | ProductDontExistsException e) {
@@ -50,8 +50,9 @@ public class CartController {
 
     // TODO cacciare customerId per prenderlo da token
     @GetMapping("/get")
-    public ResponseEntity<?> getCartProducts(@RequestBody @NotNull UUID customerId,
-                                             @RequestParam(value = "page", defaultValue = "0") int pageNumber) {
+    public ResponseEntity<?> getCartProducts(
+            @RequestBody @NotNull UUID customerId,
+            @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber) {
         // UUID customerId = TODO cambiare con metodo per estrarre id da token
         List<Product> result = cartItemService.getCart(customerId, pageNumber);
 
