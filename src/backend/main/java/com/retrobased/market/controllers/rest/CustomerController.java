@@ -37,7 +37,7 @@ public class CustomerController {
             customerService.registerUser(customer);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (UserMailAlreadyExistsException e) {
-            return new ResponseEntity<>(new ResponseMessage("ERROR_EMAIL_ALREADY_REGISTERED"), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_EMAIL_ALREADY_REGISTERED"));
         }
     }
 
@@ -45,9 +45,9 @@ public class CustomerController {
     @PostMapping("/address")
     public ResponseEntity<?> addCustomerAddress(@RequestBody @Valid CustomerAddress address, @RequestParam(value = "user") @NonNull UUID customerId) {
         try {
-            return new ResponseEntity<>(customerAddressService.addAddress(customerId, address), HttpStatus.CREATED);
+            return ResponseEntity.status(HttpStatus.CREATED).body(customerAddressService.addAddress(customerId, address));
         } catch (CustomerDontExistsException e) {
-            return new ResponseEntity<>(new ResponseMessage("ERROR_USER_DONT_EXIST"), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_USER_DONT_EXIST"));
         }
     }
 

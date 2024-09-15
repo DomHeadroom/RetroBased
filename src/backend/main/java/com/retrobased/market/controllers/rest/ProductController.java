@@ -33,9 +33,9 @@ public class ProductController {
 
         List<Product> result = productService.searchProduct(keyword, pageNumber, sortBy);
         if (result.isEmpty())
-            return new ResponseEntity<>(new ResponseMessage("NO_RESULTS_FOUND"), HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return ResponseEntity.ok(result);
     }
 
     // aggiunta di un prodotto al db
@@ -43,9 +43,9 @@ public class ProductController {
     public ResponseEntity<?> addProduct(@RequestBody @Valid Product product) {
         try {
             Product newProduct = productService.addProduct(product);
-            return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
         } catch (ArgumentValueNotValidException e) {
-            return new ResponseEntity<>(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));
         }
     }
 

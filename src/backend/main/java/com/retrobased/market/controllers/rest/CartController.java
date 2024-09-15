@@ -41,10 +41,10 @@ public class CartController {
         try {
             UUID customerId = null; // TODO cambiare con metodo per estrarre id da token
             CartItem added = cartItemService.addProductToCart(customerId, productId, quantity);
-            return new ResponseEntity<>(added, HttpStatus.OK);
+            return ResponseEntity.ok(added);
         } catch (ArgumentValueNotValidException | ProductAlreadyPresentException |
                  ProductQuantityNotAvailableException | CustomerDontExistsException | ProductDontExistsException e) {
-            return new ResponseEntity<>(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"));
         }
     }
 
@@ -57,9 +57,9 @@ public class CartController {
         List<Product> result = cartItemService.getCart(customerId, pageNumber);
 
         if (result.isEmpty())
-            return new ResponseEntity<>(new ResponseMessage("NO_RESULTS_FOUND"), HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return ResponseEntity.ok(result);
 
     }
 
