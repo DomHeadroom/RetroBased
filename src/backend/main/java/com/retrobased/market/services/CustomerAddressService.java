@@ -54,7 +54,7 @@ public class CustomerAddressService {
     }
     @Transactional(readOnly = true)
     public boolean existsCustomerAddressForCustomer (@NotNull UUID customerId, @NotNull UUID customerAddressId) {
-        return customerAddressRepository.existsById(customerAddressId);
+        return customerAddressRepository.existsByIdAndCustomerId(customerAddressId,customerId);
     }
 
     @Transactional(readOnly = true)

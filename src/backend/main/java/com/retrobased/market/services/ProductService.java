@@ -48,7 +48,6 @@ public class ProductService {
         )
             throw new ArgumentValueNotValidException();
 
-
         return productRepository.save(product);
     }
 
@@ -111,7 +110,7 @@ public class ProductService {
         }
 
         Order currentOrder = new Order();
-        currentOrder.setCustomer(customerRepository.getReferenceById(customerId));
+        currentOrder.setCustomer(customerRepository.findCustomerById(customerId));
         currentOrder.setAddress(address);
 
         Order savedOrder = orderRepository.save(currentOrder);

@@ -47,7 +47,7 @@ public class OrderController {
     // metodo per ottenere ordini
     @GetMapping("/get")
     public ResponseEntity<?> getOrder(
-            @RequestBody @NotNull UUID customerId,
+            @RequestParam(value = "user") @NotNull UUID customerId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber
     ) {
         // UUID customerId = TODO cambiare con metodo per estrarre id da token
@@ -78,12 +78,12 @@ public class OrderController {
     @PostMapping("/buy")
     public ResponseEntity<?> buyOrder(
             @RequestBody ProductRequest productRequest
-
-    ) throws ArgumentValueNotValidException, ProductNotFoundException {
+    ) {
         try{
-            UUID customerId = null; // TODO cambiare con metodo per estrarre id da token
+            // a6cd2287-bb39-48b8-b1d7-62ec612ba064
+            UUID customerId = UUID.fromString("a6cd2287-bb39-48b8-b1d7-62ec612ba064"); // TODO cambiare con metodo per estrarre id da token
 
-            if (!customerAddressService.existsCustomerAddressForCustomer(customerId,productRequest.getAddressId()))
+            if (!customerAddressService.existsCustomerAddressForCustomer(customerId, productRequest.getAddressId()))
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"));
 
             CustomerAddress customerAddress = customerAddressService.getCustomerAddressById(productRequest.getAddressId());

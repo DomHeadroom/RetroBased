@@ -39,7 +39,7 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public List<Product> getOrderProducts(UUID orderId, int pageNumber) {
-        Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.desc("createdAt")));
+        Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.asc("id")));
         Page<Product> products = orderItemRepository.findByOrderId(orderId, paging);
 
         if (products.hasContent())
