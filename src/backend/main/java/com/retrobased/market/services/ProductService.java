@@ -5,10 +5,13 @@ import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.entities.Order;
 import com.retrobased.market.entities.OrderItem;
 import com.retrobased.market.entities.Product;
+import com.retrobased.market.entities.ProductSeller;
 import com.retrobased.market.repositories.CustomerRepository;
 import com.retrobased.market.repositories.OrderItemRepository;
 import com.retrobased.market.repositories.OrderRepository;
 import com.retrobased.market.repositories.ProductRepository;
+import com.retrobased.market.repositories.ProductSellerRepository;
+import com.retrobased.market.repositories.SellerRepository;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
 
 import com.retrobased.market.support.exceptions.ProductNotFoundException;
@@ -32,22 +35,29 @@ public class ProductService {
     private final CustomerRepository customerRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
+    private final SellerRepository sellerRepository;
+    private final ProductSellerRepository productSellerRepository;
 
-    public ProductService(ProductRepository productRepository, OrderRepository orderRepository, CustomerRepository customerRepository, OrderItemRepository orderItemRepository) {
+    public ProductService(ProductRepository productRepository, OrderRepository orderRepository, CustomerRepository customerRepository, OrderItemRepository orderItemRepository, SellerRepository sellerRepository, ProductSellerRepository productSellerRepository) {
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.orderItemRepository = orderItemRepository;
+        this.sellerRepository = sellerRepository;
+        this.productSellerRepository = productSellerRepository;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Product addProduct(Product product) throws ArgumentValueNotValidException {
-        if (product.getQuantity() < 0 ||
-                product.getSalePrice().signum() == -1
-        )
-            throw new ArgumentValueNotValidException();
+    public Product addProduct(Product product, UUID sellerId) throws ArgumentValueNotValidException {
 
-        return productRepository.save(product);
+        Product productAdded = productRepository.save(product);
+
+        ProductSeller productSeller = new ProductSeller();
+        productSeller.setProduct(productAdded);
+        productSeller.setSeller(sellerRepository.getReferenceById(sellerId));
+
+        productSellerRepository.save(productSeller);
+        return productAdded;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -56,7 +66,7 @@ public class ProductService {
         if (!productRepository.existsById(productId))
             throw new ProductNotFoundException();
 
-        productRepository.deleteById(productId);
+        productRepository.removeProduct(productId);
 
     }
 
@@ -107,6 +117,8 @@ public class ProductService {
 
             product.setQuantity(product.getQuantity() - productQuantity.getQuantity());
         }
+
+        // creare istanze anche per sell and product seller
 
         Order currentOrder = new Order();
         currentOrder.setCustomer(customerRepository.findCustomerById(customerId));

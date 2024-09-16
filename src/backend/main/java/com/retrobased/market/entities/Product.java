@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -39,6 +40,7 @@ public class Product {
 
     @Column(name = "sale_price", nullable = false)
     @NotNull(message = "A value is required for this field.")
+    @Min(0L)
     private BigDecimal salePrice = BigDecimal.ZERO;
 
     @Column(name = "compare_price")
@@ -50,6 +52,7 @@ public class Product {
 
     @Column(name = "quantity", nullable = false)
     @NotNull(message = "A value is required for this field.")
+    @Min(1)
     private Long quantity = 0L;
 
     @Column(name = "short_description", nullable = false)
@@ -73,6 +76,10 @@ public class Product {
 
     @Column(name = "note")
     private String note;
+
+    @Column(name = "deleted")
+    @JsonIgnore
+    private Boolean deleted;
 
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt = OffsetDateTime.now();

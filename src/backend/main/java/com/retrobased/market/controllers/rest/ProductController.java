@@ -1,6 +1,7 @@
 package com.retrobased.market.controllers.rest;
 
 import com.retrobased.market.entities.Product;
+import com.retrobased.market.services.ProductSellerService;
 import com.retrobased.market.services.ProductService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
@@ -23,9 +24,11 @@ import java.util.UUID;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductSellerService productSellerService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, ProductSellerService productSellerService) {
         this.productService = productService;
+        this.productSellerService = productSellerService;
     }
 
     @GetMapping("/search")
@@ -45,7 +48,8 @@ public class ProductController {
     @PostMapping("/add")
     public ResponseEntity<?> addProduct(@RequestBody @Valid Product product) {
         try {
-            Product newProduct = productService.addProduct(product);
+            UUID sellerId = null; // TODO estrarre sellerId da token
+            Product newProduct = productService.addProduct(product, sellerId);
             return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
         } catch (ArgumentValueNotValidException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));
@@ -55,6 +59,10 @@ public class ProductController {
     @PostMapping("/remove")
     public ResponseEntity<?> removeProduct(@RequestParam(value = "product") @NotNull UUID productId) {
         try {
+            UUID sellerId = null; // TODO estrarre sellerId da token
+            if (!productSellerService.existsProductForSeller(productId,sellerId))
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"));
+
             productService.removeProduct(productId);
             return ResponseEntity.noContent().build();
         } catch (ProductNotFoundException e) {
