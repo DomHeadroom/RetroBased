@@ -24,6 +24,7 @@ public class Seller {
     private String company;
 
     @Column(name = "phone_number")
+    @NotBlank
     private String phoneNumber;
 
     @Column(name = "address_line1", nullable = false)

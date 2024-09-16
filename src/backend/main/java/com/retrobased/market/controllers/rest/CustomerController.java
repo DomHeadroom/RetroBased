@@ -34,8 +34,8 @@ public class CustomerController {
     @PostMapping("/register")
     public ResponseEntity<?> registerCustomer(@RequestBody @Valid Customer customer) {
         try {
-            customerService.registerUser(customer);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            customerService.registerCustomer(customer);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (UserMailAlreadyExistsException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_EMAIL_ALREADY_REGISTERED"));
         }

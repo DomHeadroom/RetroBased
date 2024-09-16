@@ -2,7 +2,6 @@ package com.retrobased.market.services;
 
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.repositories.OrderRepository;
-import com.retrobased.market.repositories.ProductRepository;
 import com.retrobased.market.repositories.ProductSellerRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,11 +16,11 @@ import java.util.UUID;
 
 @Service
 public class ProductSellerService {
-    private final ProductRepository productRepository;
+    private final ProductSellerRepository productSellerRepository;
     private final OrderRepository orderRepository;
 
-    public ProductSellerService(ProductRepository productRepository, OrderRepository orderRepository) {
-        this.productRepository = productRepository;
+    public ProductSellerService(ProductSellerRepository productSellerRepository, OrderRepository orderRepository) {
+        this.productSellerRepository = productSellerRepository;
         this.orderRepository = orderRepository;
     }
 
@@ -29,7 +28,7 @@ public class ProductSellerService {
     @Transactional(readOnly = true)
     public List<Product> showAllSellerProducts(int pageNumber, String sortBy, UUID sellerId) {
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(sortBy));
-        Page<Product> pagedResult = productRepository.findAll(paging);
+        Page<Product> pagedResult = productSellerRepository.findProductsBySellerId(sellerId,paging);
 
         if (pagedResult.hasContent())
             return pagedResult.getContent();
@@ -39,6 +38,6 @@ public class ProductSellerService {
 
     @Transactional(readOnly = true)
     public boolean existsProductForSeller(UUID productId, UUID sellerId) {
-        return orderRepository.existsOrderForCustomer(productId, sellerId);
+        return productSellerRepository.existsByIdProductIdAndIdSellerId(productId, sellerId);
     }
 }

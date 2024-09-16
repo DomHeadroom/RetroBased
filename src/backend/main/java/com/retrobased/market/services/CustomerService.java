@@ -10,24 +10,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CustomerService {
-    private final CustomerRepository userRepo;
+    private final CustomerRepository customerRepository;
 
-    public CustomerService(CustomerRepository userRepo) {
-        this.userRepo = userRepo;
+    public CustomerService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void registerUser(Customer user) throws UserMailAlreadyExistsException {
+    public void registerCustomer(Customer customer) throws UserMailAlreadyExistsException {
 
-        if (userRepo.existsByEmail(user.getEmail())) {
+        if (customerRepository.existsByEmail(customer.getEmail()))
             throw new UserMailAlreadyExistsException();
-        }
 
-        user.setId(null);
-        user.setRegisteredAt(null);
-
-        Customer savedUser = userRepo.save(user);
-        System.out.println("Saved user: " + savedUser);
+        Customer customerAdded = customerRepository.save(customer);
+        System.out.println("Saved user: " + customerAdded);
     }
 
 

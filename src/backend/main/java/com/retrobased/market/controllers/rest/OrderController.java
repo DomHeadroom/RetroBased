@@ -65,7 +65,7 @@ public class OrderController {
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber
     ) {
         UUID customerId = null; // TODO cambiare con metodo per estrarre id da token
-        if (orderService.existsOrderForCustomer(customerId, orderId))
+        if (!orderService.existsOrderForCustomer(customerId, orderId))
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
         List<Product> result = orderService.getOrderProducts(orderId, pageNumber);
