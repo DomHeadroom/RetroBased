@@ -4,7 +4,9 @@ import com.retrobased.market.entities.Product;
 import com.retrobased.market.services.ProductService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
+import com.retrobased.market.support.exceptions.ProductNotFoundException;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/product")
@@ -45,6 +48,16 @@ public class ProductController {
             Product newProduct = productService.addProduct(product);
             return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
         } catch (ArgumentValueNotValidException e) {
+            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));
+        }
+    }
+
+    @PostMapping("/remove")
+    public ResponseEntity<?> removeProduct(@RequestParam(value = "product") @NotNull UUID productId) {
+        try {
+            productService.removeProduct(productId);
+            return ResponseEntity.noContent().build();
+        } catch (ProductNotFoundException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));
         }
     }

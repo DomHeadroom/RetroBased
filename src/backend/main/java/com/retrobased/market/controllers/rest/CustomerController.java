@@ -7,9 +7,9 @@ import com.retrobased.market.services.CustomerService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.CustomerDontExistsException;
 import com.retrobased.market.support.exceptions.UserMailAlreadyExistsException;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
@@ -43,11 +43,13 @@ public class CustomerController {
 
     // TODO cacciare customerId per prenderlo da token
     @PostMapping("/address")
-    public ResponseEntity<?> addCustomerAddress(@RequestBody @Valid CustomerAddress address, @RequestParam(value = "user") @NonNull UUID customerId) {
+    public ResponseEntity<?> addCustomerAddress(
+            @RequestBody @Valid CustomerAddress address,
+            @RequestParam(value = "user") @NotNull UUID customerId) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(customerAddressService.addAddress(customerId, address));
         } catch (CustomerDontExistsException e) {
-            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_USER_DONT_EXIST"));
+            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_USER_NOT_FOUND"));
         }
     }
 

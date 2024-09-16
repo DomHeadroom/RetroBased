@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.UUID;
@@ -43,8 +42,8 @@ public class CartController {
             CartItem added = cartItemService.addProductToCart(customerId, productId, quantity);
             return ResponseEntity.ok(added);
         } catch (ArgumentValueNotValidException | ProductAlreadyPresentException |
-                 ProductQuantityNotAvailableException | CustomerDontExistsException | ProductDontExistsException e) {
-            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"));
+                 ProductQuantityNotAvailableException | CustomerDontExistsException | ProductNotFoundException e) {
+            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));
         }
     }
 

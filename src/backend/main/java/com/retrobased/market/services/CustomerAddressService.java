@@ -5,7 +5,7 @@ import com.retrobased.market.repositories.CustomerAddressRepository;
 import com.retrobased.market.repositories.CustomerRepository;
 import com.retrobased.market.support.exceptions.AddressDontExistsException;
 import com.retrobased.market.support.exceptions.CustomerDontExistsException;
-import org.springframework.lang.NonNull;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +25,7 @@ public class CustomerAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public CustomerAddress addAddress(@NonNull UUID customerId, @NonNull CustomerAddress address) throws CustomerDontExistsException {
+    public CustomerAddress addAddress(@NotNull UUID customerId, @NotNull CustomerAddress address) throws CustomerDontExistsException {
         if (!customerRepository.existsById(customerId))
             throw new CustomerDontExistsException();
 
@@ -41,7 +41,7 @@ public class CustomerAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void removeAddress(@NonNull UUID customerId, @NonNull UUID addressId) throws AddressDontExistsException, CustomerDontExistsException {
+    public void removeAddress(@NotNull UUID customerId, @NotNull UUID addressId) throws AddressDontExistsException, CustomerDontExistsException {
         if (!customerRepository.existsById(customerId))
             throw new CustomerDontExistsException();
 
@@ -51,5 +51,14 @@ public class CustomerAddressService {
 
         customerRepository.deleteById(addressId);
 
+    }
+    @Transactional(readOnly = true)
+    public boolean existsCustomerAddressForCustomer (@NotNull UUID customerId, @NotNull UUID customerAddressId) {
+        return customerAddressRepository.existsById(customerAddressId);
+    }
+
+    @Transactional(readOnly = true)
+    public CustomerAddress getCustomerAddressById (@NotNull UUID customerAddressId) {
+        return customerAddressRepository.getReferenceById(customerAddressId);
     }
 }

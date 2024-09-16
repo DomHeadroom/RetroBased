@@ -2,11 +2,8 @@ package com.retrobased.market.services;
 
 import com.retrobased.market.entities.Order;
 import com.retrobased.market.entities.Product;
-import com.retrobased.market.repositories.CartItemRepository;
-import com.retrobased.market.repositories.CustomerRepository;
 import com.retrobased.market.repositories.OrderItemRepository;
 import com.retrobased.market.repositories.OrderRepository;
-import com.retrobased.market.repositories.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +26,7 @@ public class OrderService {
         this.orderItemRepository = orderItemRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<Order> getOrder(UUID customerId, int pageNumber) {
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.desc("createdAt")));
         Page<Order> orders = orderRepository.findByCustomerId(customerId, paging);
@@ -39,14 +37,20 @@ public class OrderService {
         return new ArrayList<>();
     }
 
+    @Transactional(readOnly = true)
     public List<Product> getOrderProducts(UUID orderId, int pageNumber) {
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.desc("createdAt")));
-        Page<Product> orders = orderItemRepository.findByOrderId(orderId, paging);
+        Page<Product> products = orderItemRepository.findByOrderId(orderId, paging);
 
-        if (orders.hasContent())
-            return orders.getContent();
+        if (products.hasContent())
+            return products.getContent();
 
         return new ArrayList<>();
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existsOrderForCustomer(UUID customerId, UUID orderId) {
+        return orderRepository.existsByCustomerIdAndId(customerId, orderId);
     }
 
 }
