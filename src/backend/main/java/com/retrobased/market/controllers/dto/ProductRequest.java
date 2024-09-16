@@ -3,7 +3,9 @@ package com.retrobased.market.controllers.dto;
 import java.util.List;
 import java.util.UUID;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,8 +14,8 @@ import lombok.Setter;
 public class ProductRequest {
 
     @NotEmpty
-    private List<ProductQuantityDTO> products;
+    private List<@Valid ProductQuantityDTO> products;
 
-    @NotEmpty
+    @NotNull
     private UUID addressId;
 }

@@ -77,7 +77,7 @@ public class OrderController {
 
     @PostMapping("/buy")
     public ResponseEntity<?> buyOrder(
-            @RequestBody ProductRequest productRequest
+            @RequestBody @Valid ProductRequest productRequest
     ) {
         try{
             // a6cd2287-bb39-48b8-b1d7-62ec612ba064
