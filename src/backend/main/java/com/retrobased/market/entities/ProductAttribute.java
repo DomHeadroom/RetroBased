@@ -22,6 +22,6 @@ public class ProductAttribute {
 
     @ManyToOne
     @JoinColumn(name = "attribute_id", nullable = false)
-    private Attribute attributeId;
+    private Attribute attribute;
 
 }

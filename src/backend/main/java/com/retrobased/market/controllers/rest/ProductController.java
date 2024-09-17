@@ -1,7 +1,14 @@
 package com.retrobased.market.controllers.rest;
 
+import com.retrobased.market.controllers.dto.ProductCategoryDTO;
+import com.retrobased.market.entities.Attribute;
 import com.retrobased.market.entities.Product;
+import com.retrobased.market.entities.Category;
+import com.retrobased.market.services.AttributeService;
+import com.retrobased.market.services.CategoryService;
+import com.retrobased.market.services.ProductAttributeService;
 import com.retrobased.market.services.ProductSellerService;
+import com.retrobased.market.services.ProductCategoryService;
 import com.retrobased.market.services.ProductService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
@@ -25,10 +32,18 @@ public class ProductController {
 
     private final ProductService productService;
     private final ProductSellerService productSellerService;
+    private final CategoryService categoryService;
+    private final AttributeService attributeService;
+    private final ProductCategoryService productCategoryService;
+    private final ProductAttributeService productAttributeService;
 
-    public ProductController(ProductService productService, ProductSellerService productSellerService) {
+    public ProductController(ProductService productService, ProductSellerService productSellerService, ProductCategoryService productCategoryService, CategoryService categoryService, AttributeService attributeService, ProductAttributeService productAttributeService) {
         this.productService = productService;
         this.productSellerService = productSellerService;
+        this.productCategoryService = productCategoryService;
+        this.categoryService = categoryService;
+        this.attributeService = attributeService;
+        this.productAttributeService = productAttributeService;
     }
 
     @GetMapping("/search")
@@ -46,10 +61,35 @@ public class ProductController {
 
     // aggiunta di un prodotto al db
     @PostMapping("/add")
-    public ResponseEntity<?> addProduct(@RequestBody @Valid Product product) {
+    public ResponseEntity<?> addProduct(
+            @RequestBody @Valid ProductCategoryDTO productCategory
+    ) {
         try {
             UUID sellerId = null; // TODO estrarre sellerId da token
-            Product newProduct = productService.addProduct(product, sellerId);
+
+            Category firstCategory = validateCategory(productCategory.getFirstCategoryId());
+            Category secondCategory = validateCategory(productCategory.getSecondCategoryId());
+
+            if (firstCategory != null && secondCategory != null &&
+                    !categoryService.areCategoriesValid(firstCategory, secondCategory))
+                throw new ArgumentValueNotValidException();
+
+            Attribute attribute = validateAttribute(productCategory.getAttributeId());
+
+            Product newProduct = productService.addProduct(productCategory.getProduct(), sellerId);
+
+            if(firstCategory != null){
+                productCategoryService.create(firstCategory, newProduct);
+            }
+
+            if(secondCategory != null){
+                productCategoryService.create(secondCategory, newProduct);
+            }
+
+            if(attribute != null){
+                productAttributeService.create(attribute, newProduct);
+            }
+
             return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
         } catch (ArgumentValueNotValidException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));
@@ -60,7 +100,7 @@ public class ProductController {
     public ResponseEntity<?> removeProduct(@RequestParam(value = "product") @NotNull UUID productId) {
         try {
             UUID sellerId = null; // TODO estrarre sellerId da token
-            if (!productSellerService.existsProductForSeller(productId,sellerId))
+            if (!productSellerService.existsProductForSeller(productId, sellerId))
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"));
 
             productService.removeProduct(productId);
@@ -83,4 +123,23 @@ public class ProductController {
         return new ResponseEntity<>(result, HttpStatus.OK);
    }*/
 
+    private Category validateCategory(UUID categoryId) throws ArgumentValueNotValidException {
+        if (categoryId == null)
+            return null;
+
+        if (!categoryService.existsById(categoryId))
+            throw new ArgumentValueNotValidException();
+
+        return categoryService.getById(categoryId);
+    }
+
+    private Attribute validateAttribute(UUID attributeId) throws ArgumentValueNotValidException {
+        if (attributeId == null)
+            return null;
+
+        if (!attributeService.existsById(attributeId))
+            throw new ArgumentValueNotValidException();
+
+        return attributeService.getById(attributeId);
+    }
 }

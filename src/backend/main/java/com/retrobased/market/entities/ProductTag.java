@@ -9,6 +9,8 @@ import jakarta.persistence.Table;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.JoinColumn;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -32,14 +34,17 @@ public class ProductTag {
     public static class ProductTagId implements Serializable {
 
         @Column(name = "product_id")
+        @NotNull
         private UUID productId;
 
         @Column(name = "tag_id")
+        @NotNull
         private UUID tagId;
 
     }
 
     @EmbeddedId
+    @Valid
     private ProductTagId id;
 
     @ManyToOne

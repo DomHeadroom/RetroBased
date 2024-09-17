@@ -1,6 +1,5 @@
 package com.retrobased.market.controllers.rest;
 
-import com.retrobased.market.controllers.dto.ProductQuantityDTO;
 import com.retrobased.market.controllers.dto.ProductRequest;
 import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.entities.Order;
