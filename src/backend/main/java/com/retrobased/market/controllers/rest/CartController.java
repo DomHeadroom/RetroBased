@@ -1,11 +1,13 @@
 package com.retrobased.market.controllers.rest;
 
+import com.retrobased.market.controllers.dto.ProductRequestCart;
 import com.retrobased.market.entities.CartItem;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.services.ProductService;
 import com.retrobased.market.services.CartItemService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
@@ -36,10 +38,10 @@ public class CartController {
 
     // aggiunta prodotto al carrello
     @GetMapping("/add")
-    public ResponseEntity<?> addProductToCart(@RequestParam(value = "product") @NotNull UUID productId, @RequestParam(value = "quantity") @NotNull @Min(1) Long quantity) {
+    public ResponseEntity<?> addProductToCart(@RequestBody @Valid @NotNull ProductRequestCart productRequestCart) {
         try {
             UUID customerId = null; // TODO cambiare con metodo per estrarre id da token
-            CartItem added = cartItemService.addProductToCart(customerId, productId, quantity);
+            List<CartItem> added = cartItemService.addProductToCart(customerId, productRequestCart.getProducts());
             return ResponseEntity.ok(added);
         } catch (ArgumentValueNotValidException | ProductAlreadyPresentException |
                  ProductQuantityNotAvailableException | CustomerDontExistsException | ProductNotFoundException e) {

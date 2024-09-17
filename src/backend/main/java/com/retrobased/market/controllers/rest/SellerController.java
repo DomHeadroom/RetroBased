@@ -36,7 +36,7 @@ public class SellerController {
 
     // aggiunta prodotto al carrello
     @PostMapping("/register")
-    public ResponseEntity<?> registerCustomer(@RequestBody @Valid Seller seller) {
+    public ResponseEntity<?> registerCustomer(@RequestBody @Valid @NotNull Seller seller) {
         sellerService.registerSeller(seller);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductRequest {
+public class ProductRequestOrder {
 
     @NotEmpty
     private List<@Valid ProductQuantityDTO> products;

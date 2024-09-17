@@ -62,7 +62,7 @@ public class ProductController {
     // aggiunta di un prodotto al db
     @PostMapping("/add")
     public ResponseEntity<?> addProduct(
-            @RequestBody @Valid ProductCategoryDTO productCategory
+            @RequestBody @Valid @NotNull ProductCategoryDTO productCategory
     ) {
         try {
             UUID sellerId = null; // TODO estrarre sellerId da token

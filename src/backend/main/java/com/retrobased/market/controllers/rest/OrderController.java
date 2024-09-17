@@ -1,6 +1,6 @@
 package com.retrobased.market.controllers.rest;
 
-import com.retrobased.market.controllers.dto.ProductRequest;
+import com.retrobased.market.controllers.dto.ProductRequestOrder;
 import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.entities.Order;
 import com.retrobased.market.entities.Product;
@@ -76,18 +76,18 @@ public class OrderController {
 
     @PostMapping("/buy")
     public ResponseEntity<?> buyOrder(
-            @RequestBody @Valid ProductRequest productRequest
+            @RequestBody @Valid @NotNull ProductRequestOrder productRequestOrder
     ) {
         try{
             // a6cd2287-bb39-48b8-b1d7-62ec612ba064
             UUID customerId = UUID.fromString("a6cd2287-bb39-48b8-b1d7-62ec612ba064"); // TODO cambiare con metodo per estrarre id da token
 
-            if (!customerAddressService.existsCustomerAddressForCustomer(customerId, productRequest.getAddressId()))
+            if (!customerAddressService.existsCustomerAddressForCustomer(customerId, productRequestOrder.getAddressId()))
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"));
 
-            CustomerAddress customerAddress = customerAddressService.getCustomerAddressById(productRequest.getAddressId());
+            CustomerAddress customerAddress = customerAddressService.getCustomerAddressById(productRequestOrder.getAddressId());
 
-            Order finalOrder = productService.lockAndReduceQuantities(productRequest.getProducts(),customerAddress,customerId);
+            Order finalOrder = productService.lockAndReduceQuantities(productRequestOrder.getProducts(),customerAddress,customerId);
             return ResponseEntity.status(HttpStatus.CREATED).body(finalOrder);
         } catch (ArgumentValueNotValidException | ProductNotFoundException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"));

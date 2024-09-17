@@ -32,7 +32,7 @@ public class CustomerController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerCustomer(@RequestBody @Valid Customer customer) {
+    public ResponseEntity<?> registerCustomer(@RequestBody @Valid @NotNull Customer customer) {
         try {
             customerService.registerCustomer(customer);
             return ResponseEntity.status(HttpStatus.CREATED).build();

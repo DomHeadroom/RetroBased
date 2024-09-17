@@ -1,5 +1,6 @@
 package com.retrobased.market.services;
 
+import com.retrobased.market.controllers.dto.ProductQuantityDTO;
 import com.retrobased.market.entities.Cart;
 import com.retrobased.market.entities.CartItem;
 import com.retrobased.market.entities.Product;
@@ -15,8 +16,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CartItemService {
@@ -106,27 +109,41 @@ public class CartItemService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public CartItem addProductToCart(@NotNull UUID customerId, @NotNull UUID productId, @NotNull Long quantity) throws ArgumentValueNotValidException, ProductAlreadyPresentException, ProductQuantityNotAvailableException, CustomerDontExistsException, ProductNotFoundException {
+    public List<CartItem> addProductToCart(@NotNull UUID customerId, @NotNull List<ProductQuantityDTO> productQuantities) throws ArgumentValueNotValidException, ProductAlreadyPresentException, ProductQuantityNotAvailableException, CustomerDontExistsException, ProductNotFoundException {
 
-        if (quantity <= 0)
-            throw new ArgumentValueNotValidException();
+        List<UUID> productIds = productQuantities.stream()
+                .map(ProductQuantityDTO::getProductId)
+                .distinct()
+                .collect(Collectors.toList());
 
-        checkValues(customerId, productId);
+        List<Product> products = productRepository.findByIdInWithLock(productIds);
 
-        if (productRepository.findQuantityById(productId) < quantity)
-            throw new ProductQuantityNotAvailableException();
+        if (products.size() != productQuantities.size())
+            throw new ProductNotFoundException();
 
         Cart cart = getCustomerCart(customerId);
+        List<CartItem> items = new LinkedList<>();
+        for (ProductQuantityDTO productQuantity : productQuantities) {
+            Product product = products.stream()
+                    .filter(p -> p.getId().equals(productQuantity.getProductId()))
+                    .findFirst()
+                    .orElseThrow();
 
-        if (cartItemRepository.existsByCartIdAndProductId(cart.getId(), productId))
-            throw new ProductAlreadyPresentException();
+            if (cartItemRepository.existsByCartIdAndProductId(cart.getId(), product.getId()))
+                productQuantity.setQuantity(productQuantity.getQuantity() + cartItemRepository.getQuantityByCartIdAndProductId(cart.getId(), product.getId()));
 
-        CartItem item = new CartItem();
-        item.setProduct(productRepository.getReferenceById(productId));
-        item.setCart(cart);
-        item.setQuantity(quantity);
+            if (product.getQuantity() < productQuantity.getQuantity())
+                throw new ArgumentValueNotValidException();
 
-        return cartItemRepository.save(item);
+            CartItem item = new CartItem();
+            item.setProduct(productRepository.getReferenceById(product.getId()));
+            item.setCart(cart);
+            item.setQuantity(productQuantity.getQuantity());
+
+            items.add(item);
+        }
+
+        return cartItemRepository.saveAll(items);
 
     }
 
