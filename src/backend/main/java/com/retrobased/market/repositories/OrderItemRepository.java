@@ -1,6 +1,5 @@
 package com.retrobased.market.repositories;
 
-import com.retrobased.market.entities.Order;
 import com.retrobased.market.entities.OrderItem;
 import com.retrobased.market.entities.Product;
 import org.springframework.data.domain.Page;
@@ -15,5 +14,7 @@ import java.util.UUID;
 public interface OrderItemRepository extends JpaRepository<OrderItem, UUID>, JpaSpecificationExecutor<OrderItem> {
 
     @Query("SELECT oi.product FROM OrderItem oi WHERE oi.order.id = :orderId")
-    Page<Product> findByOrderId(@Param("orderId")UUID orderId, Pageable paging);
+    Page<Product> findByOrderId(@Param("orderId") UUID orderId, Pageable paging);
+
+    Page<OrderItem> getByOrderId(UUID orderId, Pageable paging);
 }

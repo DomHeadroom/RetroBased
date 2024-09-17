@@ -27,20 +27,21 @@ import java.util.UUID;
 @RequestMapping("/api/cart")
 @Validated
 public class CartController {
-    private final ProductService productService;
 
     private final CartItemService cartItemService;
 
-    public CartController(ProductService productService, CartItemService cartItemService) {
-        this.productService = productService;
+    public CartController(CartItemService cartItemService) {
         this.cartItemService = cartItemService;
     }
+
+    //TODO FIXXARE STA STRONZATA PERCHè NON WORKA ALLA RICEVUTA DELL'OGGETTO PER QUALCHE MOTIVO
 
     // aggiunta prodotto al carrello
     @GetMapping("/add")
     public ResponseEntity<?> addProductToCart(@RequestBody @Valid @NotNull ProductRequestCart productRequestCart) {
         try {
-            UUID customerId = null; // TODO cambiare con metodo per estrarre id da token
+            UUID customerId = UUID.fromString("f3106b66-3ed0-4d61-a7ae-fcc0651eb8cf"); // TODO cambiare con metodo per estrarre id da token
+
             List<CartItem> added = cartItemService.addProductToCart(customerId, productRequestCart.getProducts());
             return ResponseEntity.ok(added);
         } catch (ArgumentValueNotValidException | ProductAlreadyPresentException |

@@ -25,6 +25,7 @@ public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpec
 
     Long findQuantityById(UUID id);
 
+    @Query("SELECT p FROM Product p WHERE (p.id IN :productIds) AND p.deleted = FALSE")
     List<Product> findByIdIn(List<UUID> productIds);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)

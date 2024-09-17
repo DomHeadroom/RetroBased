@@ -3,7 +3,7 @@ package com.retrobased.market.controllers.rest;
 import com.retrobased.market.controllers.dto.ProductRequestOrder;
 import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.entities.Order;
-import com.retrobased.market.entities.Product;
+import com.retrobased.market.entities.OrderItem;
 import com.retrobased.market.services.CustomerAddressService;
 import com.retrobased.market.services.OrderService;
 import com.retrobased.market.services.ProductService;
@@ -59,15 +59,15 @@ public class OrderController {
 
     // metodo per ottenere prodotti da ordine
     @GetMapping("/get-all")
-    public ResponseEntity<?> getAllOrders(
+    public ResponseEntity<?> getAllFromOrders(
             @RequestParam(value = "order") @NotNull UUID orderId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber
     ) {
-        UUID customerId = null; // TODO cambiare con metodo per estrarre id da token
+        UUID customerId = UUID.fromString("a6cd2287-bb39-48b8-b1d7-62ec612ba064"); // TODO cambiare con metodo per estrarre id da token
         if (!orderService.existsOrderForCustomer(customerId, orderId))
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-        List<Product> result = orderService.getOrderProducts(orderId, pageNumber);
+        List<OrderItem> result = orderService.getByOrderId(orderId, pageNumber);
         if (result.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 

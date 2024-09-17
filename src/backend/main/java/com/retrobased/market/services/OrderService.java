@@ -1,6 +1,7 @@
 package com.retrobased.market.services;
 
 import com.retrobased.market.entities.Order;
+import com.retrobased.market.entities.OrderItem;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.repositories.OrderItemRepository;
 import com.retrobased.market.repositories.OrderRepository;
@@ -53,4 +54,14 @@ public class OrderService {
         return orderRepository.existsByCustomerIdAndId(customerId, orderId);
     }
 
+    public List<OrderItem> getByOrderId(UUID orderId, int pageNumber) {
+        Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.asc("id")));
+        Page<OrderItem> orders = orderItemRepository.getByOrderId(orderId,paging);
+
+        if (orders.hasContent())
+            return orders.getContent();
+
+        return new ArrayList<>();
+
+    }
 }

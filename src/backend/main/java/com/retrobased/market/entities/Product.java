@@ -52,7 +52,7 @@ public class Product {
 
     @Column(name = "quantity", nullable = false)
     @NotNull(message = "A value is required for this field.")
-    @Min(1)
+    @Min(0)
     private Long quantity = 0L;
 
     @Column(name = "short_description", nullable = false)

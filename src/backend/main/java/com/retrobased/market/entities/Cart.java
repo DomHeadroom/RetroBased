@@ -1,5 +1,6 @@
 package com.retrobased.market.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
@@ -18,6 +19,7 @@ public class Cart {
 
     @OneToOne
     @JoinColumn(name = "customer_id", unique = true)
+    @JsonIgnore
     private Customer customer;
 
 }
