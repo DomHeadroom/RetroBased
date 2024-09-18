@@ -118,7 +118,7 @@ public class ProductService {
             product.setQuantity(product.getQuantity() - productQuantity.getQuantity());
         }
 
-        // creare istanze anche per sell and product seller
+        // TODO creare istanze anche per sell and product seller
 
         Order currentOrder = new Order();
         currentOrder.setCustomer(customerRepository.findCustomerById(customerId));

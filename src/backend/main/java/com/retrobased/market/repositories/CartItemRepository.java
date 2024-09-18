@@ -28,7 +28,8 @@ public interface CartItemRepository extends JpaRepository<CartItem, UUID>, JpaSp
     void deleteByCartIdAndProductId(UUID cartId, UUID productId);
 
     @Query("SELECT c.product FROM CartItem c WHERE c.cart.id = :cartId")
-    Page<Product> findProductsByCartId(UUID cartId, Pageable pageable);
+    Page<Product> findProductsByCartId(@Param("cartId") UUID cartId, Pageable pageable);
 
-    Long getQuantityByCartIdAndProductId(UUID cartId, UUID productId);
+    @Query("SELECT c.quantity FROM CartItem c WHERE c.cart.id = :cartId AND c.product.id = :productId")
+    Long getQuantityByCartIdAndProductId(@Param("cartId") UUID cartId,@Param("productId") UUID productId);
 }

@@ -16,10 +16,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class CartItemService {
@@ -111,34 +111,34 @@ public class CartItemService {
     @Transactional(propagation = Propagation.REQUIRED)
     public List<CartItem> addProductToCart(@NotNull UUID customerId, @NotNull List<ProductQuantityDTO> productQuantities) throws ArgumentValueNotValidException, ProductAlreadyPresentException, ProductQuantityNotAvailableException, CustomerDontExistsException, ProductNotFoundException {
 
-        List<UUID> productIds = productQuantities.stream()
-                .map(ProductQuantityDTO::getProductId)
-                .distinct()
-                .collect(Collectors.toList());
+        HashMap<UUID, Long> productIds = new HashMap<>();
 
-        List<Product> products = productRepository.findByIdInWithLock(productIds);
+        for (ProductQuantityDTO productQuantity: productQuantities) {
+            if (!productRepository.existsById(productQuantity.getProductId()))
+                throw new ProductNotFoundException();
 
-        if (products.size() != productQuantities.size())
-            throw new ProductNotFoundException();
+            productIds.merge(productQuantity.getProductId(), productQuantity.getQuantity(), Long::sum);
+        }
+
+        List<Product> products = productRepository.findByIdIn(productIds.keySet());
+
 
         Cart cart = getCustomerCart(customerId);
+
         List<CartItem> items = new LinkedList<>();
-        for (ProductQuantityDTO productQuantity : productQuantities) {
-            Product product = products.stream()
-                    .filter(p -> p.getId().equals(productQuantity.getProductId()))
-                    .findFirst()
-                    .orElseThrow();
 
-            if (cartItemRepository.existsByCartIdAndProductId(cart.getId(), product.getId()))
-                productQuantity.setQuantity(productQuantity.getQuantity() + cartItemRepository.getQuantityByCartIdAndProductId(cart.getId(), product.getId()));
-
-            if (product.getQuantity() < productQuantity.getQuantity())
+        for (Product product : products) {
+            if (cartItemRepository.existsByCartIdAndProductId(cart.getId(), product.getId())) {
+                productIds.merge(product.getId(),cartItemRepository.getQuantityByCartIdAndProductId(cart.getId(), product.getId()), Long::sum);
+            }
+            if (product.getQuantity() < productIds.get(product.getId()))
                 throw new ArgumentValueNotValidException();
 
+            // TODO nel caso esista prodotto e carrello già cambiare il valore e non creare un cartItem nuovo
             CartItem item = new CartItem();
             item.setProduct(productRepository.getReferenceById(product.getId()));
             item.setCart(cart);
-            item.setQuantity(productQuantity.getQuantity());
+            item.setQuantity(productIds.get(product.getId()));
 
             items.add(item);
         }

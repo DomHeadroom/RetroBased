@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpecificationExecutor<Product> {
@@ -26,7 +27,7 @@ public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpec
     Long findQuantityById(UUID id);
 
     @Query("SELECT p FROM Product p WHERE (p.id IN :productIds) AND p.deleted = FALSE")
-    List<Product> findByIdIn(List<UUID> productIds);
+    List<Product> findByIdIn(Set<UUID> productIds);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT p FROM Product p WHERE (p.id IN :productIds) AND p.deleted = FALSE")
