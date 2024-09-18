@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface CartItemRepository extends JpaRepository<CartItem, UUID>, JpaSpecificationExecutor<CartItem> {
@@ -32,4 +32,6 @@ public interface CartItemRepository extends JpaRepository<CartItem, UUID>, JpaSp
 
     @Query("SELECT c.quantity FROM CartItem c WHERE c.cart.id = :cartId AND c.product.id = :productId")
     Long getQuantityByCartIdAndProductId(@Param("cartId") UUID cartId,@Param("productId") UUID productId);
+
+    Optional<CartItem> findByCartIdAndProductId(UUID id, UUID id1);
 }

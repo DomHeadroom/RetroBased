@@ -1,5 +1,6 @@
 package com.retrobased.market.services;
 
+import com.retrobased.market.controllers.dto.ProductObjQuantityDTO;
 import com.retrobased.market.controllers.dto.ProductQuantityDTO;
 import com.retrobased.market.entities.Cart;
 import com.retrobased.market.entities.CartItem;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -108,43 +111,66 @@ public class CartItemService {
 
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
-    public List<CartItem> addProductToCart(@NotNull UUID customerId, @NotNull List<ProductQuantityDTO> productQuantities) throws ArgumentValueNotValidException, ProductAlreadyPresentException, ProductQuantityNotAvailableException, CustomerDontExistsException, ProductNotFoundException {
+    public List<ProductObjQuantityDTO> addProductToCart(@NotNull UUID customerId, @NotNull List<ProductQuantityDTO> productQuantities)
+            throws ArgumentValueNotValidException, ProductNotFoundException {
 
-        HashMap<UUID, Long> productIds = new HashMap<>();
+        Map<UUID, Long> productIds = new HashMap<>();
 
-        for (ProductQuantityDTO productQuantity: productQuantities) {
-            if (!productRepository.existsById(productQuantity.getProductId()))
+        for (ProductQuantityDTO productQuantity : productQuantities) {
+            UUID productId = productQuantity.getProductId();
+            if (!productRepository.existsById(productId))
                 throw new ProductNotFoundException();
 
-            productIds.merge(productQuantity.getProductId(), productQuantity.getQuantity(), Long::sum);
+            productIds.merge(productId, productQuantity.getQuantity(), Long::sum);
         }
 
         List<Product> products = productRepository.findByIdIn(productIds.keySet());
 
-
         Cart cart = getCustomerCart(customerId);
 
-        List<CartItem> items = new LinkedList<>();
+        List<CartItem> newItems = new LinkedList<>();
+        List<ProductObjQuantityDTO> resultItems = new LinkedList<>();
 
         for (Product product : products) {
-            if (cartItemRepository.existsByCartIdAndProductId(cart.getId(), product.getId())) {
-                productIds.merge(product.getId(),cartItemRepository.getQuantityByCartIdAndProductId(cart.getId(), product.getId()), Long::sum);
-            }
-            if (product.getQuantity() < productIds.get(product.getId()))
+            UUID productId = product.getId();
+            Long quantityToAdd = productIds.get(productId);
+
+            if (product.getQuantity() < quantityToAdd)
                 throw new ArgumentValueNotValidException();
 
-            // TODO nel caso esista prodotto e carrello già cambiare il valore e non creare un cartItem nuovo
-            CartItem item = new CartItem();
-            item.setProduct(productRepository.getReferenceById(product.getId()));
-            item.setCart(cart);
-            item.setQuantity(productIds.get(product.getId()));
+            Optional<CartItem> existingCartItemOpt = cartItemRepository.findByCartIdAndProductId(cart.getId(), productId);
 
-            items.add(item);
+            if (existingCartItemOpt.isPresent()) {
+                CartItem existingCartItem = existingCartItemOpt.get();
+                Long newQuantity = existingCartItem.getQuantity() + quantityToAdd;
+                existingCartItem.setQuantity(newQuantity);
+                cartItemRepository.save(existingCartItem);
+
+                resultItems.add(createProductObjQuantityDTO(product, newQuantity));
+                continue;
+            }
+
+            CartItem newItem = new CartItem();
+            newItem.setProduct(product);
+            newItem.setCart(cart);
+            newItem.setQuantity(quantityToAdd);
+            newItems.add(newItem);
+
+            resultItems.add(createProductObjQuantityDTO(product, quantityToAdd));
+
         }
 
-        return cartItemRepository.saveAll(items);
+        if (!newItems.isEmpty())
+            cartItemRepository.saveAll(newItems);
 
+        return resultItems;
+    }
+
+    private ProductObjQuantityDTO createProductObjQuantityDTO(Product product, Long quantity) {
+        ProductObjQuantityDTO dto = new ProductObjQuantityDTO();
+        dto.setProduct(product);
+        dto.setQuantity(quantity);
+        return dto;
     }
 
     private void checkValues(UUID customerId, UUID productId) throws ProductNotFoundException, CustomerDontExistsException {

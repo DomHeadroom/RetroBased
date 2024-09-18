@@ -1,9 +1,8 @@
 package com.retrobased.market.controllers.rest;
 
+import com.retrobased.market.controllers.dto.ProductObjQuantityDTO;
 import com.retrobased.market.controllers.dto.ProductRequestCart;
-import com.retrobased.market.entities.CartItem;
 import com.retrobased.market.entities.Product;
-import com.retrobased.market.services.ProductService;
 import com.retrobased.market.services.CartItemService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.*;
@@ -42,11 +41,13 @@ public class CartController {
         try {
             UUID customerId = UUID.fromString("f3106b66-3ed0-4d61-a7ae-fcc0651eb8cf"); // TODO cambiare con metodo per estrarre id da token
 
-            List<CartItem> added = cartItemService.addProductToCart(customerId, productRequestCart.getProducts());
+            List<ProductObjQuantityDTO> added = cartItemService.addProductToCart(customerId, productRequestCart.getProducts());
             return ResponseEntity.ok(added);
-        } catch (ArgumentValueNotValidException | ProductAlreadyPresentException |
-                 ProductQuantityNotAvailableException | CustomerDontExistsException | ProductNotFoundException e) {
+        } catch (ArgumentValueNotValidException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));
+        }
+        catch (ProductNotFoundException e) {
+            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_PRODUCT_NOT_EXISTS"));
         }
     }
 
