@@ -31,7 +31,7 @@ public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpec
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT p FROM Product p WHERE (p.id IN :productIds) AND p.deleted = FALSE")
-    List<Product> findByIdInWithLock(List<UUID> productIds);
+    List<Product> findByIdInWithLock(Set<UUID> productIds);
 
     @Modifying
     @Transactional

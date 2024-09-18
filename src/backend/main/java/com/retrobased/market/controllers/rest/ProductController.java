@@ -60,6 +60,7 @@ public class ProductController {
     }
 
     // aggiunta di un prodotto al db
+    // TODO aggiungere dati dentro Product_Seller
     @PostMapping("/add")
     public ResponseEntity<?> addProduct(
             @RequestBody @Valid @NotNull ProductCategoryDTO productCategory
