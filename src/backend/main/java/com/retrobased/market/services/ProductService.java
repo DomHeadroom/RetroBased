@@ -1,6 +1,6 @@
 package com.retrobased.market.services;
 
-import com.retrobased.market.controllers.dto.ProductQuantityDTO;
+import com.retrobased.market.dto.ProductQuantityDTO;
 import com.retrobased.market.entities.Customer;
 import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.entities.Order;
@@ -32,7 +32,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductService {

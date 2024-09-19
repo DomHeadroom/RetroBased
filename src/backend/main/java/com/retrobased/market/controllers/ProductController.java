@@ -1,6 +1,6 @@
-package com.retrobased.market.controllers.rest;
+package com.retrobased.market.controllers;
 
-import com.retrobased.market.controllers.dto.ProductCategoryDTO;
+import com.retrobased.market.dto.ProductCategoryDTO;
 import com.retrobased.market.entities.Attribute;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.Category;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping("api/products")
 @Validated
 public class ProductController {
 
@@ -46,7 +46,7 @@ public class ProductController {
         this.productAttributeService = productAttributeService;
     }
 
-    @GetMapping("/search")
+    @GetMapping
     public ResponseEntity<?> searchProduct(
             @RequestParam(value = "k") String keyword,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber,
@@ -61,7 +61,7 @@ public class ProductController {
 
     // aggiunta di un prodotto al db
     // TODO aggiungere dati dentro Product_Seller
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> addProduct(
             @RequestBody @Valid @NotNull ProductCategoryDTO productCategory
     ) {
@@ -97,7 +97,7 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/remove")
+    @DeleteMapping
     public ResponseEntity<?> removeProduct(@RequestParam(value = "product") @NotNull UUID productId) {
         try {
             UUID sellerId = null; // TODO estrarre sellerId da token

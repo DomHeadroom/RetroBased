@@ -1,4 +1,4 @@
-package com.retrobased.market.controllers.rest;
+package com.retrobased.market.controllers;
 
 import com.retrobased.market.entities.Customer;
 import com.retrobased.market.entities.CustomerAddress;
@@ -18,7 +18,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("api/users")
 @Validated
 public class CustomerController {
 
@@ -31,7 +31,7 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PostMapping("/register")
+    @PostMapping
     public ResponseEntity<?> registerCustomer(@RequestBody @Valid @NotNull Customer customer) {
         try {
             customerService.registerCustomer(customer);
@@ -42,7 +42,7 @@ public class CustomerController {
     }
 
     // TODO cacciare customerId per prenderlo da token
-    @PostMapping("/address")
+    @PostMapping("addresses")
     public ResponseEntity<?> addCustomerAddress(
             @RequestBody @Valid CustomerAddress address,
             @RequestParam(value = "user") @NotNull UUID customerId) {

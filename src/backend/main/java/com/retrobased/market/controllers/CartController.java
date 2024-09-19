@@ -1,7 +1,7 @@
-package com.retrobased.market.controllers.rest;
+package com.retrobased.market.controllers;
 
-import com.retrobased.market.controllers.dto.ProductObjQuantityDTO;
-import com.retrobased.market.controllers.dto.ProductRequestCart;
+import com.retrobased.market.dto.ProductObjQuantityDTO;
+import com.retrobased.market.dto.ProductRequestCart;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.services.CartItemService;
 import com.retrobased.market.support.ResponseMessage;
@@ -24,7 +24,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("api/cart")
+@RequestMapping("api/carts")
 @Validated
 public class CartController {
 
@@ -37,7 +37,7 @@ public class CartController {
     //TODO FIXXARE STA STRONZATA PERCHè NON WORKA ALLA RICEVUTA DELL'OGGETTO PER QUALCHE MOTIVO
 
     // aggiunta prodotto al carrello
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> addProductToCart(@RequestBody @Valid @NotNull ProductRequestCart productRequestCart) {
         try {
             UUID customerId = UUID.fromString("f3106b66-3ed0-4d61-a7ae-fcc0651eb8cf"); // TODO cambiare con metodo per estrarre id da token
@@ -53,7 +53,7 @@ public class CartController {
     }
 
     // TODO cacciare customerId per prenderlo da token
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<?> getCartProducts(
             @RequestBody @NotNull UUID customerId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber) {

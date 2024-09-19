@@ -1,4 +1,4 @@
-package com.retrobased.market.controllers.rest;
+package com.retrobased.market.controllers;
 
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.Seller;
@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("/api/seller")
+@RequestMapping("api/sellers")
 @Validated
 public class SellerController {
     private final SellerService sellerService;
@@ -35,20 +36,20 @@ public class SellerController {
     }
 
     // aggiunta prodotto al carrello
-    @PostMapping("/register")
-    public ResponseEntity<?> registerCustomer(@RequestBody @Valid @NotNull Seller seller) {
+    @PostMapping
+    public ResponseEntity<?> registerSeller(@RequestBody @Valid @NotNull Seller seller) {
         sellerService.registerSeller(seller);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    // TODO cacciare customerId per prenderlo da token
-    @GetMapping("/get")
-    public ResponseEntity<?> getSoldProducts(
-            @RequestBody @NotNull UUID sellerId,
+    @GetMapping("{seller}/products")
+    public ResponseEntity<?> getSellerProducts(
+            @PathVariable("seller") @NotNull UUID sellerId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber) {
-        // UUID customerId = TODO cambiare con metodo per estrarre id da token
+
         List<Product> result = cartItemService.getCart(sellerId, pageNumber);
 
+        // TODO rifare questo metodo per prendere prodotti venduti
         if (result.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 

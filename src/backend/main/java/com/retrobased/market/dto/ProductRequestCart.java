@@ -1,4 +1,4 @@
-package com.retrobased.market.controllers.dto;
+package com.retrobased.market.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;

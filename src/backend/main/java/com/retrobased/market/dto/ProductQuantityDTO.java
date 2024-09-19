@@ -1,4 +1,4 @@
-package com.retrobased.market.controllers.dto;
+package com.retrobased.market.dto;
 
 import java.util.UUID;
 import jakarta.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-package com.retrobased.market.controllers.dto;
+package com.retrobased.market.dto;
 
 import com.retrobased.market.entities.Product;
 import jakarta.validation.Valid;
