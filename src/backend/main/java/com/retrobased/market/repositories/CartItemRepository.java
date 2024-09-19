@@ -16,6 +16,7 @@ import java.util.UUID;
 
 public interface CartItemRepository extends JpaRepository<CartItem, UUID>, JpaSpecificationExecutor<CartItem> {
 
+    // TODO modificare questo method con save nel codice che lo richiama
     @Modifying
     @Transactional
     @Query("UPDATE CartItem c SET c.quantity = :quantity WHERE c.cart.id = :cartId AND c.product.id = :productId")

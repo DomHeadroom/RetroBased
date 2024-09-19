@@ -33,6 +33,7 @@ public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpec
     @Query("SELECT p FROM Product p WHERE (p.id IN :productIds) AND p.deleted = FALSE")
     List<Product> findByIdInWithLock(Set<UUID> productIds);
 
+    // TODO modificare questo metodo con save nel codice che la richiama
     @Modifying
     @Transactional
     @Query("UPDATE Product p SET p.deleted = TRUE WHERE p.id = :productId")
