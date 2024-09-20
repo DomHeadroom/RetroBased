@@ -73,7 +73,7 @@ public class ProductService {
         if (!productRepository.existsById(productId))
             throw new ProductNotFoundException();
 
-        productRepository.removeProduct(productId);
+        productRepository.deleteById(productId);
 
     }
 
