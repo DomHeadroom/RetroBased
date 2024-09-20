@@ -3,7 +3,6 @@ package com.retrobased.market.services;
 import com.retrobased.market.entities.Order;
 import com.retrobased.market.entities.OrderItem;
 import com.retrobased.market.entities.Product;
-import com.retrobased.market.repositories.OrderItemRepository;
 import com.retrobased.market.repositories.OrderRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,15 +19,31 @@ import java.util.UUID;
 public class OrderService {
     private final OrderRepository orderRepository;
 
-    private final OrderItemRepository orderItemRepository;
+    private final OrderItemService orderItemService;
 
-    public OrderService(OrderItemRepository orderItemRepository, OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, OrderItemService orderItemService) {
         this.orderRepository = orderRepository;
-        this.orderItemRepository = orderItemRepository;
+        this.orderItemService = orderItemService;
     }
 
+    /**
+     * Retrieves a paginated list of {@link Order} objects associated with a specific customer.
+     * Orders are sorted in descending order based on the creation date (i.e., most recent first).
+     * Supports pagination with a page size of 20 items.
+     *
+     * @param customerId The UUID of the customer whose orders are to be retrieved.
+     *                   This identifies the customer in the database.
+     * @param pageNumber The page number to retrieve, with results paginated in sets of 20.
+     *                   Must be a non-negative integer.
+     * @return A list of {@link Order} objects associated with the specified customer.
+     *         If no orders exist for the customer or the page is empty, returns an empty list.
+     *
+     * @apiNote This method is read-only, using pagination to manage the number of orders returned per request.
+     *          Orders are sorted by their creation timestamp in descending order to show the most recent orders first.
+     * @see OrderRepository#findByCustomerId(UUID, Pageable) OrderRepository.findByCustomerId
+     */
     @Transactional(readOnly = true)
-    public List<Order> getOrder(UUID customerId, int pageNumber) {
+    public List<Order> getOrders(UUID customerId, int pageNumber) {
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.desc("createdAt")));
         Page<Order> orders = orderRepository.findByCustomerId(customerId, paging);
 
@@ -41,7 +56,7 @@ public class OrderService {
     @Transactional(readOnly = true)
     public List<Product> getOrderProducts(UUID orderId, int pageNumber) {
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.asc("id")));
-        Page<Product> products = orderItemRepository.findByOrderId(orderId, paging);
+        Page<Product> products = orderItemService.getOrderProducts(orderId, paging);
 
         if (products.hasContent())
             return products.getContent();
@@ -49,19 +64,35 @@ public class OrderService {
         return new ArrayList<>();
     }
 
+    /**
+     * Retrieves the list of {@link OrderItem} objects associated with a specific order.
+     * Supports pagination with a page size of 20 items and sorting by item ID in ascending order.
+     *
+     * @param orderId    The UUID of the order from which to retrieve the {@link OrderItem} objects.
+     *                   This represents the order to be queried.
+     * @param pageNumber The page number to retrieve, with results being paginated in sets of 20.
+     *                   Must be a non-negative integer.
+     * @return A list of {@link OrderItem} objects that belong to the specified order.
+     *         If no items are found for the given order or the page is empty, returns an empty list.
+     *
+     * @apiNote This method is read-only and uses pagination to limit the number of order items returned
+     *          per page. The items are sorted in ascending order based on their ID.
+     * @see OrderItemService#getOrderItem(UUID, Pageable) OrderItemService.getOrderItem
+     */
     @Transactional(readOnly = true)
-    public boolean existsOrderForCustomer(UUID customerId, UUID orderId) {
-        return orderRepository.existsByCustomerIdAndId(customerId, orderId);
-    }
-
     public List<OrderItem> getByOrderId(UUID orderId, int pageNumber) {
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.asc("id")));
-        Page<OrderItem> orders = orderItemRepository.getByOrderId(orderId,paging);
+        Page<OrderItem> orders = orderItemService.getOrderItem(orderId,paging);
 
         if (orders.hasContent())
             return orders.getContent();
 
         return new ArrayList<>();
 
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existsOrderForCustomer(UUID customerId, UUID orderId) {
+        return orderRepository.existsByCustomerIdAndId(customerId, orderId);
     }
 }

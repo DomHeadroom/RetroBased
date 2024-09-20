@@ -41,6 +41,23 @@ public class CartItemService {
         this.customerService = customerService;
     }
 
+    /**
+     * Retrieves a paginated list of {@link Product} objects contained in a customer's shopping cart.
+     * The products are sorted in descending order based on their creation date.
+     * Supports pagination with a page size of 20 items.
+     *
+     * @param customerId The UUID of the customer whose cart items are to be retrieved.
+     *                   This identifies the customer in the database and is used to fetch their cart.
+     * @param pageNumber The page number to retrieve, with results paginated in sets of 20.
+     *                   Must be a non-negative integer.
+     * @return A list of {@link Product} objects present in the specified customer's cart.
+     *         If the cart is empty or the page is out of range, returns an empty list.
+     *
+     * @apiNote This method is read-only, utilizing pagination to manage the number of products returned per request.
+     *          The products are sorted by their creation timestamp in descending order to show the most recent products first.
+     * @see CartService#getCustomerCart(UUID) CartService.getCustomerCart
+     * @see CartItemRepository#findProductsByCartId(UUID, Pageable) CartItemRepository.findProductsByCartId
+     */
     @Transactional(readOnly = true)
     public List<Product> getCart(UUID customerId, int pageNumber) {
         Cart customerCart = getCustomerCart(customerId);
@@ -52,60 +69,43 @@ public class CartItemService {
 
         return new ArrayList<>();
     }
-
-    // TODO CAMBIARE CON OGGETTO CARRELLO E NON ID PRODOTTO
+    /**
+     * Updates the quantity of a specified product in the customer's shopping cart.
+     * <p>
+     * This method ensures that the customer's cart item is either updated with the new quantity or
+     * removed from the cart if the quantity is set to zero. If the requested quantity exceeds the
+     * available stock or if the product is not found in the cart, it will throw appropriate exceptions.
+     * </p>
+     *
+     * <p><strong>Transaction:</strong> This method is executed within a required transaction scope. If a transaction
+     * is already in progress, this method will participate in it. If not, a new transaction is started.</p>
+     *
+     * @param customerId the ID of the customer whose cart is being modified; must not be null
+     * @param productId the ID of the product to update in the cart; must not be null
+     * @param quantity the new quantity for the product in the cart; must be non-negative (0 will remove the item)
+     * @throws ArgumentValueNotValidException if the requested quantity exceeds available stock
+     * @throws ProductNotFoundException if the product is not found in the customer's cart
+     * @throws CustomerDontExistsException if the customer does not exist in the system
+     */
     @Transactional(propagation = Propagation.REQUIRED)
-    public void increaseQuantity(@NotNull UUID customerId, @NotNull UUID productId, @NotNull @Min(1) Long quantity) throws ArgumentValueNotValidException, ProductQuantityNotAvailableException, ProductNotFoundException, UnableToChangeValueException, CustomerDontExistsException {
-
+    public void changeQuantity(@NotNull UUID customerId, @NotNull UUID productId, @NotNull @Min(0) Long quantity) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerDontExistsException {
         checkValues(customerId, productId);
-
-        Cart cart = getCustomerCart(customerId);
-
-        if (!existsProductInCart(cart.getId(), productId))
-            throw new ProductNotFoundException();
-
-        if (getProductQuantityInCart(cart.getId(), productId) > quantity)
-            throw new ArgumentValueNotValidException();
 
         if (productService.getQuantity(productId) < quantity)
-            throw new ProductQuantityNotAvailableException();
-
-        if (cartItemRepository.updateQuantityByCartIdAndProductId(cart.getId(), productId, quantity) == 0)
-            throw new UnableToChangeValueException();
-
-    }
-
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void decreaseQuantity(@NotNull UUID customerId, @NotNull UUID productId, @NotNull @Min(1) Long quantity) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerDontExistsException {
-
-        checkValues(customerId, productId);
-
-        Cart cart = getCustomerCart(customerId);
-
-        if (!existsProductInCart(cart.getId(), productId))
-            throw new ProductNotFoundException();
-
-        if (getProductQuantityInCart(cart.getId(), productId) < quantity)
             throw new ArgumentValueNotValidException();
 
-        if (quantity == 0) {
-            removeProduct(cart.getId(), productId);
-            return;
-        }
-        cartItemRepository.updateQuantityByCartIdAndProductId(cart.getId(), productId, quantity);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void removeProduct(@NotNull UUID customerId, @NotNull UUID productId) throws ProductNotFoundException, CustomerDontExistsException {
-        checkValues(customerId, productId);
-
         Cart cart = getCustomerCart(customerId);
 
-        if (!existsProductInCart(cart.getId(), productId))
-            throw new ProductNotFoundException();
+        CartItem cartItem = getCartItem(cart.getId(), productId)
+                .orElseThrow(ProductNotFoundException::new);
 
-        cartItemRepository.deleteByCartIdAndProductId(cart.getId(), productId);
+        if (quantity == 0) {
+            cartItemRepository.delete(cartItem);
+            return;
+        }
 
+        cartItem.setQuantity(quantity);
+        cartItemRepository.save(cartItem);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -189,6 +189,11 @@ public class CartItemService {
     @Transactional(readOnly = true)
     public Long getProductQuantityInCart(UUID cartId, UUID productId) {
         return cartItemRepository.findQuantityByCartIdAndProductId(cartId, productId);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<CartItem> getCartItem(UUID cartId, UUID productId) {
+        return cartItemRepository.findByCartIdAndProductId(cartId,productId);
     }
 
     @Transactional(readOnly = true)

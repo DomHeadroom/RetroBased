@@ -51,7 +51,7 @@ public class OrderController {
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber
     ) {
         // UUID customerId = TODO cambiare con metodo per estrarre id da token
-        List<Order> result = orderService.getOrder(customerId, pageNumber);
+        List<Order> result = orderService.getOrders(customerId, pageNumber);
         if (result.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 

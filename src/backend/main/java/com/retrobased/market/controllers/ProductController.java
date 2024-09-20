@@ -46,6 +46,20 @@ public class ProductController {
         this.productAttributeService = productAttributeService;
     }
 
+    /**
+     * Searches for products based on the provided keyword. Supports pagination and sorting.
+     *
+     * @param keyword   The search keyword used to filter products.
+     * @param pageNumber The page number for paginated results (default is 0).
+     *                   Must be a non-negative integer.
+     * @param sortBy    The field by which to sort the products (default is "id").
+     * @return A {@link ResponseEntity} containing the list of products that match the search criteria,
+     *         or a status of 204 No Content if no products are found.
+     *
+     * @apiNote This method allows clients to search for products using a keyword and optionally specify
+     *          sorting and pagination. The sort field defaults to "id" and the page number defaults to 0.
+     * @see ProductService#searchProduct(String, int, String) ProductService.searchProduct
+     */
     @GetMapping
     public ResponseEntity<?> searchProduct(
             @RequestParam(value = "k") String keyword,
@@ -128,10 +142,10 @@ public class ProductController {
         if (categoryId == null)
             return null;
 
-        if (!categoryService.existsById(categoryId))
+        if (!categoryService.exists(categoryId))
             throw new ArgumentValueNotValidException();
 
-        return categoryService.getById(categoryId);
+        return categoryService.get(categoryId);
     }
 
     private Attribute validateAttribute(UUID attributeId) throws ArgumentValueNotValidException {

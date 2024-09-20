@@ -14,11 +14,11 @@ public class CartService {
 
     private final CartRepository cartRepository;
 
-    private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
 
-    public CartService(CustomerRepository customerRepository, CartRepository cartRepository) {
+    public CartService(CartRepository cartRepository, CustomerService customerService) {
         this.cartRepository = cartRepository;
-        this.customerRepository = customerRepository;
+        this.customerService = customerService;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -27,7 +27,7 @@ public class CartService {
             return cartRepository.getCartByCustomerId(customerId);
 
         Cart customerCart = new Cart();
-        customerCart.setCustomer(customerRepository.getReferenceById(customerId));
+        customerCart.setCustomer(customerService.get(customerId));
 
         return cartRepository.save(customerCart);
 
