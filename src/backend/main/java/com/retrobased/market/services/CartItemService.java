@@ -7,6 +7,7 @@ import com.retrobased.market.entities.CartItem;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.repositories.*;
 import com.retrobased.market.support.exceptions.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,19 +29,19 @@ import java.util.UUID;
 public class CartItemService {
     private final CartItemRepository cartItemRepository;
 
-    private final ProductRepository productRepository;
-
-    private final CustomerRepository customerRepository;
 
     private final CartService cartService;
+    private final ProductService productService;
+    private final CustomerService customerService;
 
-    public CartItemService(CartItemRepository cartItemRepository, ProductRepository productRepository, CustomerRepository customerRepository, CartService cartService) {
+    public CartItemService(CartItemRepository cartItemRepository, CartService cartService, ProductService productService, CustomerService customerService) {
         this.cartItemRepository = cartItemRepository;
-        this.productRepository = productRepository;
-        this.customerRepository = customerRepository;
         this.cartService = cartService;
+        this.productService = productService;
+        this.customerService = customerService;
     }
 
+    @Transactional(readOnly = true)
     public List<Product> getCart(UUID customerId, int pageNumber) {
         Cart customerCart = getCustomerCart(customerId);
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.desc("createdAt")));
@@ -54,21 +55,19 @@ public class CartItemService {
 
     // TODO CAMBIARE CON OGGETTO CARRELLO E NON ID PRODOTTO
     @Transactional(propagation = Propagation.REQUIRED)
-    public void increaseQuantity(@NotNull UUID customerId, @NotNull UUID productId, @NotNull Long quantity) throws ArgumentValueNotValidException, ProductQuantityNotAvailableException, ProductNotFoundException, UnableToChangeValueException, CustomerDontExistsException {
-        if (quantity <= 0)
-            throw new ArgumentValueNotValidException();
+    public void increaseQuantity(@NotNull UUID customerId, @NotNull UUID productId, @NotNull @Min(1) Long quantity) throws ArgumentValueNotValidException, ProductQuantityNotAvailableException, ProductNotFoundException, UnableToChangeValueException, CustomerDontExistsException {
 
         checkValues(customerId, productId);
 
         Cart cart = getCustomerCart(customerId);
 
-        if (!cartItemRepository.existsByCartIdAndProductId(cart.getId(), productId))
+        if (!existsProductInCart(cart.getId(), productId))
             throw new ProductNotFoundException();
 
-        if (cartItemRepository.findQuantityByCartIdAndProductId(cart.getId(), productId) > quantity)
+        if (getProductQuantityInCart(cart.getId(), productId) > quantity)
             throw new ArgumentValueNotValidException();
 
-        if (productRepository.findQuantityById(productId) < quantity)
+        if (productService.getQuantity(productId) < quantity)
             throw new ProductQuantityNotAvailableException();
 
         if (cartItemRepository.updateQuantityByCartIdAndProductId(cart.getId(), productId, quantity) == 0)
@@ -77,18 +76,16 @@ public class CartItemService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void decreaseQuantity(@NotNull UUID customerId, @NotNull UUID productId, @NotNull Long quantity) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerDontExistsException {
-        if (quantity < 0)
-            throw new ArgumentValueNotValidException();
+    public void decreaseQuantity(@NotNull UUID customerId, @NotNull UUID productId, @NotNull @Min(1) Long quantity) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerDontExistsException {
 
         checkValues(customerId, productId);
 
         Cart cart = getCustomerCart(customerId);
 
-        if (!cartItemRepository.existsByCartIdAndProductId(cart.getId(), productId))
+        if (!existsProductInCart(cart.getId(), productId))
             throw new ProductNotFoundException();
 
-        if (cartItemRepository.findQuantityByCartIdAndProductId(cart.getId(), productId) < quantity)
+        if (getProductQuantityInCart(cart.getId(), productId) < quantity)
             throw new ArgumentValueNotValidException();
 
         if (quantity == 0) {
@@ -104,13 +101,14 @@ public class CartItemService {
 
         Cart cart = getCustomerCart(customerId);
 
-        if (!cartItemRepository.existsByCartIdAndProductId(cart.getId(), productId))
+        if (!existsProductInCart(cart.getId(), productId))
             throw new ProductNotFoundException();
 
         cartItemRepository.deleteByCartIdAndProductId(cart.getId(), productId);
 
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public List<ProductObjQuantityDTO> addProductToCart(@NotNull UUID customerId, @NotNull List<ProductQuantityDTO> productQuantities)
             throws ArgumentValueNotValidException, ProductNotFoundException {
 
@@ -118,16 +116,15 @@ public class CartItemService {
 
         for (ProductQuantityDTO productQuantity : productQuantities) {
             UUID productId = productQuantity.getProductId();
-            if (!productRepository.existsById(productId) ||
-                    !productRepository.existsByIdAndDeleted(productId, true) ||
-                    !productRepository.existsByIdAndDisableOutOfStock(productId, true)
-            )
+            if (!productService.exists(productId) ||
+                    productService.isDeleted(productId) ||
+                    productService.isOutOfStock(productId))
                 throw new ProductNotFoundException();
 
             productIds.merge(productId, productQuantity.getQuantity(), Long::sum);
         }
 
-        List<Product> products = productRepository.findByIdIn(productIds.keySet());
+        List<Product> products = productService.get(productIds.keySet());
 
         Cart cart = getCustomerCart(customerId);
 
@@ -177,15 +174,26 @@ public class CartItemService {
     }
 
     private void checkValues(UUID customerId, UUID productId) throws ProductNotFoundException, CustomerDontExistsException {
-        if (!customerRepository.existsById(customerId))
+        if (!customerService.exists(customerId))
             throw new CustomerDontExistsException();
 
-        if (!productRepository.existsById(productId))
+        if (!productService.exists(productId))
             throw new ProductNotFoundException();
     }
 
-    private Cart getCustomerCart(UUID customerId) {
+    @Transactional(readOnly = true)
+    public Cart getCustomerCart(UUID customerId) {
         return cartService.getCustomerCart(customerId);
+    }
+
+    @Transactional(readOnly = true)
+    public Long getProductQuantityInCart(UUID cartId, UUID productId) {
+        return cartItemRepository.findQuantityByCartIdAndProductId(cartId, productId);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existsProductInCart(UUID cartId, UUID productId) {
+        return cartItemRepository.existsByCartIdAndProductId(cartId, productId);
     }
 
 }

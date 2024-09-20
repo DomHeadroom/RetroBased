@@ -17,16 +17,14 @@ import java.util.UUID;
 @Service
 public class ProductSellerService {
     private final ProductSellerRepository productSellerRepository;
-    private final OrderRepository orderRepository;
 
-    public ProductSellerService(ProductSellerRepository productSellerRepository, OrderRepository orderRepository) {
+    public ProductSellerService(ProductSellerRepository productSellerRepository) {
         this.productSellerRepository = productSellerRepository;
-        this.orderRepository = orderRepository;
     }
 
     // TODO get Seller Product
     @Transactional(readOnly = true)
-    public List<Product> showAllSellerProducts(int pageNumber, String sortBy, UUID sellerId) {
+    public List<Product> getSellerProducts(int pageNumber, String sortBy, UUID sellerId) {
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(sortBy));
         Page<Product> pagedResult = productSellerRepository.findProductsBySellerId(sellerId,paging);
 

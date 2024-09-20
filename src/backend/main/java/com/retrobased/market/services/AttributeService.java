@@ -3,6 +3,7 @@ package com.retrobased.market.services;
 import com.retrobased.market.entities.Attribute;
 import com.retrobased.market.repositories.AttributeRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -15,11 +16,13 @@ public class AttributeService {
         this.attributeRepository = attributeRepository;
     }
 
-    public boolean existsById(UUID categoryId) {
-        return attributeRepository.existsById(categoryId);
+    @Transactional(readOnly = true)
+    public boolean exists(UUID id) {
+        return attributeRepository.existsById(id);
     }
 
-    public Attribute getById(UUID categoryId) {
-        return attributeRepository.getReferenceById(categoryId);
+    @Transactional(readOnly = true)
+    public Attribute get(UUID id) {
+        return attributeRepository.getReferenceById(id);
     }
 }

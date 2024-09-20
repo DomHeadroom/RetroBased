@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -106,9 +107,9 @@ public class ProductService {
 
         for (ProductQuantityDTO productQuantity : productQuantities) {
             UUID productId = productQuantity.getProductId();
-            if (!productRepository.existsById(productId) ||
-                    !productRepository.existsByIdAndDeleted(productId,true) ||
-                    !productRepository.existsByIdAndDisableOutOfStock(productId,true))
+            if (!exists(productId) ||
+                    isDeleted(productId) ||
+                    isOutOfStock(productId))
                 throw new ProductNotFoundException();
             productIds.merge(productId, productQuantity.getQuantity(), Long::sum);
         }
@@ -165,4 +166,28 @@ public class ProductService {
         return currentOrder;
     }
 
+    @Transactional(readOnly = true)
+    public Boolean exists(UUID id) {
+        return productRepository.existsById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Product> get(Set<UUID> ids) {
+        return productRepository.findByIdIn(ids);
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean isDeleted(UUID productId) {
+        return productRepository.existsByIdAndDeleted(productId, true);
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean isOutOfStock(UUID productId) {
+        return productRepository.existsByIdAndDisableOutOfStock(productId, true);
+    }
+
+    @Transactional(readOnly = true)
+    public Long getQuantity(UUID productId) {
+        return productRepository.findQuantityById(productId);
+    }
 }

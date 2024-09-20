@@ -138,9 +138,9 @@ public class ProductController {
         if (attributeId == null)
             return null;
 
-        if (!attributeService.existsById(attributeId))
+        if (!attributeService.exists(attributeId))
             throw new ArgumentValueNotValidException();
 
-        return attributeService.getById(attributeId);
+        return attributeService.get(attributeId);
     }
 }

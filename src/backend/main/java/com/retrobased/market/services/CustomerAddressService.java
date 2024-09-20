@@ -17,20 +17,20 @@ public class CustomerAddressService {
 
     private final CustomerAddressRepository customerAddressRepository;
 
-    private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
 
-    public CustomerAddressService(CustomerAddressRepository customerAddressRepository, CustomerRepository customerRepository) {
+    public CustomerAddressService(CustomerAddressRepository customerAddressRepository, CustomerService customerService) {
         this.customerAddressRepository = customerAddressRepository;
-        this.customerRepository = customerRepository;
+        this.customerService = customerService;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerAddress addAddress(@NotNull UUID customerId, @NotNull CustomerAddress address) throws CustomerDontExistsException {
-        if (!customerRepository.existsById(customerId))
+        if (!customerService.exists(customerId))
             throw new CustomerDontExistsException();
 
         CustomerAddress newAddress = new CustomerAddress();
-        newAddress.setCustomer(customerRepository.getReferenceById(customerId));
+        newAddress.setCustomer(customerService.get(customerId));
         newAddress.setCity(address.getCity());
         newAddress.setCountry(address.getCountry());
         newAddress.setPostalCode(address.getPostalCode());
@@ -42,23 +42,24 @@ public class CustomerAddressService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void removeAddress(@NotNull UUID customerId, @NotNull UUID addressId) throws AddressDontExistsException, CustomerDontExistsException {
-        if (!customerRepository.existsById(customerId))
+        if (!customerService.exists(customerId))
             throw new CustomerDontExistsException();
 
         if (!customerAddressRepository.existsById(customerId) ||
                 !customerAddressRepository.existsByIdAndCustomerId(customerId, addressId))
             throw new AddressDontExistsException();
 
-        customerRepository.deleteById(addressId);
+        customerAddressRepository.deleteById(addressId);
 
-    }
-    @Transactional(readOnly = true)
-    public boolean existsCustomerAddressForCustomer (@NotNull UUID customerId, @NotNull UUID customerAddressId) {
-        return customerAddressRepository.existsByIdAndCustomerId(customerAddressId,customerId);
     }
 
     @Transactional(readOnly = true)
-    public CustomerAddress getCustomerAddressById (@NotNull UUID customerAddressId) {
+    public boolean existsCustomerAddressForCustomer(@NotNull UUID customerId, @NotNull UUID customerAddressId) {
+        return customerAddressRepository.existsByIdAndCustomerId(customerAddressId, customerId);
+    }
+
+    @Transactional(readOnly = true)
+    public CustomerAddress getCustomerAddressById(@NotNull UUID customerAddressId) {
         return customerAddressRepository.getReferenceById(customerAddressId);
     }
 }
