@@ -5,6 +5,8 @@ import com.retrobased.market.entities.Category;
 import com.retrobased.market.entities.ProductCategory;
 import com.retrobased.market.repositories.ProductCategoryRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductCategoryService {
@@ -15,6 +17,7 @@ public class ProductCategoryService {
         this.productCategoryRepository = productCategoryRepository;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public void create(Category category, Product product) {
         ProductCategory productCategory = new ProductCategory();
         productCategory.setProduct(product);

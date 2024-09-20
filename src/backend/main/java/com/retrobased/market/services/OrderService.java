@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -92,5 +93,10 @@ public class OrderService {
     @Transactional(readOnly = true)
     public boolean existsOrderForCustomer(UUID customerId, UUID orderId) {
         return orderRepository.existsByCustomerIdAndId(customerId, orderId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Order save(Order order) {
+        return orderRepository.save(order);
     }
 }

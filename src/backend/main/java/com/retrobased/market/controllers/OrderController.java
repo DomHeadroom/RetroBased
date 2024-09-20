@@ -83,10 +83,10 @@ public class OrderController {
             // a6cd2287-bb39-48b8-b1d7-62ec612ba064
             UUID customerId = UUID.fromString("a6cd2287-bb39-48b8-b1d7-62ec612ba064"); // TODO cambiare con metodo per estrarre id da token
 
-            if (!customerAddressService.existsCustomerAddressForCustomer(customerId, productRequestOrder.getAddressId()))
+            if (!customerAddressService.existsAddressForCustomer(customerId, productRequestOrder.getAddressId()))
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"));
 
-            CustomerAddress customerAddress = customerAddressService.getCustomerAddressById(productRequestOrder.getAddressId());
+            CustomerAddress customerAddress = customerAddressService.get(productRequestOrder.getAddressId());
 
             Order finalOrder = productService.lockAndReduceQuantities(productRequestOrder.getProducts(), customerAddress, customerId);
             return ResponseEntity.status(HttpStatus.CREATED).body(finalOrder);

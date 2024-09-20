@@ -37,21 +37,21 @@ import java.util.UUID;
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
-    private final CustomerRepository customerRepository;
-    private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
-    private final SellerRepository sellerRepository;
-    private final ProductSellerRepository productSellerRepository;
-    private final SellRepository sellRepository;
+    private final ProductSellerService productSellerService;
+    private final CustomerService customerService;
+    private final OrderItemService orderItemService;
+    private final SellService sellService;
+    private final OrderService orderService;
+    private final SellerService sellerService;
 
-    public ProductService(ProductRepository productRepository, OrderRepository orderRepository, CustomerRepository customerRepository, OrderItemRepository orderItemRepository, SellerRepository sellerRepository, ProductSellerRepository productSellerRepository, SellRepository sellRepository) {
+    public ProductService(ProductRepository productRepository, ProductSellerService productSellerService, CustomerService customerService, OrderItemService orderItemService, SellService sellService, OrderService orderService, SellerService sellerService) {
         this.productRepository = productRepository;
-        this.orderRepository = orderRepository;
-        this.customerRepository = customerRepository;
-        this.orderItemRepository = orderItemRepository;
-        this.sellerRepository = sellerRepository;
-        this.productSellerRepository = productSellerRepository;
-        this.sellRepository = sellRepository;
+        this.productSellerService = productSellerService;
+        this.customerService = customerService;
+        this.orderItemService = orderItemService;
+        this.sellService = sellService;
+        this.orderService = orderService;
+        this.sellerService = sellerService;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -61,9 +61,9 @@ public class ProductService {
 
         ProductSeller productSeller = new ProductSeller();
         productSeller.setProduct(productAdded);
-        productSeller.setSeller(sellerRepository.getReferenceById(sellerId));
+        productSeller.setSeller(sellerService.get(sellerId));
 
-        productSellerRepository.save(productSeller);
+        productSellerService.save(productSeller);
         return productAdded;
     }
 
@@ -125,12 +125,12 @@ public class ProductService {
             product.setQuantity(product.getQuantity() - quantityToAdd);
         }
 
-        Customer customer = customerRepository.findCustomerById(customerId);
+        Customer customer = customerService.get(customerId);
 
         Order currentOrder = new Order();
         currentOrder.setCustomer(customer);
         currentOrder.setAddress(address);
-        Order savedOrder = orderRepository.save(currentOrder);
+        Order savedOrder = orderService.save(currentOrder);
 
         List<OrderItem> orderItems = new LinkedList<>();
 
@@ -157,9 +157,9 @@ public class ProductService {
             soldItems.add(soldItem);
         }
 
-        sellRepository.saveAll(soldItems);
+        sellService.save(soldItems);
 
-        orderItemRepository.saveAll(orderItems);
+        orderItemService.save(orderItems);
 
         productRepository.saveAll(products);
 

@@ -54,12 +54,12 @@ public class CustomerAddressService {
     }
 
     @Transactional(readOnly = true)
-    public boolean existsCustomerAddressForCustomer(@NotNull UUID customerId, @NotNull UUID customerAddressId) {
+    public boolean existsAddressForCustomer(@NotNull UUID customerId, @NotNull UUID customerAddressId) {
         return customerAddressRepository.existsByIdAndCustomerId(customerAddressId, customerId);
     }
 
     @Transactional(readOnly = true)
-    public CustomerAddress getCustomerAddressById(@NotNull UUID customerAddressId) {
+    public CustomerAddress get(@NotNull UUID customerAddressId) {
         return customerAddressRepository.getReferenceById(customerAddressId);
     }
 }

@@ -1,12 +1,13 @@
 package com.retrobased.market.services;
 
-import com.retrobased.market.entities.Customer;
+import com.retrobased.market.entities.Category;
 import com.retrobased.market.entities.Seller;
-import com.retrobased.market.repositories.CustomerRepository;
 import com.retrobased.market.repositories.SellerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 
 @Service
@@ -22,5 +23,10 @@ public class SellerService {
 
         Seller sellerAdded = sellerRepository.save(seller);
         System.out.println("Saved user: " + sellerAdded);
+    }
+
+    @Transactional(readOnly = true)
+    public Seller get(UUID id) {
+        return sellerRepository.getReferenceById(id);
     }
 }

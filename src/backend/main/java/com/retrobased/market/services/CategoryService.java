@@ -21,6 +21,7 @@ public class CategoryService {
         return categoryRepository.existsById(id);
     }
 
+    @Transactional(readOnly = true)
     public Category get(UUID id) {
         return categoryRepository.getReferenceById(id);
     }

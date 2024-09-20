@@ -13,8 +13,9 @@ import java.util.UUID;
 
 public interface OrderItemRepository extends JpaRepository<OrderItem, UUID>, JpaSpecificationExecutor<OrderItem> {
 
-    @Query("SELECT oi.product FROM OrderItem oi WHERE oi.order.id = :orderId")
+    @Query("SELECT oi.product FROM OrderItem oi WHERE oi.order.id = :orderId AND oi.product.disableOutOfStock = FALSE AND oi.product.deleted = FALSE")
     Page<Product> findByOrderId(@Param("orderId") UUID orderId, Pageable paging);
 
-    Page<OrderItem> getByOrderId(UUID orderId, Pageable paging);
+    @Query("SELECT oi FROM OrderItem oi WHERE oi.order.id = :orderId AND oi.product.disableOutOfStock = FALSE AND oi.product.deleted = FALSE")
+    Page<OrderItem> getByOrderId(@Param("orderId") UUID orderId, Pageable paging);
 }
