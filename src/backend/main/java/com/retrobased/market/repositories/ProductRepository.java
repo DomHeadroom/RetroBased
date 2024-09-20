@@ -38,4 +38,8 @@ public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpec
     @Transactional
     @Query("UPDATE Product p SET p.deleted = TRUE WHERE p.id = :productId")
     int removeProduct(UUID productId);
+
+    boolean existsByIdAndDeleted(UUID id, boolean deleted);
+
+    boolean existsByIdAndDisableOutOfStock(UUID id, boolean disableOutOfStock);
 }

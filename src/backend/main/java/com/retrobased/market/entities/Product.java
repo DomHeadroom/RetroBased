@@ -72,7 +72,7 @@ public class Product {
     private Boolean published = false;
 
     @Column(name = "disable_out_of_stock", nullable = false)
-    private Boolean disableOutOfStock = true;
+    private Boolean disableOutOfStock = false;
 
     @Column(name = "note")
     private String note;

@@ -106,7 +106,9 @@ public class ProductService {
 
         for (ProductQuantityDTO productQuantity : productQuantities) {
             UUID productId = productQuantity.getProductId();
-            if (!productRepository.existsById(productId))
+            if (!productRepository.existsById(productId) ||
+                    !productRepository.existsByIdAndDeleted(productId,true) ||
+                    !productRepository.existsByIdAndDisableOutOfStock(productId,true))
                 throw new ProductNotFoundException();
             productIds.merge(productId, productQuantity.getQuantity(), Long::sum);
         }
