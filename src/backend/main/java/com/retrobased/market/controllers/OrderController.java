@@ -79,7 +79,7 @@ public class OrderController {
     public ResponseEntity<?> buyOrder(
             @RequestBody @Valid @NotNull ProductRequestOrder productRequestOrder
     ) {
-        try{
+        try {
             // a6cd2287-bb39-48b8-b1d7-62ec612ba064
             UUID customerId = UUID.fromString("a6cd2287-bb39-48b8-b1d7-62ec612ba064"); // TODO cambiare con metodo per estrarre id da token
 
@@ -88,9 +88,9 @@ public class OrderController {
 
             CustomerAddress customerAddress = customerAddressService.getCustomerAddressById(productRequestOrder.getAddressId());
 
-            Order finalOrder = productService.lockAndReduceQuantities(productRequestOrder.getProducts(),customerAddress,customerId);
+            Order finalOrder = productService.lockAndReduceQuantities(productRequestOrder.getProducts(), customerAddress, customerId);
             return ResponseEntity.status(HttpStatus.CREATED).body(finalOrder);
-        } catch (ArgumentValueNotValidException | ProductNotFoundException e){
+        } catch (ArgumentValueNotValidException | ProductNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"));
         }
     }

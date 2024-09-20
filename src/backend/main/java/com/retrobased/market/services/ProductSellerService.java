@@ -26,7 +26,7 @@ public class ProductSellerService {
     @Transactional(readOnly = true)
     public List<Product> getSellerProducts(int pageNumber, String sortBy, UUID sellerId) {
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(sortBy));
-        Page<Product> pagedResult = productSellerRepository.findProductsBySellerId(sellerId,paging);
+        Page<Product> pagedResult = productSellerRepository.findProductsBySellerId(sellerId, paging);
 
         if (pagedResult.hasContent())
             return pagedResult.getContent();

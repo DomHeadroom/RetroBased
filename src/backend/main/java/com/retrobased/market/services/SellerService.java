@@ -18,7 +18,7 @@ public class SellerService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void registerSeller(Seller seller){
+    public void registerSeller(Seller seller) {
 
         Seller sellerAdded = sellerRepository.save(seller);
         System.out.println("Saved user: " + sellerAdded);

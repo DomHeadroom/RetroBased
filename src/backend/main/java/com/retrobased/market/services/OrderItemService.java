@@ -20,15 +20,17 @@ public class OrderItemService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> getOrderProducts (UUID orderId, Pageable paging) {
+    public Page<Product> getOrderProducts(UUID orderId, Pageable paging) {
         return orderItemRepository.findByOrderId(orderId, paging);
     }
+
     @Transactional(readOnly = true)
-    public Page<Product> getOrderProduct (UUID orderId, Pageable paging) {
+    public Page<Product> getOrderProduct(UUID orderId, Pageable paging) {
         return orderItemRepository.findByOrderId(orderId, paging);
     }
+
     @Transactional(readOnly = true)
-    public Page<OrderItem> getOrderItem (UUID orderId, Pageable paging) {
-        return orderItemRepository.getByOrderId(orderId,paging);
+    public Page<OrderItem> getOrderItem(UUID orderId, Pageable paging) {
+        return orderItemRepository.getByOrderId(orderId, paging);
     }
 }

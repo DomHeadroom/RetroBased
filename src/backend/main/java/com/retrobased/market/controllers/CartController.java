@@ -34,9 +34,21 @@ public class CartController {
         this.cartItemService = cartItemService;
     }
 
-    //TODO FIXXARE STA STRONZATA PERCHè NON WORKA ALLA RICEVUTA DELL'OGGETTO PER QUALCHE MOTIVO
-
-    // aggiunta prodotto al carrello
+    /**
+     * Adds one or more products to the customer's shopping cart.
+     * <p>
+     * This method receives a list of products from the request body, attempts to add them to the customer's cart,
+     * and returns the added products along with their quantities. If any issues arise, such as invalid argument values
+     * or non-existent products, the method will return an appropriate error response.
+     * </p>
+     *
+     * @param productRequestCart the request body containing the list of products to add to the cart; must be valid and not null
+     * @return a response entity containing either the added products or an error message if an exception occurs
+     * <ul>
+     *     <li><strong>200 OK</strong> – If the products were successfully added to the cart.</li>
+     *     <li><strong>400 Bad Request</strong> – If the input is invalid or the product does not exist.</li>
+     * </ul>
+     */
     @PostMapping
     public ResponseEntity<?> addProductToCart(@RequestBody @Valid @NotNull ProductRequestCart productRequestCart) {
         try {
@@ -46,13 +58,30 @@ public class CartController {
             return ResponseEntity.ok(added);
         } catch (ArgumentValueNotValidException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));
-        }
-        catch (ProductNotFoundException e) {
+        } catch (ProductNotFoundException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_PRODUCT_NOT_EXISTS"));
         }
     }
 
     // TODO cacciare customerId per prenderlo da token
+
+    /**
+     * Retrieves the products in the customer's shopping cart.
+     * <p>
+     * This method fetches a paginated list of products that are present in the customer's cart.
+     * It accepts the customer's UUID and the page number as parameters. If the cart is empty or no products
+     * are found for the specified page, the method returns a <strong>204 No Content</strong> response.
+     * Otherwise, it returns the list of products in the cart.
+     * </p>
+     *
+     * @param customerId the UUID of the customer whose cart products are being retrieved; must not be null
+     * @param pageNumber the page number of the products to retrieve, starting from 0; defaults to 0 if not specified, must be a non-negative integer
+     * @return a response entity containing either the list of products in the cart or a status indicating no content
+     * <ul>
+     *     <li><strong>200 OK</strong> – If products are successfully retrieved.</li>
+     *     <li><strong>204 No Content</strong> – If the cart is empty or there are no products for the given page.</li>
+     * </ul>
+     */
     @GetMapping
     public ResponseEntity<?> getCartProducts(
             @RequestBody @NotNull UUID customerId,

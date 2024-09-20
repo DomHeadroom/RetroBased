@@ -14,7 +14,7 @@ import java.util.UUID;
 public interface ProductSellerRepository extends JpaRepository<ProductSeller, UUID>, JpaSpecificationExecutor<ProductSeller> {
 
     @Query("SELECT ps.product FROM ProductSeller ps WHERE ps.seller.id = :sellerId")
-    Page<Product> findProductsBySellerId(@Param("sellerId") UUID sellerId, Pageable paging );
+    Page<Product> findProductsBySellerId(@Param("sellerId") UUID sellerId, Pageable paging);
 
     boolean existsByIdProductIdAndIdSellerId(UUID productId, UUID sellerId);
 }

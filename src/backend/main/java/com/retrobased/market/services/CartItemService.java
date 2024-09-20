@@ -51,10 +51,9 @@ public class CartItemService {
      * @param pageNumber The page number to retrieve, with results paginated in sets of 20.
      *                   Must be a non-negative integer.
      * @return A list of {@link Product} objects present in the specified customer's cart.
-     *         If the cart is empty or the page is out of range, returns an empty list.
-     *
+     * If the cart is empty or the page is out of range, returns an empty list.
      * @apiNote This method is read-only, utilizing pagination to manage the number of products returned per request.
-     *          The products are sorted by their creation timestamp in descending order to show the most recent products first.
+     * The products are sorted by their creation timestamp in descending order to show the most recent products first.
      * @see CartService#getCustomerCart(UUID) CartService.getCustomerCart
      * @see CartItemRepository#findProductsByCartId(UUID, Pageable) CartItemRepository.findProductsByCartId
      */
@@ -69,6 +68,7 @@ public class CartItemService {
 
         return new ArrayList<>();
     }
+
     /**
      * Updates the quantity of a specified product in the customer's shopping cart.
      * <p>
@@ -81,11 +81,11 @@ public class CartItemService {
      * is already in progress, this method will participate in it. If not, a new transaction is started.</p>
      *
      * @param customerId the ID of the customer whose cart is being modified; must not be null
-     * @param productId the ID of the product to update in the cart; must not be null
-     * @param quantity the new quantity for the product in the cart; must be non-negative (0 will remove the item)
+     * @param productId  the ID of the product to update in the cart; must not be null
+     * @param quantity   the new quantity for the product in the cart; must be non-negative (0 will remove the item)
      * @throws ArgumentValueNotValidException if the requested quantity exceeds available stock
-     * @throws ProductNotFoundException if the product is not found in the customer's cart
-     * @throws CustomerDontExistsException if the customer does not exist in the system
+     * @throws ProductNotFoundException       if the product is not found in the customer's cart
+     * @throws CustomerDontExistsException    if the customer does not exist in the system
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public void changeQuantity(@NotNull UUID customerId, @NotNull UUID productId, @NotNull @Min(0) Long quantity) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerDontExistsException {
@@ -193,7 +193,7 @@ public class CartItemService {
 
     @Transactional(readOnly = true)
     public Optional<CartItem> getCartItem(UUID cartId, UUID productId) {
-        return cartItemRepository.findByCartIdAndProductId(cartId,productId);
+        return cartItemRepository.findByCartIdAndProductId(cartId, productId);
     }
 
     @Transactional(readOnly = true)
