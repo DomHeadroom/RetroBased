@@ -6,16 +6,8 @@ import java.util.UUID;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
-public class ProductRequestOrder {
-
-    @NotEmpty
-    private List<@Valid ProductQuantityDTO> products;
-
-    @NotNull
-    private UUID addressId;
-}
+public record ProductRequestOrder(
+        @NotEmpty List<@Valid ProductQuantityDTO> products,
+        @NotNull UUID addressId
+) {}

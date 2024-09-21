@@ -8,13 +8,7 @@ import com.retrobased.market.entities.OrderItem;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.ProductSeller;
 import com.retrobased.market.entities.Sell;
-import com.retrobased.market.repositories.CustomerRepository;
-import com.retrobased.market.repositories.OrderItemRepository;
-import com.retrobased.market.repositories.OrderRepository;
 import com.retrobased.market.repositories.ProductRepository;
-import com.retrobased.market.repositories.ProductSellerRepository;
-import com.retrobased.market.repositories.SellRepository;
-import com.retrobased.market.repositories.SellerRepository;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
 
 import com.retrobased.market.support.exceptions.ProductNotFoundException;

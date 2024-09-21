@@ -115,13 +115,13 @@ public class CartItemService {
         Map<UUID, Long> productIds = new HashMap<>();
 
         for (ProductQuantityDTO productQuantity : productQuantities) {
-            UUID productId = productQuantity.getProductId();
+            UUID productId = productQuantity.productId();
             if (!productService.exists(productId) ||
                     productService.isDeleted(productId) ||
                     productService.isOutOfStock(productId))
                 throw new ProductNotFoundException();
 
-            productIds.merge(productId, productQuantity.getQuantity(), Long::sum);
+            productIds.merge(productId, productQuantity.quantity(), Long::sum);
         }
 
         List<Product> products = productService.get(productIds.keySet());
@@ -167,10 +167,7 @@ public class CartItemService {
     }
 
     private ProductObjQuantityDTO createProductObjQuantityDTO(Product product, Long quantity) {
-        ProductObjQuantityDTO dto = new ProductObjQuantityDTO();
-        dto.setProduct(product);
-        dto.setQuantity(quantity);
-        return dto;
+        return new ProductObjQuantityDTO(product,quantity);
     }
 
     private void checkValues(UUID customerId, UUID productId) throws ProductNotFoundException, CustomerDontExistsException {
