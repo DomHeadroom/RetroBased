@@ -1,6 +1,5 @@
 package com.retrobased.market.services;
 
-import com.retrobased.market.entities.Category;
 import com.retrobased.market.entities.Seller;
 import com.retrobased.market.repositories.SellerRepository;
 import org.springframework.stereotype.Service;

@@ -2,7 +2,6 @@ package com.retrobased.market.services;
 
 import com.retrobased.market.entities.Sell;
 import com.retrobased.market.repositories.SellRepository;
-import com.retrobased.market.repositories.SellerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

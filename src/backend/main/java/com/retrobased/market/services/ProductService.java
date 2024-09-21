@@ -100,12 +100,12 @@ public class ProductService {
         Map<UUID, Long> productIds = new HashMap<>();
 
         for (ProductQuantityDTO productQuantity : productQuantities) {
-            UUID productId = productQuantity.getProductId();
+            UUID productId = productQuantity.productId();
             if (!exists(productId) ||
                     isDeleted(productId) ||
                     isOutOfStock(productId))
                 throw new ProductNotFoundException();
-            productIds.merge(productId, productQuantity.getQuantity(), Long::sum);
+            productIds.merge(productId, productQuantity.quantity(), Long::sum);
         }
 
         List<Product> products = productRepository.findByIdInWithLock(productIds.keySet());

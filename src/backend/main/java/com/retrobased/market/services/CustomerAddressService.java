@@ -2,7 +2,6 @@ package com.retrobased.market.services;
 
 import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.repositories.CustomerAddressRepository;
-import com.retrobased.market.repositories.CustomerRepository;
 import com.retrobased.market.support.exceptions.AddressDontExistsException;
 import com.retrobased.market.support.exceptions.CustomerDontExistsException;
 import jakarta.validation.constraints.NotNull;
