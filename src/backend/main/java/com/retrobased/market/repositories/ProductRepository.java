@@ -16,10 +16,10 @@ import java.util.UUID;
 
 public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpecificationExecutor<Product> {
 
-    @Query("SELECT p FROM Product p WHERE (p.productName LIKE :name OR p.productDescription LIKE :name) AND p.deleted = FALSE")
+    @Query("SELECT p FROM Product p WHERE (p.productName LIKE :name OR p.productDescription LIKE :name) AND p.deleted = FALSE AND p.published = TRUE")
     Page<Product> find(@Param("name") String name, Pageable paging);
 
-    @Query("SELECT p FROM Product p WHERE (LOWER(p.productName) LIKE LOWER(CONCAT('%', :name, '%')) OR LOWER(p.productDescription) LIKE LOWER(CONCAT('%', :name, '%'))) AND p.deleted = FALSE")
+    @Query("SELECT p FROM Product p WHERE (LOWER(p.productName) LIKE LOWER(CONCAT('%', :name, '%')) OR LOWER(p.productDescription) LIKE LOWER(CONCAT('%', :name, '%'))) AND p.deleted = FALSE AND p.published = TRUE")
     Page<Product> findByNameIgnoreCase(@Param("name") String name, Pageable paging);
 
     Long findQuantityById(UUID id);
@@ -28,10 +28,12 @@ public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpec
     List<Product> findByIdIn(Set<UUID> productIds);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT p FROM Product p WHERE (p.id IN :productIds) AND p.deleted = FALSE")
+    @Query("SELECT p FROM Product p WHERE p.id IN :productIds")
     List<Product> findByIdInWithLock(Set<UUID> productIds);
 
     boolean existsByIdAndDeleted(UUID id, boolean deleted);
 
     boolean existsByIdAndDisableOutOfStock(UUID id, boolean disableOutOfStock);
+
+    boolean existsByIdAndPublished(UUID id, boolean published);
 }

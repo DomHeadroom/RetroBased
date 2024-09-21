@@ -43,13 +43,6 @@ public class Product {
     @Min(0L)
     private BigDecimal salePrice = BigDecimal.ZERO;
 
-    @Column(name = "compare_price")
-    private BigDecimal comparePrice = BigDecimal.ZERO;
-
-    @Column(name = "buying_price")
-    private BigDecimal buyingPrice;
-    // TODO non sono sicuro questo sia necessario
-
     @Column(name = "quantity", nullable = false)
     @NotNull(message = "A value is required for this field.")
     @Min(0)
@@ -62,10 +55,6 @@ public class Product {
     @Column(name = "product_description", nullable = false)
     @NotBlank(message = "This field cannot be empty.")
     private String productDescription;
-
-    @Column(name = "product_type", nullable = false)
-    @NotBlank(message = "This field cannot be empty.")
-    private String productType;
 
     @JsonIgnore
     @Column(name = "published", nullable = false)

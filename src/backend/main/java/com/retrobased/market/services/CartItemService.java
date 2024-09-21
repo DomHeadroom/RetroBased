@@ -118,7 +118,8 @@ public class CartItemService {
             UUID productId = productQuantity.productId();
             if (!productService.exists(productId) ||
                     productService.isDeleted(productId) ||
-                    productService.isOutOfStock(productId))
+                    productService.isOutOfStock(productId) ||
+                    !productService.isPublished(productId))
                 throw new ProductNotFoundException();
 
             productIds.merge(productId, productQuantity.quantity(), Long::sum);

@@ -103,8 +103,10 @@ public class ProductService {
             UUID productId = productQuantity.productId();
             if (!exists(productId) ||
                     isDeleted(productId) ||
-                    isOutOfStock(productId))
+                    isOutOfStock(productId) ||
+                    !isPublished(productId))
                 throw new ProductNotFoundException();
+
             productIds.merge(productId, productQuantity.quantity(), Long::sum);
         }
 
@@ -178,6 +180,11 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Boolean isOutOfStock(UUID productId) {
         return productRepository.existsByIdAndDisableOutOfStock(productId, true);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isPublished(UUID productId) {
+        return productRepository.existsByIdAndPublished(productId,true);
     }
 
     @Transactional(readOnly = true)
