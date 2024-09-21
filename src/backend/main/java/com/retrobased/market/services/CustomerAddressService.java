@@ -3,7 +3,7 @@ package com.retrobased.market.services;
 import com.retrobased.market.entities.Customer;
 import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.repositories.CustomerAddressRepository;
-import com.retrobased.market.support.exceptions.AddressDontExistsException;
+import com.retrobased.market.support.exceptions.AddressNotFoundException;
 import com.retrobased.market.support.exceptions.CustomerNotFoundException;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
@@ -41,13 +41,13 @@ public class CustomerAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void removeAddress(@NotNull UUID customerId, @NotNull UUID addressId) throws AddressDontExistsException, CustomerNotFoundException {
+    public void removeAddress(@NotNull UUID customerId, @NotNull UUID addressId) throws AddressNotFoundException, CustomerNotFoundException {
         if (!customerService.exists(customerId))
             throw new CustomerNotFoundException();
 
         if (!customerAddressRepository.existsById(customerId) ||
                 !customerAddressRepository.existsByIdAndCustomerId(customerId, addressId))
-            throw new AddressDontExistsException();
+            throw new AddressNotFoundException();
 
         customerAddressRepository.deleteById(addressId);
 
