@@ -81,16 +81,16 @@ public class ProductController {
         try {
             UUID sellerId = null; // TODO estrarre sellerId da token
 
-            Category firstCategory = validateCategory(productCategory.getFirstCategoryId());
-            Category secondCategory = validateCategory(productCategory.getSecondCategoryId());
+            Category firstCategory = validateCategory(productCategory.firstCategoryId());
+            Category secondCategory = validateCategory(productCategory.secondCategoryId());
 
             if (firstCategory != null && secondCategory != null &&
                     !categoryService.areCategoriesValid(firstCategory, secondCategory))
                 throw new ArgumentValueNotValidException();
 
-            Attribute attribute = validateAttribute(productCategory.getAttributeId());
+            Attribute attribute = validateAttribute(productCategory.attributeId());
 
-            Product newProduct = productService.addProduct(productCategory.getProduct(), sellerId);
+            Product newProduct = productService.addProduct(productCategory.product(), sellerId);
 
             if (firstCategory != null) {
                 productCategoryService.create(firstCategory, newProduct);

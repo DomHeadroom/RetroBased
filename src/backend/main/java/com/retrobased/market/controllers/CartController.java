@@ -1,7 +1,7 @@
 package com.retrobased.market.controllers;
 
 import com.retrobased.market.dto.ProductObjQuantityDTO;
-import com.retrobased.market.dto.ProductRequestCart;
+import com.retrobased.market.dto.ProductRequestCartDTO;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.services.CartItemService;
 import com.retrobased.market.support.ResponseMessage;
@@ -42,7 +42,7 @@ public class CartController {
      * or non-existent products, the method will return an appropriate error response.
      * </p>
      *
-     * @param productRequestCart the request body containing the list of products to add to the cart; must be valid and not null
+     * @param productRequestCartDTO the request body containing the list of products to add to the cart; must be valid and not null
      * @return a response entity containing either the added products or an error message if an exception occurs
      * <ul>
      *     <li><strong>200 OK</strong> – If the products were successfully added to the cart.</li>
@@ -50,11 +50,11 @@ public class CartController {
      * </ul>
      */
     @PostMapping
-    public ResponseEntity<?> addProductToCart(@RequestBody @Valid @NotNull ProductRequestCart productRequestCart) {
+    public ResponseEntity<?> addProductToCart(@RequestBody @Valid @NotNull ProductRequestCartDTO productRequestCartDTO) {
         try {
             UUID customerId = UUID.fromString("f3106b66-3ed0-4d61-a7ae-fcc0651eb8cf"); // TODO cambiare con metodo per estrarre id da token
 
-            List<ProductObjQuantityDTO> added = cartItemService.addProductToCart(customerId, productRequestCart.getProducts());
+            List<ProductObjQuantityDTO> added = cartItemService.addProductToCart(customerId, productRequestCartDTO.products());
             return ResponseEntity.ok(added);
         } catch (ArgumentValueNotValidException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));

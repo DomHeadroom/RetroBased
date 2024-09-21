@@ -1,6 +1,6 @@
 package com.retrobased.market.controllers;
 
-import com.retrobased.market.dto.ProductRequestOrder;
+import com.retrobased.market.dto.ProductRequestOrderDTO;
 import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.entities.Order;
 import com.retrobased.market.entities.OrderItem;
@@ -77,7 +77,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<?> buyOrder(
-            @RequestBody @Valid @NotNull ProductRequestOrder productRequestOrder
+            @RequestBody @Valid @NotNull ProductRequestOrderDTO productRequestOrder
     ) {
         try {
             // a6cd2287-bb39-48b8-b1d7-62ec612ba064

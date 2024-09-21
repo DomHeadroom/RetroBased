@@ -7,7 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-public record ProductRequestOrder(
+public record ProductRequestOrderDTO(
         @NotEmpty List<@Valid ProductQuantityDTO> products,
         @NotNull UUID addressId
 ) {}
