@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -25,7 +26,7 @@ public class SellerService {
     }
 
     @Transactional(readOnly = true)
-    public Seller get(UUID id) {
-        return sellerRepository.getReferenceById(id);
+    public Optional<Seller> get(UUID id) {
+        return sellerRepository.findById(id);
     }
 }

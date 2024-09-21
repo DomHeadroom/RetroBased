@@ -1,11 +1,14 @@
 package com.retrobased.market.services;
 
 import com.retrobased.market.entities.Cart;
+import com.retrobased.market.entities.Customer;
 import com.retrobased.market.repositories.CartRepository;
+import com.retrobased.market.support.exceptions.CustomerNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -21,12 +24,16 @@ public class CartService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Cart getCustomerCart(UUID customerId) {
-        if (cartRepository.existsByCustomerId(customerId))
-            return cartRepository.getCartByCustomerId(customerId);
+    public Cart getCustomerCart(UUID customerId) throws CustomerNotFoundException {
+        Customer customer = customerService.get(customerId)
+                .orElseThrow(CustomerNotFoundException::new);
+        Optional<Cart> cart = cartRepository.getCartByCustomerId(customer.getId());
+
+        if (cart.isPresent())
+            return cart.get();
 
         Cart customerCart = new Cart();
-        customerCart.setCustomer(customerService.get(customerId));
+        customerCart.setCustomer(customer);
 
         return cartRepository.save(customerCart);
 

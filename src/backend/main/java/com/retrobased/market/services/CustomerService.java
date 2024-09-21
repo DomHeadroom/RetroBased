@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -34,8 +35,8 @@ public class CustomerService {
     }
 
     @Transactional(readOnly = true)
-    public Customer get(UUID id) {
-        return customerRepository.getReferenceById(id);
+    public Optional<Customer> get(UUID id) {
+        return customerRepository.findById(id);
     }
 
     @Transactional(readOnly = true)

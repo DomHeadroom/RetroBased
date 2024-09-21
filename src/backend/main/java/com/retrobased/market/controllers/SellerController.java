@@ -4,6 +4,8 @@ import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.Seller;
 import com.retrobased.market.services.CartItemService;
 import com.retrobased.market.services.SellerService;
+import com.retrobased.market.support.ResponseMessage;
+import com.retrobased.market.support.exceptions.CustomerNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -47,7 +49,13 @@ public class SellerController {
             @PathVariable("seller") @NotNull UUID sellerId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber) {
 
-        List<Product> result = cartItemService.getCart(sellerId, pageNumber);
+        List<Product> result = null;
+
+        try {
+            result = cartItemService.getCart(sellerId, pageNumber);
+        } catch (CustomerNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new ResponseMessage("ERROR_TOKEN_USER"));
+        }
 
         // TODO rifare questo metodo per prendere prodotti venduti
         if (result.isEmpty())

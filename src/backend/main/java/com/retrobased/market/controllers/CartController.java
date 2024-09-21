@@ -60,6 +60,8 @@ public class CartController {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));
         } catch (ProductNotFoundException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_PRODUCT_NOT_EXISTS"));
+        } catch (CustomerNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage("ERROR_TOKEN_USER"));
         }
     }
 
@@ -87,7 +89,12 @@ public class CartController {
             @RequestBody @NotNull UUID customerId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber) {
         // UUID customerId = TODO cambiare con metodo per estrarre id da token
-        List<Product> result = cartItemService.getCart(customerId, pageNumber);
+        List<Product> result = null;
+        try {
+            result = cartItemService.getCart(customerId, pageNumber);
+        } catch (CustomerNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
         if (result.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

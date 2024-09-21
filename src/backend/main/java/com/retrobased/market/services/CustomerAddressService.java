@@ -1,9 +1,10 @@
 package com.retrobased.market.services;
 
+import com.retrobased.market.entities.Customer;
 import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.repositories.CustomerAddressRepository;
 import com.retrobased.market.support.exceptions.AddressDontExistsException;
-import com.retrobased.market.support.exceptions.CustomerDontExistsException;
+import com.retrobased.market.support.exceptions.CustomerNotFoundException;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,12 +25,12 @@ public class CustomerAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public CustomerAddress addAddress(@NotNull UUID customerId, @NotNull CustomerAddress address) throws CustomerDontExistsException {
-        if (!customerService.exists(customerId))
-            throw new CustomerDontExistsException();
+    public CustomerAddress addAddress(@NotNull UUID customerId, @NotNull CustomerAddress address) throws CustomerNotFoundException {
+        Customer customer = customerService.get(customerId)
+                .orElseThrow(CustomerNotFoundException::new);
 
         CustomerAddress newAddress = new CustomerAddress();
-        newAddress.setCustomer(customerService.get(customerId));
+        newAddress.setCustomer(customer);
         newAddress.setCity(address.getCity());
         newAddress.setCountry(address.getCountry());
         newAddress.setPostalCode(address.getPostalCode());
@@ -40,9 +41,9 @@ public class CustomerAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void removeAddress(@NotNull UUID customerId, @NotNull UUID addressId) throws AddressDontExistsException, CustomerDontExistsException {
+    public void removeAddress(@NotNull UUID customerId, @NotNull UUID addressId) throws AddressDontExistsException, CustomerNotFoundException {
         if (!customerService.exists(customerId))
-            throw new CustomerDontExistsException();
+            throw new CustomerNotFoundException();
 
         if (!customerAddressRepository.existsById(customerId) ||
                 !customerAddressRepository.existsByIdAndCustomerId(customerId, addressId))

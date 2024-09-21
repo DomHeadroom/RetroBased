@@ -9,6 +9,7 @@ import com.retrobased.market.services.OrderService;
 import com.retrobased.market.services.ProductService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
+import com.retrobased.market.support.exceptions.CustomerNotFoundException;
 import com.retrobased.market.support.exceptions.ProductNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -92,6 +93,8 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.CREATED).body(finalOrder);
         } catch (ArgumentValueNotValidException | ProductNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"));
+        } catch (CustomerNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage("ERROR_TOKEN_USER"));
         }
     }
 }

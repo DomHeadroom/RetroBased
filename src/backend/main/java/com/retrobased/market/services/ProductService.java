@@ -8,10 +8,13 @@ import com.retrobased.market.entities.OrderItem;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.ProductSeller;
 import com.retrobased.market.entities.Sell;
+import com.retrobased.market.entities.Seller;
 import com.retrobased.market.repositories.ProductRepository;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
 
+import com.retrobased.market.support.exceptions.CustomerNotFoundException;
 import com.retrobased.market.support.exceptions.ProductNotFoundException;
+import com.retrobased.market.support.exceptions.SellerNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -49,13 +52,16 @@ public class ProductService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Product addProduct(Product product, UUID sellerId) throws ArgumentValueNotValidException {
+    public Product addProduct(Product product, UUID sellerId) throws ArgumentValueNotValidException, SellerNotFoundException {
 
         Product productAdded = productRepository.save(product);
 
+        Seller seller = sellerService.get(sellerId)
+                .orElseThrow(SellerNotFoundException::new);
+
         ProductSeller productSeller = new ProductSeller();
         productSeller.setProduct(productAdded);
-        productSeller.setSeller(sellerService.get(sellerId));
+        productSeller.setSeller(seller);
 
         productSellerService.save(productSeller);
         return productAdded;
@@ -95,7 +101,9 @@ public class ProductService {
     }
 
     @Transactional
-    public Order lockAndReduceQuantities(List<ProductQuantityDTO> productQuantities, CustomerAddress address, UUID customerId) throws ArgumentValueNotValidException, ProductNotFoundException {
+    public Order lockAndReduceQuantities(List<ProductQuantityDTO> productQuantities, CustomerAddress address, UUID customerId) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
+        Customer customer = customerService.get(customerId)
+                .orElseThrow(CustomerNotFoundException::new);
 
         Map<UUID, Long> productIds = new HashMap<>();
 
@@ -120,8 +128,6 @@ public class ProductService {
 
             product.setQuantity(product.getQuantity() - quantityToAdd);
         }
-
-        Customer customer = customerService.get(customerId);
 
         Order currentOrder = new Order();
         currentOrder.setCustomer(customer);

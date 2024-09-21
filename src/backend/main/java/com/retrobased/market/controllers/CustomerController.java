@@ -5,7 +5,7 @@ import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.services.CustomerAddressService;
 import com.retrobased.market.services.CustomerService;
 import com.retrobased.market.support.ResponseMessage;
-import com.retrobased.market.support.exceptions.CustomerDontExistsException;
+import com.retrobased.market.support.exceptions.CustomerNotFoundException;
 import com.retrobased.market.support.exceptions.UserMailAlreadyExistsException;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
@@ -48,7 +48,7 @@ public class CustomerController {
             @RequestParam(value = "user") @NotNull UUID customerId) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(customerAddressService.addAddress(customerId, address));
-        } catch (CustomerDontExistsException e) {
+        } catch (CustomerNotFoundException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_USER_NOT_FOUND"));
         }
     }

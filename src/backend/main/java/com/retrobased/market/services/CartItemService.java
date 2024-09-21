@@ -58,7 +58,7 @@ public class CartItemService {
      * @see CartItemRepository#findProductsByCartId(UUID, Pageable) CartItemRepository.findProductsByCartId
      */
     @Transactional(readOnly = true)
-    public List<Product> getCart(UUID customerId, int pageNumber) {
+    public List<Product> getCart(UUID customerId, int pageNumber) throws CustomerNotFoundException {
         Cart customerCart = getCustomerCart(customerId);
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.desc("createdAt")));
         Page<Product> cartItems = cartItemRepository.findProductsByCartId(customerCart.getId(), paging);
@@ -85,10 +85,10 @@ public class CartItemService {
      * @param quantity   the new quantity for the product in the cart; must be non-negative (0 will remove the item)
      * @throws ArgumentValueNotValidException if the requested quantity exceeds available stock
      * @throws ProductNotFoundException       if the product is not found in the customer's cart
-     * @throws CustomerDontExistsException    if the customer does not exist in the system
+     * @throws CustomerNotFoundException    if the customer does not exist in the system
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public void changeQuantity(@NotNull UUID customerId, @NotNull UUID productId, @NotNull @Min(0) Long quantity) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerDontExistsException {
+    public void changeQuantity(@NotNull UUID customerId, @NotNull UUID productId, @NotNull @Min(0) Long quantity) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
         checkValues(customerId, productId);
 
         if (productService.getQuantity(productId) < quantity)
@@ -110,7 +110,7 @@ public class CartItemService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public List<ProductObjQuantityDTO> addProductToCart(@NotNull UUID customerId, @NotNull List<ProductQuantityDTO> productQuantities)
-            throws ArgumentValueNotValidException, ProductNotFoundException {
+            throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
 
         Map<UUID, Long> productIds = new HashMap<>();
 
@@ -171,16 +171,16 @@ public class CartItemService {
         return new ProductObjQuantityDTO(product, quantity);
     }
 
-    private void checkValues(UUID customerId, UUID productId) throws ProductNotFoundException, CustomerDontExistsException {
+    private void checkValues(UUID customerId, UUID productId) throws ProductNotFoundException, CustomerNotFoundException {
         if (!customerService.exists(customerId))
-            throw new CustomerDontExistsException();
+            throw new CustomerNotFoundException();
 
         if (!productService.exists(productId))
             throw new ProductNotFoundException();
     }
 
     @Transactional(readOnly = true)
-    public Cart getCustomerCart(UUID customerId) {
+    public Cart getCustomerCart(UUID customerId) throws CustomerNotFoundException {
         return cartService.getCustomerCart(customerId);
     }
 

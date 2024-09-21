@@ -13,6 +13,7 @@ import com.retrobased.market.services.ProductService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
 import com.retrobased.market.support.exceptions.ProductNotFoundException;
+import com.retrobased.market.support.exceptions.SellerNotFoundException;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
@@ -107,6 +108,8 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
         } catch (ArgumentValueNotValidException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));
+        } catch (SellerNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage("ERROR_TOKEN_USER"));
         }
     }
 
@@ -141,19 +144,15 @@ public class ProductController {
         if (categoryId == null)
             return null;
 
-        if (!categoryService.exists(categoryId))
-            throw new ArgumentValueNotValidException();
-
-        return categoryService.get(categoryId);
+        return categoryService.get(categoryId)
+                .orElseThrow(ArgumentValueNotValidException::new);
     }
 
     private Attribute validateAttribute(UUID attributeId) throws ArgumentValueNotValidException {
         if (attributeId == null)
             return null;
 
-        if (!attributeService.exists(attributeId))
-            throw new ArgumentValueNotValidException();
-
-        return attributeService.get(attributeId);
+        return attributeService.get(attributeId)
+                .orElseThrow(ArgumentValueNotValidException::new);
     }
 }
