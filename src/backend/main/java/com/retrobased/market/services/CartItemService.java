@@ -167,7 +167,7 @@ public class CartItemService {
     }
 
     private ProductObjQuantityDTO createProductObjQuantityDTO(Product product, Long quantity) {
-        return new ProductObjQuantityDTO(product,quantity);
+        return new ProductObjQuantityDTO(product, quantity);
     }
 
     private void checkValues(UUID customerId, UUID productId) throws ProductNotFoundException, CustomerDontExistsException {

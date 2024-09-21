@@ -11,4 +11,5 @@ public record ProductCategoryDTO(
         UUID firstCategoryId,
         UUID secondCategoryId,
         UUID attributeId
-) {}
+) {
+}

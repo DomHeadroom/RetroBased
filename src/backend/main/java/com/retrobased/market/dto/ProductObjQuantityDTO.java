@@ -7,4 +7,5 @@ import jakarta.validation.constraints.Min;
 public record ProductObjQuantityDTO(
         @NotNull Product product,
         @NotNull @Min(1) Long quantity
-) {}
+) {
+}

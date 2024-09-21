@@ -10,4 +10,5 @@ import jakarta.validation.constraints.NotNull;
 public record ProductRequestOrderDTO(
         @NotEmpty List<@Valid ProductQuantityDTO> products,
         @NotNull UUID addressId
-) {}
+) {
+}
