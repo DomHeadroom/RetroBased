@@ -93,18 +93,20 @@ public class ProductController {
 
             Attribute attribute = validateAttribute(productCategory.attributeId());
 
-            Product newProduct = productService.addProduct(productCategory.product(), sellerId);
+            Product product = productService.addProduct(productCategory.product(), sellerId);
+
+            productSellerService.create(sellerId, product);
 
             if (firstCategory != null)
-                productCategoryService.create(firstCategory, newProduct);
+                productCategoryService.create(firstCategory, product);
 
             if (secondCategory != null)
-                productCategoryService.create(secondCategory, newProduct);
+                productCategoryService.create(secondCategory, product);
 
             if (attribute != null)
-                productAttributeService.create(attribute, newProduct);
+                productAttributeService.create(attribute, product);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
+            return ResponseEntity.status(HttpStatus.CREATED).body(product);
         } catch (ArgumentValueNotValidException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));
         } catch (SellerNotFoundException e) {

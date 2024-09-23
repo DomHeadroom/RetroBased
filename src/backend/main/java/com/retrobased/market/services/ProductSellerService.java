@@ -2,7 +2,9 @@ package com.retrobased.market.services;
 
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.ProductSeller;
+import com.retrobased.market.entities.Seller;
 import com.retrobased.market.repositories.ProductSellerRepository;
+import com.retrobased.market.support.exceptions.SellerNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +20,11 @@ import java.util.UUID;
 @Service
 public class ProductSellerService {
     private final ProductSellerRepository productSellerRepository;
+    private final SellerService sellerService;
 
-    public ProductSellerService(ProductSellerRepository productSellerRepository) {
+    public ProductSellerService(ProductSellerRepository productSellerRepository, SellerService sellerService) {
         this.productSellerRepository = productSellerRepository;
+        this.sellerService = sellerService;
     }
 
     // TODO get Seller Product
@@ -43,5 +47,14 @@ public class ProductSellerService {
     @Transactional(propagation = Propagation.REQUIRED)
     public ProductSeller save(ProductSeller productSeller) {
         return productSellerRepository.save(productSeller);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void create(UUID sellerId, Product product) throws SellerNotFoundException {
+        Seller seller = sellerService.get(sellerId).orElseThrow(SellerNotFoundException::new);
+        ProductSeller productSeller = new ProductSeller();
+        productSeller.setSeller(seller);
+        productSeller.setProduct(product);
+        save(productSeller);
     }
 }
