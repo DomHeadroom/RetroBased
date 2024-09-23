@@ -209,7 +209,7 @@ public class ProductService {
         return productRepository.findQuantityById(productId);
     }
 
-    private ProductDTO convertToDTO(Product product) {
+    public ProductDTO convertToDTO(Product product) {
         return new ProductDTO(
                 product.getId(),
                 product.getSlug(),

@@ -1,5 +1,6 @@
 package com.retrobased.market.controllers;
 
+import com.retrobased.market.dto.ProductDTO;
 import com.retrobased.market.dto.ProductObjQuantityDTO;
 import com.retrobased.market.dto.ProductRequestCartDTO;
 import com.retrobased.market.entities.Product;
@@ -86,10 +87,10 @@ public class CartController {
      */
     @GetMapping
     public ResponseEntity<?> getCartProducts(
-            @RequestBody @NotNull UUID customerId,
+            @RequestParam @NotNull UUID customerId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber) {
         // UUID customerId = TODO cambiare con metodo per estrarre id da token
-        List<Product> result = null;
+        List<ProductDTO> result = null;
         try {
             result = cartItemService.getCart(customerId, pageNumber);
         } catch (CustomerNotFoundException e) {

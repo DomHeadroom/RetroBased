@@ -1,8 +1,9 @@
 package com.retrobased.market.controllers;
 
-import com.retrobased.market.entities.Product;
+import com.retrobased.market.dto.ProductDTO;
 import com.retrobased.market.entities.Seller;
 import com.retrobased.market.services.CartItemService;
+import com.retrobased.market.services.ProductSellerService;
 import com.retrobased.market.services.SellerService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.CustomerNotFoundException;
@@ -30,11 +31,11 @@ import java.util.UUID;
 public class SellerController {
     private final SellerService sellerService;
 
-    private final CartItemService cartItemService;
+    private final ProductSellerService productSellerService;
 
-    public SellerController(SellerService sellerService, CartItemService cartItemService) {
+    public SellerController(SellerService sellerService, ProductSellerService productSellerService) {
         this.sellerService = sellerService;
-        this.cartItemService = cartItemService;
+        this.productSellerService = productSellerService;
     }
 
     // aggiunta prodotto al carrello
@@ -47,17 +48,14 @@ public class SellerController {
     @GetMapping("{seller}/products")
     public ResponseEntity<?> getSellerProducts(
             @PathVariable("seller") @NotNull UUID sellerId,
-            @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber) {
+            @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber,
+            @RequestParam(value = "s", defaultValue = "id") String sortBy) {
 
-        List<Product> result = null;
-
-        try {
-            result = cartItemService.getCart(sellerId, pageNumber);
-        } catch (CustomerNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new ResponseMessage("ERROR_TOKEN_USER"));
-        }
+        List<ProductDTO> result = null;
 
         // TODO rifare questo metodo per prendere prodotti venduti
+        result = productSellerService.getSellerProducts(sellerId, pageNumber, sortBy);
+
         if (result.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 

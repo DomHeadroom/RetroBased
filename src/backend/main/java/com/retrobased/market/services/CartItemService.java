@@ -1,5 +1,6 @@
 package com.retrobased.market.services;
 
+import com.retrobased.market.dto.ProductDTO;
 import com.retrobased.market.dto.ProductObjQuantityDTO;
 import com.retrobased.market.dto.ProductQuantityDTO;
 import com.retrobased.market.entities.Cart;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CartItemService {
@@ -58,13 +60,15 @@ public class CartItemService {
      * @see CartItemRepository#findProductsByCartId(UUID, Pageable) CartItemRepository.findProductsByCartId
      */
     @Transactional(readOnly = true)
-    public List<Product> getCart(UUID customerId, int pageNumber) throws CustomerNotFoundException {
+    public List<ProductDTO> getCart(UUID customerId, int pageNumber) throws CustomerNotFoundException {
         Cart customerCart = getCustomerCart(customerId);
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.desc("createdAt")));
         Page<Product> cartItems = cartItemRepository.findProductsByCartId(customerCart.getId(), paging);
-
         if (cartItems.hasContent())
-            return cartItems.getContent();
+            return cartItems.getContent()
+                    .stream()
+                    .map(productService::convertToDTO)
+                    .collect(Collectors.toList());
 
         return new ArrayList<>();
     }

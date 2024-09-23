@@ -1,5 +1,6 @@
 package com.retrobased.market.services;
 
+import com.retrobased.market.dto.ProductDTO;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.ProductSeller;
 import com.retrobased.market.entities.Seller;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductSellerService {
@@ -29,12 +31,15 @@ public class ProductSellerService {
 
     // TODO get Seller Product
     @Transactional(readOnly = true)
-    public List<Product> getSellerProducts(int pageNumber, String sortBy, UUID sellerId) {
+    public List<ProductDTO> getSellerProducts(UUID sellerId, int pageNumber, String sortBy) {
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(sortBy));
         Page<Product> pagedResult = productSellerRepository.findProductsBySellerId(sellerId, paging);
 
         if (pagedResult.hasContent())
-            return pagedResult.getContent();
+            return pagedResult.getContent()
+                    .stream()
+                    .map(this::convertProductToDTO)
+                    .collect(Collectors.toList());
 
         return new ArrayList<>();
     }
@@ -56,5 +61,21 @@ public class ProductSellerService {
         productSeller.setSeller(seller);
         productSeller.setProduct(product);
         save(productSeller);
+    }
+
+    public ProductDTO convertProductToDTO(Product product) {
+        return new ProductDTO(
+                product.getId(),
+                product.getSlug(),
+                product.getProductName(),
+                product.getSku(),
+                product.getSalePrice(),
+                product.getQuantity(),
+                product.getShortDescription(),
+                product.getProductDescription(),
+                product.getDisableOutOfStock(),
+                product.getNote(),
+                product.getCreatedAt()
+        );
     }
 }
