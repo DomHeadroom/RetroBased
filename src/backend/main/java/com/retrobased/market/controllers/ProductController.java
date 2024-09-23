@@ -1,6 +1,7 @@
 package com.retrobased.market.controllers;
 
 import com.retrobased.market.dto.ProductCategoryDTO;
+import com.retrobased.market.dto.ProductDTO;
 import com.retrobased.market.entities.Attribute;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.Category;
@@ -66,7 +67,7 @@ public class ProductController {
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber,
             @RequestParam(value = "s", defaultValue = "id") String sortBy) {
 
-        List<Product> result = productService.searchProduct(keyword, pageNumber, sortBy);
+        List<ProductDTO> result = productService.searchProduct(keyword, pageNumber, sortBy);
         if (result.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -85,7 +86,8 @@ public class ProductController {
             Category firstCategory = validateCategory(productCategory.firstCategoryId());
             Category secondCategory = validateCategory(productCategory.secondCategoryId());
 
-            if (firstCategory != null && secondCategory != null &&
+            if (firstCategory != null &&
+                    secondCategory != null &&
                     !categoryService.areCategoriesValid(firstCategory, secondCategory))
                 throw new ArgumentValueNotValidException();
 
@@ -93,17 +95,14 @@ public class ProductController {
 
             Product newProduct = productService.addProduct(productCategory.product(), sellerId);
 
-            if (firstCategory != null) {
+            if (firstCategory != null)
                 productCategoryService.create(firstCategory, newProduct);
-            }
 
-            if (secondCategory != null) {
+            if (secondCategory != null)
                 productCategoryService.create(secondCategory, newProduct);
-            }
 
-            if (attribute != null) {
+            if (attribute != null)
                 productAttributeService.create(attribute, newProduct);
-            }
 
             return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
         } catch (ArgumentValueNotValidException e) {

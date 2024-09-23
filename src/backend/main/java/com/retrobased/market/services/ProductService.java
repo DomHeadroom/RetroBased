@@ -1,5 +1,6 @@
 package com.retrobased.market.services;
 
+import com.retrobased.market.dto.ProductDTO;
 import com.retrobased.market.dto.ProductQuantityDTO;
 import com.retrobased.market.entities.Customer;
 import com.retrobased.market.entities.CustomerAddress;
@@ -28,8 +29,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -52,9 +55,8 @@ public class ProductService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Product addProduct(Product product, UUID sellerId) throws ArgumentValueNotValidException, SellerNotFoundException {
-
-        Product productAdded = productRepository.save(product);
+    public Product addProduct(ProductDTO product, UUID sellerId) throws ArgumentValueNotValidException, SellerNotFoundException {
+        Product productAdded = productRepository.save(convertToProduct(product));
 
         Seller seller = sellerService.get(sellerId)
                 .orElseThrow(SellerNotFoundException::new);
@@ -70,10 +72,11 @@ public class ProductService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void removeProduct(UUID productId) throws ProductNotFoundException {
 
-        if (!productRepository.existsById(productId))
-            throw new ProductNotFoundException();
+        Product product = get(productId).orElseThrow(ProductNotFoundException::new);
 
-        productRepository.deleteById(productId);
+        product.setDeleted(true);
+
+        productRepository.save(product);
 
     }
 
@@ -90,12 +93,15 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public List<Product> searchProduct(String name, int pageNumber, String sortBy) {
+    public List<ProductDTO> searchProduct(String name, int pageNumber, String sortBy) {
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(sortBy));
         Page<Product> pagedResult = productRepository.findByNameIgnoreCase(name, paging);
 
         if (pagedResult.hasContent())
-            return pagedResult.getContent();
+            return pagedResult.getContent()
+                    .stream()
+                    .map(this::convertToDTO)
+                    .collect(Collectors.toList());
 
         return new ArrayList<>();
     }
@@ -179,6 +185,11 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
+    public Optional<Product> get(UUID id) {
+        return productRepository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
     public Boolean isDeleted(UUID productId) {
         return productRepository.existsByIdAndDeleted(productId, true);
     }
@@ -196,5 +207,37 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Long getQuantity(UUID productId) {
         return productRepository.findQuantityById(productId);
+    }
+
+    private ProductDTO convertToDTO(Product product) {
+        return new ProductDTO(
+                product.getId(),
+                product.getSlug(),
+                product.getProductName(),
+                product.getSku(),
+                product.getSalePrice(),
+                product.getQuantity(),
+                product.getShortDescription(),
+                product.getProductDescription(),
+                product.getDisableOutOfStock(),
+                product.getNote(),
+                product.getCreatedAt()
+        );
+    }
+
+    private Product convertToProduct(ProductDTO productDTO) {
+        Product product = new Product();
+        product.setId(productDTO.id());
+        product.setSlug(productDTO.slug());
+        product.setProductName(productDTO.productName());
+        product.setSku(productDTO.sku());
+        product.setSalePrice(productDTO.salePrice());
+        product.setQuantity(productDTO.quantity());
+        product.setShortDescription(productDTO.shortDescription());
+        product.setProductDescription(productDTO.productDescription());
+        product.setDisableOutOfStock(productDTO.disableOutOfStock());
+        product.setNote(productDTO.note());
+
+        return product;
     }
 }

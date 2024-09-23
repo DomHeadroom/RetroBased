@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
 public record ProductCategoryDTO(
-        @Valid @NotNull Product product,
+        @Valid @NotNull ProductDTO product,
         UUID firstCategoryId,
         UUID secondCategoryId,
         UUID attributeId

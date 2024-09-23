@@ -23,12 +23,8 @@ public record ProductDTO(
         @Min(0L)
         BigDecimal salePrice,
 
-        BigDecimal comparePrice,
-
-        BigDecimal buyingPrice,
-
         @NotNull(message = "Quantity is required.")
-        @Min(0L)
+        @Min(1L)
         Long quantity,
 
         @NotBlank(message = "Short description cannot be empty.")
@@ -36,9 +32,6 @@ public record ProductDTO(
 
         @NotBlank(message = "Product description cannot be empty.")
         String productDescription,
-
-        @NotBlank(message = "Product type cannot be empty.")
-        String productType,
 
         Boolean disableOutOfStock,
 
