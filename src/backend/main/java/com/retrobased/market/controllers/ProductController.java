@@ -86,8 +86,23 @@ public class ProductController {
         return ResponseEntity.ok(result);
     }
 
-    // aggiunta di un prodotto al db
-    // TODO aggiungere dati dentro Product_Seller
+    /**
+     * Adds a product to the database and associates it with a seller, categories, attributes, and tags.
+     * This method ensures that the provided product is linked to valid categories, attributes, and tags,
+     * and it registers the product in the product-seller table to establish a relationship between the product
+     * and the seller.
+     *
+     * The product is added to the database if all provided data is valid. Upon successful addition, a {@link ProductDTO}
+     * is returned with the details of the added product, including its association with categories, attributes, and tags.
+     * The product is also added to the product-seller table to ensure that it is linked with the specified seller.
+     *
+     * @param productCategory a {@link ProductCategoryDTO} object containing the product information,
+     *                        categories, attributes, and tags. It must not be null and should be validated.
+     *
+     * @return a {@link ResponseEntity} containing the status and body of the response. If the product is
+     *         successfully added, a {@link ProductDTO} is returned with an HTTP status of 201 (Created).
+     *         In case of an invalid argument or seller not found, appropriate error messages are returned.
+     */
     @PostMapping
     public ResponseEntity<?> addProduct(
             @RequestBody @Valid @NotNull ProductCategoryDTO productCategory
@@ -158,7 +173,7 @@ public class ProductController {
         return new ResponseEntity<>(result, HttpStatus.OK);
    }*/
 
-    // TODO reworkare ste robe per lanciare eccezzioni specifiche
+    // TODO reworkare ste robe per lanciare eccezioni specifiche
     private Tag validateTag(UUID id) throws ArgumentValueNotValidException {
         if (id == null)
             return null;

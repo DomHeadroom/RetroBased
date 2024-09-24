@@ -149,6 +149,7 @@ public class CartItemService {
                 throw new ArgumentValueNotValidException();
 
             Optional<CartItem> existingCartItemOpt = cartItemRepository.findByCartIdAndProductId(cart.getId(), productId);
+            ProductDTO productDTO = productService.convertToDTO(product);
 
             if (existingCartItemOpt.isPresent()) {
                 CartItem existingCartItem = existingCartItemOpt.get();
@@ -156,7 +157,7 @@ public class CartItemService {
                 existingCartItem.setQuantity(newQuantity);
                 cartItemRepository.save(existingCartItem);
 
-                resultItems.add(createProductObjQuantityDTO(product, newQuantity));
+                resultItems.add(createProductObjQuantityDTO(productDTO, newQuantity));
                 continue;
             }
 
@@ -166,7 +167,7 @@ public class CartItemService {
             newItem.setQuantity(quantityToAdd);
             newItems.add(newItem);
 
-            resultItems.add(createProductObjQuantityDTO(product, quantityToAdd));
+            resultItems.add(createProductObjQuantityDTO(productDTO, quantityToAdd));
 
         }
 
@@ -176,7 +177,7 @@ public class CartItemService {
         return resultItems;
     }
 
-    private ProductObjQuantityDTO createProductObjQuantityDTO(Product product, Long quantity) {
+    private ProductObjQuantityDTO createProductObjQuantityDTO(ProductDTO product, Long quantity) {
         return new ProductObjQuantityDTO(product, quantity);
     }
 
