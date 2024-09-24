@@ -22,7 +22,10 @@ public class OrderService {
 
     private final OrderItemService orderItemService;
 
-    public OrderService(OrderRepository orderRepository, OrderItemService orderItemService) {
+    public OrderService(
+            OrderRepository orderRepository,
+            OrderItemService orderItemService
+    ) {
         this.orderRepository = orderRepository;
         this.orderItemService = orderItemService;
     }

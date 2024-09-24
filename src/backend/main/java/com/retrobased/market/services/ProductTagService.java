@@ -18,7 +18,10 @@ public class ProductTagService {
     private final TagRepository tagRepository;
     private final ProductTagRepository productTagRepository;
 
-    public ProductTagService(TagRepository tagRepository, ProductTagRepository productTagRepository) {
+    public ProductTagService(
+            TagRepository tagRepository,
+            ProductTagRepository productTagRepository
+    ) {
         this.tagRepository = tagRepository;
         this.productTagRepository = productTagRepository;
     }

@@ -19,7 +19,10 @@ public class CustomerAddressService {
 
     private final CustomerService customerService;
 
-    public CustomerAddressService(CustomerAddressRepository customerAddressRepository, CustomerService customerService) {
+    public CustomerAddressService(
+            CustomerAddressRepository customerAddressRepository,
+            CustomerService customerService
+    ) {
         this.customerAddressRepository = customerAddressRepository;
         this.customerService = customerService;
     }

@@ -18,7 +18,10 @@ public class CartService {
 
     private final CustomerService customerService;
 
-    public CartService(CartRepository cartRepository, CustomerService customerService) {
+    public CartService(
+            CartRepository cartRepository,
+            CustomerService customerService
+    ) {
         this.cartRepository = cartRepository;
         this.customerService = customerService;
     }

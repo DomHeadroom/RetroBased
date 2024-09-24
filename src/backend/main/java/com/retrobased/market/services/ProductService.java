@@ -41,7 +41,14 @@ public class ProductService {
     private final OrderService orderService;
     private final SellerService sellerService;
 
-    public ProductService(ProductRepository productRepository, ProductSellerService productSellerService, CustomerService customerService, OrderItemService orderItemService, OrderService orderService, SellerService sellerService) {
+    public ProductService(
+            ProductRepository productRepository,
+            ProductSellerService productSellerService,
+            CustomerService customerService,
+            OrderItemService orderItemService,
+            OrderService orderService,
+            SellerService sellerService
+    ) {
         this.productRepository = productRepository;
         this.productSellerService = productSellerService;
         this.customerService = customerService;

@@ -33,7 +33,10 @@ public class SellerController {
 
     private final ProductSellerService productSellerService;
 
-    public SellerController(SellerService sellerService, ProductSellerService productSellerService) {
+    public SellerController(
+            SellerService sellerService,
+            ProductSellerService productSellerService
+    ) {
         this.sellerService = sellerService;
         this.productSellerService = productSellerService;
     }

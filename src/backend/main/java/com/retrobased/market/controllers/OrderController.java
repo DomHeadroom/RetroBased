@@ -39,7 +39,11 @@ public class OrderController {
 
     private final CustomerAddressService customerAddressService;
 
-    public OrderController(OrderService orderService, ProductService productService, CustomerAddressService customerAddressService) {
+    public OrderController(
+            OrderService orderService,
+            ProductService productService,
+            CustomerAddressService customerAddressService
+    ) {
         this.orderService = orderService;
         this.productService = productService;
         this.customerAddressService = customerAddressService;

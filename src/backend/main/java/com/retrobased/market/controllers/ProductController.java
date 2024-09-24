@@ -42,7 +42,15 @@ public class ProductController {
     private final ProductAttributeService productAttributeService;
     private final ProductTagService productTagService;
 
-    public ProductController(ProductService productService, ProductSellerService productSellerService, ProductCategoryService productCategoryService, CategoryService categoryService, AttributeService attributeService, ProductAttributeService productAttributeService, ProductTagService productTagService) {
+    public ProductController(
+            ProductService productService,
+            ProductSellerService productSellerService,
+            ProductCategoryService productCategoryService,
+            CategoryService categoryService,
+            AttributeService attributeService,
+            ProductAttributeService productAttributeService,
+            ProductTagService productTagService
+    ) {
         this.productService = productService;
         this.productSellerService = productSellerService;
         this.productCategoryService = productCategoryService;
@@ -85,7 +93,8 @@ public class ProductController {
             @RequestBody @Valid @NotNull ProductCategoryDTO productCategory
     ) {
         try {
-            UUID sellerId = UUID.fromString("c2e56bdd-1a5b-4a14-bc5b-ef069c20060f"); // TODO estrarre sellerId da token
+            // TODO estrarre sellerId da token
+            UUID sellerId = UUID.fromString("c2e56bdd-1a5b-4a14-bc5b-ef069c20060f");
 
             Category firstCategory = validateCategory(productCategory.firstCategoryId());
             Category secondCategory = validateCategory(productCategory.secondCategoryId());
@@ -124,7 +133,8 @@ public class ProductController {
     @DeleteMapping
     public ResponseEntity<?> removeProduct(@RequestParam(value = "product") @NotNull UUID productId) {
         try {
-            UUID sellerId = null; // TODO estrarre sellerId da token
+            // TODO estrarre sellerId da token
+            UUID sellerId = null;
             if (!productSellerService.existsProductForSeller(productId, sellerId))
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"));
 
@@ -148,6 +158,7 @@ public class ProductController {
         return new ResponseEntity<>(result, HttpStatus.OK);
    }*/
 
+    // TODO reworkare ste robe per lanciare eccezzioni specifiche
     private Tag validateTag(UUID id) throws ArgumentValueNotValidException {
         if (id == null)
             return null;
