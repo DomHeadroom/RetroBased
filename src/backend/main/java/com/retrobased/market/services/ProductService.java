@@ -8,7 +8,6 @@ import com.retrobased.market.entities.Order;
 import com.retrobased.market.entities.OrderItem;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.ProductSeller;
-import com.retrobased.market.entities.Sell;
 import com.retrobased.market.entities.Seller;
 import com.retrobased.market.repositories.ProductRepository;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
@@ -40,16 +39,14 @@ public class ProductService {
     private final ProductSellerService productSellerService;
     private final CustomerService customerService;
     private final OrderItemService orderItemService;
-    private final SellService sellService;
     private final OrderService orderService;
     private final SellerService sellerService;
 
-    public ProductService(ProductRepository productRepository, ProductSellerService productSellerService, CustomerService customerService, OrderItemService orderItemService, SellService sellService, OrderService orderService, SellerService sellerService) {
+    public ProductService(ProductRepository productRepository, ProductSellerService productSellerService, CustomerService customerService, OrderItemService orderItemService, OrderService orderService, SellerService sellerService) {
         this.productRepository = productRepository;
         this.productSellerService = productSellerService;
         this.customerService = customerService;
         this.orderItemService = orderItemService;
-        this.sellService = sellService;
         this.orderService = orderService;
         this.sellerService = sellerService;
     }
@@ -148,7 +145,6 @@ public class ProductService {
 
         List<OrderItem> orderItems = new LinkedList<>();
 
-        List<Sell> soldItems = new LinkedList<>();
 
         for (Product product : products) {
             Long quantityToAdd = productIds.get(product.getId());
@@ -161,17 +157,7 @@ public class ProductService {
             orderItem.setPrice(product.getSalePrice());
 
             orderItems.add(orderItem);
-
-            Sell soldItem = new Sell();
-            soldItem.setProduct(product);
-            soldItem.setQuantity(quantityToAdd);
-            soldItem.setPrice(product.getSalePrice());
-            soldItem.setCustomer(customer);
-
-            soldItems.add(soldItem);
         }
-
-        sellService.save(soldItems);
 
         orderItemService.save(orderItems);
 

@@ -103,7 +103,8 @@ public class ProductController {
             if (attribute != null)
                 productAttributeService.create(attribute, product);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(product);
+            ProductDTO productDTO = productService.convertToDTO(product);
+            return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
         } catch (ArgumentValueNotValidException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));
         } catch (SellerNotFoundException e) {
