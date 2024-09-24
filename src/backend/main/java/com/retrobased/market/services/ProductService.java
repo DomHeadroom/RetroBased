@@ -58,8 +58,12 @@ public class ProductService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Product addProduct(ProductDTO product, UUID sellerId) throws ArgumentValueNotValidException, SellerNotFoundException {
-        Product productAdded = productRepository.save(convertToProduct(product));
+    public Product addProduct(ProductDTO productDTO, UUID sellerId) throws ArgumentValueNotValidException, SellerNotFoundException {
+        Product product = convertToProduct(productDTO);
+        product.setDeleted(false);
+        product.setPublished(true);
+
+        Product productAdded = productRepository.save(product);
 
         Seller seller = sellerService.get(sellerId)
                 .orElseThrow(SellerNotFoundException::new);
