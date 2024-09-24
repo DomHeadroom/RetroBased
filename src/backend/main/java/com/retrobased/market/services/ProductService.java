@@ -7,7 +7,6 @@ import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.entities.Order;
 import com.retrobased.market.entities.OrderItem;
 import com.retrobased.market.entities.Product;
-import com.retrobased.market.entities.ProductSeller;
 import com.retrobased.market.entities.Seller;
 import com.retrobased.market.repositories.ProductRepository;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
@@ -58,17 +57,7 @@ public class ProductService {
         Seller seller = sellerService.get(sellerId)
                 .orElseThrow(SellerNotFoundException::new);
 
-        ProductSeller.ProductSellerId productSellerId = new ProductSeller.ProductSellerId(
-                productAdded.getId(),
-                seller.getId()
-        );
-
-        ProductSeller productSeller = new ProductSeller();
-        productSeller.setId(productSellerId);
-        productSeller.setProduct(productAdded);
-        productSeller.setSeller(seller);
-
-        productSellerService.save(productSeller);
+        productSellerService.createAndSave(productAdded, seller);
         return productAdded;
     }
 

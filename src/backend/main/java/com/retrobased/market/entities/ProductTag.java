@@ -25,6 +25,21 @@ import java.util.UUID;
 @Table(name = "product_tags")
 public class ProductTag {
 
+    @EmbeddedId
+    @Valid
+    private ProductTagId id;
+
+    @ManyToOne
+    @MapsId("productId")
+    @JoinColumn(name = "product_id", nullable = false, insertable = false, updatable = false)
+    private Product product;
+
+    @ManyToOne
+    @MapsId("tagId")
+    @JoinColumn(name = "tag_id", nullable = false, insertable = false, updatable = false)
+    private Tag tag;
+
+
     @Embeddable
     @Getter
     @NoArgsConstructor
@@ -42,19 +57,4 @@ public class ProductTag {
         private UUID tagId;
 
     }
-
-    @EmbeddedId
-    @Valid
-    private ProductTagId id;
-
-    @ManyToOne
-    @MapsId("productId")
-    @JoinColumn(name = "product_id", nullable = false, insertable = false, updatable = false)
-    private Product product;
-
-    @ManyToOne
-    @MapsId("tagId")
-    @JoinColumn(name = "tag_id", nullable = false, insertable = false, updatable = false)
-    private Tag tag;
-
 }

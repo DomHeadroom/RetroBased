@@ -5,12 +5,14 @@ import com.retrobased.market.dto.ProductDTO;
 import com.retrobased.market.entities.Attribute;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.Category;
+import com.retrobased.market.entities.Tag;
 import com.retrobased.market.services.AttributeService;
 import com.retrobased.market.services.CategoryService;
 import com.retrobased.market.services.ProductAttributeService;
 import com.retrobased.market.services.ProductSellerService;
 import com.retrobased.market.services.ProductCategoryService;
 import com.retrobased.market.services.ProductService;
+import com.retrobased.market.services.TagService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
 import com.retrobased.market.support.exceptions.ProductNotFoundException;
@@ -38,14 +40,16 @@ public class ProductController {
     private final AttributeService attributeService;
     private final ProductCategoryService productCategoryService;
     private final ProductAttributeService productAttributeService;
+    private final TagService tagService;
 
-    public ProductController(ProductService productService, ProductSellerService productSellerService, ProductCategoryService productCategoryService, CategoryService categoryService, AttributeService attributeService, ProductAttributeService productAttributeService) {
+    public ProductController(ProductService productService, ProductSellerService productSellerService, ProductCategoryService productCategoryService, CategoryService categoryService, AttributeService attributeService, ProductAttributeService productAttributeService, TagService tagService) {
         this.productService = productService;
         this.productSellerService = productSellerService;
         this.productCategoryService = productCategoryService;
         this.categoryService = categoryService;
         this.attributeService = attributeService;
         this.productAttributeService = productAttributeService;
+        this.tagService = tagService;
     }
 
     /**
@@ -92,6 +96,8 @@ public class ProductController {
                 throw new ArgumentValueNotValidException();
 
             Attribute attribute = validateAttribute(productCategory.attributeId());
+            Tag tag = validateTag(productCategory.tagId());
+
             Product product = productService.addProduct(productCategory.product(), sellerId);
 
             if (firstCategory != null)
@@ -102,6 +108,9 @@ public class ProductController {
 
             if (attribute != null)
                 productAttributeService.create(attribute, product);
+
+            if (tag != null)
+                tagService.create(tag, product);
 
             ProductDTO productDTO = productService.convertToDTO(product);
             return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
@@ -139,19 +148,27 @@ public class ProductController {
         return new ResponseEntity<>(result, HttpStatus.OK);
    }*/
 
-    private Category validateCategory(UUID categoryId) throws ArgumentValueNotValidException {
-        if (categoryId == null)
+    private Tag validateTag(UUID id) throws ArgumentValueNotValidException {
+        if (id == null)
             return null;
 
-        return categoryService.get(categoryId)
+        return tagService.get(id)
                 .orElseThrow(ArgumentValueNotValidException::new);
     }
 
-    private Attribute validateAttribute(UUID attributeId) throws ArgumentValueNotValidException {
-        if (attributeId == null)
+    private Category validateCategory(UUID id) throws ArgumentValueNotValidException {
+        if (id == null)
             return null;
 
-        return attributeService.get(attributeId)
+        return categoryService.get(id)
+                .orElseThrow(ArgumentValueNotValidException::new);
+    }
+
+    private Attribute validateAttribute(UUID id) throws ArgumentValueNotValidException {
+        if (id == null)
+            return null;
+
+        return attributeService.get(id)
                 .orElseThrow(ArgumentValueNotValidException::new);
     }
 }

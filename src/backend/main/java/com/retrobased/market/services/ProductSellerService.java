@@ -63,6 +63,20 @@ public class ProductSellerService {
         save(productSeller);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void createAndSave(Product product, Seller seller) {
+        ProductSeller.ProductSellerId productSellerId = new ProductSeller.ProductSellerId(
+                product.getId(),
+                seller.getId()
+        );
+
+        ProductSeller productSeller = new ProductSeller();
+        productSeller.setId(productSellerId);
+        productSeller.setProduct(product);
+        productSeller.setSeller(seller);
+        save(productSeller);
+    }
+
     public ProductDTO convertProductToDTO(Product product) {
         return new ProductDTO(
                 product.getId(),
