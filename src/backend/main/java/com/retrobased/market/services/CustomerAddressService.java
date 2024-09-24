@@ -1,7 +1,10 @@
 package com.retrobased.market.services;
 
+import com.retrobased.market.dto.CustomerAddressDTO;
+import com.retrobased.market.dto.ProductDTO;
 import com.retrobased.market.entities.Customer;
 import com.retrobased.market.entities.CustomerAddress;
+import com.retrobased.market.entities.Product;
 import com.retrobased.market.repositories.CustomerAddressRepository;
 import com.retrobased.market.support.exceptions.AddressNotFoundException;
 import com.retrobased.market.support.exceptions.CustomerNotFoundException;
@@ -28,18 +31,20 @@ public class CustomerAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public CustomerAddress addAddress(@NotNull UUID customerId, @NotNull CustomerAddress address) throws CustomerNotFoundException {
+    public CustomerAddressDTO addAddress(@NotNull UUID customerId, @NotNull CustomerAddressDTO addressDTO) throws CustomerNotFoundException {
         Customer customer = customerService.get(customerId)
                 .orElseThrow(CustomerNotFoundException::new);
 
         CustomerAddress newAddress = new CustomerAddress();
         newAddress.setCustomer(customer);
-        newAddress.setCity(address.getCity());
-        newAddress.setCountry(address.getCountry());
-        newAddress.setPostalCode(address.getPostalCode());
-        newAddress.setAddressLine1(address.getAddressLine1());
+        newAddress.setAddressLine1(addressDTO.addressLine1());
+        newAddress.setAddressLine2(addressDTO.addressLine2());
+        newAddress.setCountry(addressDTO.country());
+        newAddress.setPostalCode(addressDTO.postalCode());
+        newAddress.setCity(addressDTO.city());
 
-        return customerAddressRepository.save(newAddress);
+        CustomerAddress savedAddress = customerAddressRepository.save(newAddress);
+        return convertToDTO(savedAddress);
 
     }
 
@@ -64,5 +69,16 @@ public class CustomerAddressService {
     @Transactional(readOnly = true)
     public CustomerAddress get(@NotNull UUID customerAddressId) {
         return customerAddressRepository.getReferenceById(customerAddressId);
+    }
+
+    public CustomerAddressDTO convertToDTO(CustomerAddress customerAddress) {
+        return new CustomerAddressDTO(
+                customerAddress.getId(),
+                customerAddress.getAddressLine1(),
+                customerAddress.getAddressLine2(),
+                customerAddress.getCountry(),
+                customerAddress.getPostalCode(),
+                customerAddress.getCity()
+        );
     }
 }

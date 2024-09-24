@@ -1,7 +1,7 @@
 package com.retrobased.market.controllers;
 
+import com.retrobased.market.dto.CustomerAddressDTO;
 import com.retrobased.market.entities.Customer;
-import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.services.CustomerAddressService;
 import com.retrobased.market.services.CustomerService;
 import com.retrobased.market.support.ResponseMessage;
@@ -47,10 +47,10 @@ public class CustomerController {
     // TODO cacciare customerId per prenderlo da token
     @PostMapping("addresses")
     public ResponseEntity<?> addCustomerAddress(
-            @RequestBody @Valid CustomerAddress address,
+            @RequestBody @Valid CustomerAddressDTO addressDTO,
             @RequestParam(value = "user") @NotNull UUID customerId) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(customerAddressService.addAddress(customerId, address));
+            return ResponseEntity.status(HttpStatus.CREATED).body(customerAddressService.addAddress(customerId, addressDTO));
         } catch (CustomerNotFoundException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_USER_NOT_FOUND"));
         }
