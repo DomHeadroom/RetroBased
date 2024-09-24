@@ -23,20 +23,6 @@ import java.util.UUID;
 @Table(name = "product_sellers")
 public class ProductSeller {
 
-    @Embeddable
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @EqualsAndHashCode
-    public static class ProductSellerId implements Serializable {
-
-        @Column(name = "product_id")
-        private UUID productId;
-
-        @Column(name = "seller_id")
-        private UUID sellerId;
-    }
-
     @EmbeddedId
     private ProductSellerId id;
 
@@ -50,4 +36,17 @@ public class ProductSeller {
     @JoinColumn(name = "seller_id", nullable = false, insertable = false, updatable = false)
     private Seller seller;
 
+    @Embeddable
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @EqualsAndHashCode
+    public static class ProductSellerId implements Serializable {
+
+        @Column(name = "product_id")
+        private UUID productId;
+
+        @Column(name = "seller_id")
+        private UUID sellerId;
+    }
 }

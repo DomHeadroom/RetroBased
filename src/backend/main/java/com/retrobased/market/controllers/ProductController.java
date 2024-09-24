@@ -81,7 +81,7 @@ public class ProductController {
             @RequestBody @Valid @NotNull ProductCategoryDTO productCategory
     ) {
         try {
-            UUID sellerId = null; // TODO estrarre sellerId da token
+            UUID sellerId = UUID.fromString("c2e56bdd-1a5b-4a14-bc5b-ef069c20060f"); // TODO estrarre sellerId da token
 
             Category firstCategory = validateCategory(productCategory.firstCategoryId());
             Category secondCategory = validateCategory(productCategory.secondCategoryId());
@@ -92,10 +92,7 @@ public class ProductController {
                 throw new ArgumentValueNotValidException();
 
             Attribute attribute = validateAttribute(productCategory.attributeId());
-
             Product product = productService.addProduct(productCategory.product(), sellerId);
-
-            productSellerService.create(sellerId, product);
 
             if (firstCategory != null)
                 productCategoryService.create(firstCategory, product);

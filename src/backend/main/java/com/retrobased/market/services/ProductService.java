@@ -61,7 +61,13 @@ public class ProductService {
         Seller seller = sellerService.get(sellerId)
                 .orElseThrow(SellerNotFoundException::new);
 
+        ProductSeller.ProductSellerId productSellerId = new ProductSeller.ProductSellerId(
+                productAdded.getId(),
+                seller.getId()
+        );
+
         ProductSeller productSeller = new ProductSeller();
+        productSeller.setId(productSellerId);
         productSeller.setProduct(productAdded);
         productSeller.setSeller(seller);
 
@@ -227,7 +233,6 @@ public class ProductService {
 
     private Product convertToProduct(ProductDTO productDTO) {
         Product product = new Product();
-        product.setId(productDTO.id());
         product.setSlug(productDTO.slug());
         product.setProductName(productDTO.productName());
         product.setSku(productDTO.sku());
@@ -235,7 +240,6 @@ public class ProductService {
         product.setQuantity(productDTO.quantity());
         product.setShortDescription(productDTO.shortDescription());
         product.setProductDescription(productDTO.productDescription());
-        product.setDisableOutOfStock(productDTO.disableOutOfStock());
         product.setNote(productDTO.note());
 
         return product;

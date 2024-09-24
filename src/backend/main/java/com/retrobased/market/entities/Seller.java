@@ -6,6 +6,8 @@ import org.hibernate.annotations.UuidGenerator;
 
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.UUID;
+
 @Data
 @Entity
 @Table(name = "sellers")
@@ -14,7 +16,7 @@ public class Seller {
     @Id
     @UuidGenerator
     @Column(name = "id", updatable = false, nullable = false)
-    private String id;
+    private UUID id;
 
     @Column(name = "seller_name", nullable = false)
     @NotBlank(message = "This field cannot be empty.")

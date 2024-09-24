@@ -38,6 +38,7 @@ public record ProductDTO(
         String productDescription,
 
         @JsonInclude(value = JsonInclude.Include.NON_DEFAULT)
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         Boolean disableOutOfStock,
 
         @JsonInclude(JsonInclude.Include.NON_NULL)
