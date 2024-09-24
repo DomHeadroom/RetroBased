@@ -12,7 +12,7 @@ import com.retrobased.market.services.ProductAttributeService;
 import com.retrobased.market.services.ProductSellerService;
 import com.retrobased.market.services.ProductCategoryService;
 import com.retrobased.market.services.ProductService;
-import com.retrobased.market.services.TagService;
+import com.retrobased.market.services.ProductTagService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
 import com.retrobased.market.support.exceptions.ProductNotFoundException;
@@ -40,16 +40,16 @@ public class ProductController {
     private final AttributeService attributeService;
     private final ProductCategoryService productCategoryService;
     private final ProductAttributeService productAttributeService;
-    private final TagService tagService;
+    private final ProductTagService productTagService;
 
-    public ProductController(ProductService productService, ProductSellerService productSellerService, ProductCategoryService productCategoryService, CategoryService categoryService, AttributeService attributeService, ProductAttributeService productAttributeService, TagService tagService) {
+    public ProductController(ProductService productService, ProductSellerService productSellerService, ProductCategoryService productCategoryService, CategoryService categoryService, AttributeService attributeService, ProductAttributeService productAttributeService, ProductTagService productTagService) {
         this.productService = productService;
         this.productSellerService = productSellerService;
         this.productCategoryService = productCategoryService;
         this.categoryService = categoryService;
         this.attributeService = attributeService;
         this.productAttributeService = productAttributeService;
-        this.tagService = tagService;
+        this.productTagService = productTagService;
     }
 
     /**
@@ -110,7 +110,7 @@ public class ProductController {
                 productAttributeService.create(attribute, product);
 
             if (tag != null)
-                tagService.create(tag, product);
+                productTagService.create(tag, product);
 
             ProductDTO productDTO = productService.convertToDTO(product);
             return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
@@ -152,7 +152,7 @@ public class ProductController {
         if (id == null)
             return null;
 
-        return tagService.get(id)
+        return productTagService.get(id)
                 .orElseThrow(ArgumentValueNotValidException::new);
     }
 

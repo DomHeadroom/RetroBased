@@ -182,7 +182,7 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public boolean isPublished(UUID productId) {
-        return productRepository.existsByIdAndPublished(productId,true);
+        return productRepository.existsByIdAndPublished(productId, true);
     }
 
     @Transactional(readOnly = true)

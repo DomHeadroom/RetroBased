@@ -89,7 +89,7 @@ public class CartItemService {
      * @param quantity   the new quantity for the product in the cart; must be non-negative (0 will remove the item)
      * @throws ArgumentValueNotValidException if the requested quantity exceeds available stock
      * @throws ProductNotFoundException       if the product is not found in the customer's cart
-     * @throws CustomerNotFoundException    if the customer does not exist in the system
+     * @throws CustomerNotFoundException      if the customer does not exist in the system
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public void changeQuantity(@NotNull UUID customerId, @NotNull UUID productId, @NotNull @Min(0) Long quantity) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {

@@ -3,6 +3,7 @@ package com.retrobased.market.services;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.ProductTag;
 import com.retrobased.market.entities.Tag;
+import com.retrobased.market.repositories.ProductTagRepository;
 import com.retrobased.market.repositories.TagRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -12,12 +13,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class TagService {
+public class ProductTagService {
 
     private final TagRepository tagRepository;
+    private final ProductTagRepository productTagRepository;
 
-    public TagService(TagRepository tagRepository) {
+    public ProductTagService(TagRepository tagRepository, ProductTagRepository productTagRepository) {
         this.tagRepository = tagRepository;
+        this.productTagRepository = productTagRepository;
     }
 
     /**
@@ -55,6 +58,6 @@ public class TagService {
         productTag.setProduct(product);
         productTag.setTag(tag);
         productTag.setId(productTagId);
-        tagRepository.save(tag);
+        productTagRepository.save(productTag);
     }
 }
