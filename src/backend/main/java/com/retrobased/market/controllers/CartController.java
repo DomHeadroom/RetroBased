@@ -1,6 +1,5 @@
 package com.retrobased.market.controllers;
 
-import com.retrobased.market.dto.ProductDTO;
 import com.retrobased.market.dto.ProductObjQuantityDTO;
 import com.retrobased.market.dto.ProductRequestCartDTO;
 import com.retrobased.market.services.CartItemService;
@@ -92,7 +91,7 @@ public class CartController {
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber) {
         // UUID customerId = TODO cambiare con metodo per estrarre id da token
         try {
-            List<ProductDTO> result = cartItemService.getCartItems(customerId, pageNumber);
+            List<ProductObjQuantityDTO> result = cartItemService.getCartItems(customerId, pageNumber);
 
             if (result.isEmpty())
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

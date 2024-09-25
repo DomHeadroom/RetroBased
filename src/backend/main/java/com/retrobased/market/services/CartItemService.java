@@ -6,6 +6,7 @@ import com.retrobased.market.dto.ProductQuantityDTO;
 import com.retrobased.market.entities.Cart;
 import com.retrobased.market.entities.CartItem;
 import com.retrobased.market.entities.Product;
+import com.retrobased.market.mappers.CartItemMapper;
 import com.retrobased.market.mappers.ProductMapper;
 import com.retrobased.market.repositories.CartItemRepository;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
@@ -65,17 +66,17 @@ public class CartItemService {
      * @apiNote This method is read-only, utilizing pagination to manage the number of products returned per request.
      * The products are sorted by their creation timestamp in descending order to show the most recent products first.
      * @see CartService#getCustomerCart(UUID) CartService.getCustomerCart
-     * @see CartItemRepository#findProductsByCartId(UUID, Pageable) CartItemRepository.findProductsByCartId
+     * @see CartItemRepository#findByCartId(UUID, Pageable) CartItemRepository.findProductsByCartId
      */
     @Transactional(readOnly = true)
-    public List<ProductDTO> getCartItems(UUID customerId, int pageNumber) throws CustomerNotFoundException {
+    public List<ProductObjQuantityDTO> getCartItems(UUID customerId, int pageNumber) throws CustomerNotFoundException {
         Cart customerCart = getCustomerCart(customerId);
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.desc("createdAt")));
-        Page<Product> cartItems = cartItemRepository.findProductsByCartId(customerCart.getId(), paging);
+        Page<CartItem> cartItems = cartItemRepository.findByCartId(customerCart.getId(), paging);
         if (cartItems.hasContent())
             return cartItems.getContent()
                     .stream()
-                    .map(ProductMapper::toDTO)
+                    .map(CartItemMapper::toProductObjQuantityDTO)
                     .collect(Collectors.toList());
 
         return new ArrayList<>();
