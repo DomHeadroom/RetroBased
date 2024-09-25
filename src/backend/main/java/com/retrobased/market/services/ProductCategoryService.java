@@ -1,7 +1,7 @@
 package com.retrobased.market.services;
 
-import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.Category;
+import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.ProductCategory;
 import com.retrobased.market.repositories.ProductCategoryRepository;
 import org.springframework.stereotype.Service;

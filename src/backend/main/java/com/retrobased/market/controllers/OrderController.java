@@ -4,8 +4,6 @@ import com.retrobased.market.dto.OrderDTO;
 import com.retrobased.market.dto.OrderItemDTO;
 import com.retrobased.market.dto.ProductRequestOrderDTO;
 import com.retrobased.market.entities.CustomerAddress;
-import com.retrobased.market.entities.Order;
-import com.retrobased.market.entities.OrderItem;
 import com.retrobased.market.services.CustomerAddressService;
 import com.retrobased.market.services.OrderService;
 import com.retrobased.market.services.ProductService;

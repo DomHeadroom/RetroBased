@@ -2,11 +2,8 @@ package com.retrobased.market.controllers;
 
 import com.retrobased.market.dto.ProductDTO;
 import com.retrobased.market.entities.Seller;
-import com.retrobased.market.services.CartItemService;
 import com.retrobased.market.services.ProductSellerService;
 import com.retrobased.market.services.SellerService;
-import com.retrobased.market.support.ResponseMessage;
-import com.retrobased.market.support.exceptions.CustomerNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

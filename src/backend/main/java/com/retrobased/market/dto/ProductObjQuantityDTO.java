@@ -1,8 +1,7 @@
 package com.retrobased.market.dto;
 
-import com.retrobased.market.entities.Product;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 public record ProductObjQuantityDTO(
         @NotNull ProductDTO product,

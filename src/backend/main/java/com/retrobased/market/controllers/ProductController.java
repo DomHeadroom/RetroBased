@@ -3,29 +3,34 @@ package com.retrobased.market.controllers;
 import com.retrobased.market.dto.ProductCategoryDTO;
 import com.retrobased.market.dto.ProductDTO;
 import com.retrobased.market.entities.Attribute;
-import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.Category;
+import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.Tag;
 import com.retrobased.market.mappers.ProductMapper;
 import com.retrobased.market.services.AttributeService;
 import com.retrobased.market.services.CategoryService;
 import com.retrobased.market.services.ProductAttributeService;
-import com.retrobased.market.services.ProductSellerService;
 import com.retrobased.market.services.ProductCategoryService;
+import com.retrobased.market.services.ProductSellerService;
 import com.retrobased.market.services.ProductService;
 import com.retrobased.market.services.ProductTagService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
 import com.retrobased.market.support.exceptions.ProductNotFoundException;
 import com.retrobased.market.support.exceptions.SellerNotFoundException;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
@@ -98,10 +103,9 @@ public class ProductController {
      *
      * @param productCategory a {@link ProductCategoryDTO} object containing the product information,
      *                        categories, attributes, and tags. It must not be null and should be validated.
-     *
      * @return a {@link ResponseEntity} containing the status and body of the response. If the product is
-     *         successfully added, a {@link ProductDTO} is returned with an HTTP status of 201 (Created).
-     *         In case of an invalid argument or seller not found, appropriate error messages are returned.
+     * successfully added, a {@link ProductDTO} is returned with an HTTP status of 201 (Created).
+     * In case of an invalid argument or seller not found, appropriate error messages are returned.
      */
     @PostMapping
     public ResponseEntity<?> addProduct(

@@ -8,12 +8,16 @@ import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.CountryNotFoundException;
 import com.retrobased.market.support.exceptions.CustomerNotFoundException;
 import com.retrobased.market.support.exceptions.UserMailAlreadyExistsException;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
