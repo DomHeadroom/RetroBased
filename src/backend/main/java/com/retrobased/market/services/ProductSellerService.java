@@ -4,6 +4,7 @@ import com.retrobased.market.dto.ProductDTO;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.ProductSeller;
 import com.retrobased.market.entities.Seller;
+import com.retrobased.market.mappers.ProductMapper;
 import com.retrobased.market.repositories.ProductSellerRepository;
 import com.retrobased.market.support.exceptions.SellerNotFoundException;
 import org.springframework.data.domain.Page;
@@ -41,7 +42,7 @@ public class ProductSellerService {
         if (pagedResult.hasContent())
             return pagedResult.getContent()
                     .stream()
-                    .map(this::convertProductToDTO)
+                    .map(ProductMapper::toDTO)
                     .collect(Collectors.toList());
 
         return new ArrayList<>();
@@ -80,19 +81,4 @@ public class ProductSellerService {
         save(productSeller);
     }
 
-    public ProductDTO convertProductToDTO(Product product) {
-        return new ProductDTO(
-                product.getId(),
-                product.getSlug(),
-                product.getProductName(),
-                product.getSku(),
-                product.getSalePrice(),
-                product.getQuantity(),
-                product.getShortDescription(),
-                product.getProductDescription(),
-                product.getDisableOutOfStock(),
-                product.getNote(),
-                product.getCreatedAt()
-        );
-    }
 }

@@ -1,5 +1,6 @@
 package com.retrobased.market.controllers;
 
+import com.retrobased.market.dto.OrderDTO;
 import com.retrobased.market.dto.ProductRequestOrderDTO;
 import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.entities.Order;
@@ -56,7 +57,7 @@ public class OrderController {
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber
     ) {
         // UUID customerId = TODO cambiare con metodo per estrarre id da token
-        List<Order> result = orderService.getOrders(customerId, pageNumber);
+        List<OrderDTO> result = orderService.getOrders(customerId, pageNumber);
         if (result.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 

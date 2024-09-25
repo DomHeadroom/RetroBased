@@ -4,6 +4,7 @@ import com.retrobased.market.dto.CustomerAddressDTO;
 import com.retrobased.market.entities.Country;
 import com.retrobased.market.entities.Customer;
 import com.retrobased.market.entities.CustomerAddress;
+import com.retrobased.market.mappers.CustomerAddressMapper;
 import com.retrobased.market.repositories.CustomerAddressRepository;
 import com.retrobased.market.support.exceptions.AddressNotFoundException;
 import com.retrobased.market.support.exceptions.CustomerNotFoundException;
@@ -50,7 +51,7 @@ public class CustomerAddressService {
         newAddress.setCity(addressDTO.city());
 
         CustomerAddress savedAddress = customerAddressRepository.save(newAddress);
-        return convertToDTO(savedAddress);
+        return CustomerAddressMapper.toDTO(savedAddress);
 
     }
 
@@ -77,14 +78,5 @@ public class CustomerAddressService {
         return customerAddressRepository.getReferenceById(customerAddressId);
     }
 
-    public CustomerAddressDTO convertToDTO(CustomerAddress customerAddress) {
-        return new CustomerAddressDTO(
-                customerAddress.getId(),
-                customerAddress.getAddressLine1(),
-                customerAddress.getAddressLine2(),
-                customerAddress.getCountry().getId(),
-                customerAddress.getPostalCode(),
-                customerAddress.getCity()
-        );
-    }
+
 }

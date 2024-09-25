@@ -1,8 +1,10 @@
 package com.retrobased.market.services;
 
+import com.retrobased.market.dto.OrderDTO;
 import com.retrobased.market.entities.Order;
 import com.retrobased.market.entities.OrderItem;
 import com.retrobased.market.entities.Product;
+import com.retrobased.market.mappers.OrderMapper;
 import com.retrobased.market.repositories.OrderRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -46,12 +49,15 @@ public class OrderService {
      * @see OrderRepository#findByCustomerId(UUID, Pageable) OrderRepository.findByCustomerId
      */
     @Transactional(readOnly = true)
-    public List<Order> getOrders(UUID customerId, int pageNumber) {
+    public List<OrderDTO> getOrders(UUID customerId, int pageNumber) {
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.desc("createdAt")));
         Page<Order> orders = orderRepository.findByCustomerId(customerId, paging);
 
         if (orders.hasContent())
-            return orders.getContent();
+            return orders.getContent()
+                    .stream()
+                    .map(OrderMapper::toDTO)
+                    .collect(Collectors.toList());
 
         return new ArrayList<>();
     }
@@ -102,4 +108,5 @@ public class OrderService {
     public Order save(Order order) {
         return orderRepository.save(order);
     }
+
 }

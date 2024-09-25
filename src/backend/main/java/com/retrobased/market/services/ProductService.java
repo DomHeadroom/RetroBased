@@ -8,6 +8,7 @@ import com.retrobased.market.entities.Order;
 import com.retrobased.market.entities.OrderItem;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.Seller;
+import com.retrobased.market.mappers.ProductMapper;
 import com.retrobased.market.repositories.ProductRepository;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
 
@@ -59,7 +60,7 @@ public class ProductService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public Product addProduct(ProductDTO productDTO, UUID sellerId) throws ArgumentValueNotValidException, SellerNotFoundException {
-        Product product = convertToProduct(productDTO);
+        Product product = ProductMapper.toEntity(productDTO);
         product.setDeleted(false);
         product.setPublished(true);
 
@@ -103,7 +104,7 @@ public class ProductService {
         if (pagedResult.hasContent())
             return pagedResult.getContent()
                     .stream()
-                    .map(this::convertToDTO)
+                    .map(ProductMapper::toDTO)
                     .collect(Collectors.toList());
 
         return new ArrayList<>();
@@ -201,33 +202,4 @@ public class ProductService {
         return productRepository.findQuantityById(productId);
     }
 
-    public ProductDTO convertToDTO(Product product) {
-        return new ProductDTO(
-                product.getId(),
-                product.getSlug(),
-                product.getProductName(),
-                product.getSku(),
-                product.getSalePrice(),
-                product.getQuantity(),
-                product.getShortDescription(),
-                product.getProductDescription(),
-                product.getDisableOutOfStock(),
-                product.getNote(),
-                product.getCreatedAt()
-        );
-    }
-
-    private Product convertToProduct(ProductDTO productDTO) {
-        Product product = new Product();
-        product.setSlug(productDTO.slug());
-        product.setProductName(productDTO.productName());
-        product.setSku(productDTO.sku());
-        product.setSalePrice(productDTO.salePrice());
-        product.setQuantity(productDTO.quantity());
-        product.setShortDescription(productDTO.shortDescription());
-        product.setProductDescription(productDTO.productDescription());
-        product.setNote(productDTO.note());
-
-        return product;
-    }
 }
