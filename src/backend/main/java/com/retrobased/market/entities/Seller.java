@@ -24,18 +24,15 @@ public class Seller {
     private UUID id;
 
     @Column(name = "seller_name", nullable = false)
-    @NotBlank(message = "This field cannot be empty.")
     private String sellerName;
 
     @Column(name = "company")
     private String company;
 
     @Column(name = "phone_number")
-    @NotBlank
     private String phoneNumber;
 
     @Column(name = "address_line1", nullable = false)
-    @NotBlank(message = "This field cannot be empty.")
     private String addressLine1;
 
     @Column(name = "address_line2")
@@ -43,7 +40,6 @@ public class Seller {
 
     @ManyToOne
     @JoinColumn(name = "country_id")
-    @NotNull(message = "This field cannot be null.")
     private Country country;
 
     @Column(name = "city")

@@ -60,8 +60,8 @@ public class CustomerAddressService {
         if (!customerService.exists(customerId))
             throw new CustomerNotFoundException();
 
-        if (!customerAddressRepository.existsById(customerId) ||
-                !customerAddressRepository.existsByIdAndCustomerId(customerId, addressId))
+        if (!customerAddressRepository.existsById(addressId) ||
+                !customerAddressRepository.existsByIdAndCustomerId(addressId, customerId))
             throw new AddressNotFoundException();
 
         customerAddressRepository.deleteById(addressId);

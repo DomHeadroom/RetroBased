@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public interface CustomerAddressRepository extends JpaRepository<CustomerAddress, UUID>, JpaSpecificationExecutor<CustomerAddress> {
 
-    boolean existsByIdAndCustomerId(UUID id, UUID customer_id);
+    boolean existsByIdAndCustomerId(UUID addressId, UUID customerId);
 
 }

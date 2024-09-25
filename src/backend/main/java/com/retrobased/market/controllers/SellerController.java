@@ -1,7 +1,7 @@
 package com.retrobased.market.controllers;
 
 import com.retrobased.market.dto.ProductDTO;
-import com.retrobased.market.entities.Seller;
+import com.retrobased.market.dto.SellerDTO;
 import com.retrobased.market.services.ProductSellerService;
 import com.retrobased.market.services.SellerService;
 import com.retrobased.market.support.ResponseMessage;
@@ -41,7 +41,7 @@ public class SellerController {
 
     // TODO cambiare sta roba con SELLER DTO
     @PostMapping
-    public ResponseEntity<?> registerSeller(@RequestBody @Valid @NotNull Seller seller) {
+    public ResponseEntity<?> registerSeller(@RequestBody @Valid @NotNull SellerDTO seller) {
         sellerService.registerSeller(seller);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

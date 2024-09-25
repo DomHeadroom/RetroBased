@@ -1,6 +1,8 @@
 package com.retrobased.market.services;
 
+import com.retrobased.market.dto.SellerDTO;
 import com.retrobased.market.entities.Seller;
+import com.retrobased.market.mappers.SellerMapper;
 import com.retrobased.market.repositories.SellerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,10 +21,9 @@ public class SellerService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void registerSeller(Seller seller) {
+    public void registerSeller(SellerDTO seller) {
 
-        Seller sellerAdded = sellerRepository.save(seller);
-        System.out.println("Saved user: " + sellerAdded);
+        sellerRepository.save(SellerMapper.toEntity(seller));
     }
 
     @Transactional(readOnly = true)

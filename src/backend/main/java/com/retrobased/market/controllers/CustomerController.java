@@ -77,7 +77,7 @@ public class CustomerController {
 
     @DeleteMapping("addresses")
     public ResponseEntity<?> removeCustomerAddress(
-            @RequestParam @NotNull UUID addressId,
+            @RequestParam(value = "id") @NotNull UUID addressId,
             // TODO cacciare customerId per prenderlo da token
             @RequestParam(value = "user") @NotNull UUID customerId) {
         try {

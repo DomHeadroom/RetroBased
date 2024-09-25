@@ -21,5 +21,5 @@ public interface CartItemRepository extends JpaRepository<CartItem, UUID>, JpaSp
     @Query("SELECT c.product FROM CartItem c WHERE c.cart.id = :cartId")
     Page<Product> findProductsByCartId(@Param("cartId") UUID cartId, Pageable pageable);
 
-    Optional<CartItem> findByCartIdAndProductId(UUID id, UUID id1);
+    Optional<CartItem> findByCartIdAndProductId(UUID cartId, UUID productId);
 }
