@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -99,10 +100,13 @@ public class OrderController {
             // a6cd2287-bb39-48b8-b1d7-62ec612ba064
             UUID customerId = UUID.fromString("a6cd2287-bb39-48b8-b1d7-62ec612ba064"); // TODO cambiare con metodo per estrarre id da token
 
-            if (!customerAddressService.existsAddressForCustomer(customerId, productRequestOrder.addressId()))
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"));
+            Optional<CustomerAddress> customerAddressOpt = customerAddressService.getIfExistsAndNotDeleted(customerId, productRequestOrder.addressId());
 
-            CustomerAddress customerAddress = customerAddressService.get(productRequestOrder.addressId());
+            if (customerAddressOpt.isEmpty())
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("ERROR_ADDRESS_NOT_FOUND"));
+
+            CustomerAddress customerAddress = customerAddressOpt.get();
+
 
             OrderDTO finalOrder = productService.lockAndReduceQuantities(productRequestOrder.products(), customerAddress, customerId);
             return ResponseEntity.status(HttpStatus.CREATED).body(finalOrder);

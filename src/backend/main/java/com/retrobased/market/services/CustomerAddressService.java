@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -60,17 +61,12 @@ public class CustomerAddressService {
         if (!customerService.exists(customerId))
             throw new CustomerNotFoundException();
 
-        if (!customerAddressRepository.existsById(addressId) ||
-                !customerAddressRepository.existsByIdAndCustomerId(addressId, customerId))
-            throw new AddressNotFoundException();
+        CustomerAddress address = customerAddressRepository.findByIdAndCustomerIdAndDeletedFalse(addressId,customerId)
+                .orElseThrow(AddressNotFoundException::new);
 
-        customerAddressRepository.deleteById(addressId);
+        address.setDeleted(true);
+        customerAddressRepository.save(address);
 
-    }
-
-    @Transactional(readOnly = true)
-    public boolean existsAddressForCustomer(@NotNull UUID customerId, @NotNull UUID customerAddressId) {
-        return customerAddressRepository.existsByIdAndCustomerId(customerAddressId, customerId);
     }
 
     @Transactional(readOnly = true)
@@ -78,5 +74,8 @@ public class CustomerAddressService {
         return customerAddressRepository.getReferenceById(customerAddressId);
     }
 
-
+    @Transactional(readOnly = true)
+    public Optional<CustomerAddress> getIfExistsAndNotDeleted(UUID customerId, UUID addressId) {
+        return customerAddressRepository.findByIdAndCustomerIdAndDeletedFalse(addressId, customerId);
+    }
 }

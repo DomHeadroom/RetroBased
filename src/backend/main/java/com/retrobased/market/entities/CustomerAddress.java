@@ -43,4 +43,7 @@ public class CustomerAddress {
     @Column(name = "city", nullable = false)
     private String city;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
 }
