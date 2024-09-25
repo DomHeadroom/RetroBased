@@ -34,7 +34,6 @@ public class CustomerAddress {
 
     @ManyToOne
     @JoinColumn(name = "country_id")
-    @NotNull(message = "This field cannot be null.")
     private Country country;
 
     @Column(name = "postal_code", nullable = false)

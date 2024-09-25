@@ -25,12 +25,10 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    @JsonIgnore
     private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "addresses_id")
-    @JsonIgnore
     private CustomerAddress address;
 
     @Column(name = "order_approved_at")
