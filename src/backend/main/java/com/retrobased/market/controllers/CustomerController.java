@@ -5,6 +5,7 @@ import com.retrobased.market.entities.Customer;
 import com.retrobased.market.services.CustomerAddressService;
 import com.retrobased.market.services.CustomerService;
 import com.retrobased.market.support.ResponseMessage;
+import com.retrobased.market.support.exceptions.AddressNotFoundException;
 import com.retrobased.market.support.exceptions.CountryNotFoundException;
 import com.retrobased.market.support.exceptions.CustomerNotFoundException;
 import com.retrobased.market.support.exceptions.UserMailAlreadyExistsException;
@@ -13,6 +14,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,6 +72,21 @@ public class CustomerController {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_USER_NOT_FOUND"));
         } catch (CountryNotFoundException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_COUNTRY_NOT_FOUND"));
+        }
+    }
+
+    @DeleteMapping("addresses")
+    public ResponseEntity<?> removeCustomerAddress(
+            @RequestParam @NotNull UUID addressId,
+            // TODO cacciare customerId per prenderlo da token
+            @RequestParam(value = "user") @NotNull UUID customerId) {
+        try {
+            customerAddressService.removeAddress(customerId, addressId);
+            return ResponseEntity.ok(new ResponseMessage("SUCCESSFUL_ADDRESS_DELETION"));
+        } catch (CustomerNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("ERROR_USER_NOT_FOUND"));
+        } catch (AddressNotFoundException e) {
+            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ADDRESS_NOT_FOUND"));
         }
     }
 
