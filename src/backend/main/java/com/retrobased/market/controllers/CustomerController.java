@@ -49,10 +49,19 @@ public class CustomerController {
         }
     }
 
-    // TODO cacciare customerId per prenderlo da token
+    /**
+     * Adds an address to a customer.
+     *
+     * @param addressDTO The DTO object containing the address details. This must be a valid
+     *                   {@link CustomerAddressDTO} object as per the validation constraints.
+     * @return A {@link ResponseEntity} containing the created {@link CustomerAddressDTO}
+     * if the operation is successful, or an error message if the customer or
+     * country is not found.
+     */
     @PostMapping("addresses")
     public ResponseEntity<?> addCustomerAddress(
             @RequestBody @Valid CustomerAddressDTO addressDTO,
+            // TODO cacciare customerId per prenderlo da token
             @RequestParam(value = "user") @NotNull UUID customerId) {
         try {
             CustomerAddressDTO customerAddress = customerAddressService.addAddress(customerId, addressDTO);
