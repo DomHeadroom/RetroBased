@@ -154,10 +154,10 @@ public class ProductController {
      * The seller ID is currently not implemented and will be extracted from
      * the token in the future.</p>
      *
-     * @param productId  The UUID of the product to be removed. This value must not be {@code null}.
-     * @return           A {@link ResponseEntity} with no content (204 status) if the product is successfully removed,
-     *                   or a bad request (400 status) with an error message if the product does not exist or if
-     *                   the seller is not authorized to remove the product.
+     * @param productId The UUID of the product to be removed. This value must not be {@code null}.
+     * @return A {@link ResponseEntity} with no content (204 status) if the product is successfully removed,
+     * or a bad request (400 status) with an error message if the product does not exist or if
+     * the seller is not authorized to remove the product.
      */
     @DeleteMapping
     public ResponseEntity<?> removeProduct(@RequestParam(value = "product") @NotNull UUID productId) {

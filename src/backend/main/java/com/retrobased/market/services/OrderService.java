@@ -4,7 +4,6 @@ import com.retrobased.market.dto.OrderDTO;
 import com.retrobased.market.dto.OrderItemDTO;
 import com.retrobased.market.entities.Order;
 import com.retrobased.market.entities.OrderItem;
-import com.retrobased.market.entities.Product;
 import com.retrobased.market.mappers.OrderItemMapper;
 import com.retrobased.market.mappers.OrderMapper;
 import com.retrobased.market.repositories.OrderRepository;
@@ -60,17 +59,6 @@ public class OrderService {
                     .stream()
                     .map(OrderMapper::toDTO)
                     .collect(Collectors.toList());
-
-        return new ArrayList<>();
-    }
-
-    @Transactional(readOnly = true)
-    public List<Product> getOrderProducts(UUID orderId, int pageNumber) {
-        Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.asc("id")));
-        Page<Product> products = orderItemService.getOrderProducts(orderId, paging);
-
-        if (products.hasContent())
-            return products.getContent();
 
         return new ArrayList<>();
     }

@@ -61,7 +61,7 @@ public class CustomerAddressService {
         if (!customerService.exists(customerId))
             throw new CustomerNotFoundException();
 
-        CustomerAddress address = customerAddressRepository.findByIdAndCustomerIdAndDeletedFalse(addressId,customerId)
+        CustomerAddress address = customerAddressRepository.findByIdAndCustomerIdAndDeletedFalse(addressId, customerId)
                 .orElseThrow(AddressNotFoundException::new);
 
         address.setDeleted(true);

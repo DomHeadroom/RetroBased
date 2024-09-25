@@ -72,9 +72,9 @@ public class OrderController {
      *                   This value must not be {@code null}.
      * @param pageNumber The page number for pagination, with a default value of 0 if
      *                   not provided. This value must be zero or greater.
-     * @return           A {@link ResponseEntity} containing a list of {@link OrderItemDTO}
-     *                   objects if products are found for the order, or {@code NO_CONTENT}
-     *                   (204 status) if the order doesn't exist or has no products.
+     * @return A {@link ResponseEntity} containing a list of {@link OrderItemDTO}
+     * objects if products are found for the order, or {@code NO_CONTENT}
+     * (204 status) if the order doesn't exist or has no products.
      */
     @GetMapping("{order}/products")
     public ResponseEntity<?> getProductsFromOrder(
