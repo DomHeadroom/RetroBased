@@ -6,6 +6,7 @@ import com.retrobased.market.dto.ProductQuantityDTO;
 import com.retrobased.market.entities.Cart;
 import com.retrobased.market.entities.CartItem;
 import com.retrobased.market.entities.Product;
+import com.retrobased.market.mappers.ProductMapper;
 import com.retrobased.market.repositories.*;
 import com.retrobased.market.support.exceptions.*;
 import jakarta.validation.constraints.Min;
@@ -72,7 +73,7 @@ public class CartItemService {
         if (cartItems.hasContent())
             return cartItems.getContent()
                     .stream()
-                    .map(productService::convertToDTO)
+                    .map(ProductMapper::toDTO)
                     .collect(Collectors.toList());
 
         return new ArrayList<>();
@@ -149,7 +150,7 @@ public class CartItemService {
                 throw new ArgumentValueNotValidException();
 
             Optional<CartItem> existingCartItemOpt = cartItemRepository.findByCartIdAndProductId(cart.getId(), productId);
-            ProductDTO productDTO = productService.convertToDTO(product);
+            ProductDTO productDTO = ProductMapper.toDTO(product);
 
             if (existingCartItemOpt.isPresent()) {
                 CartItem existingCartItem = existingCartItemOpt.get();

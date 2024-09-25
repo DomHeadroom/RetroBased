@@ -6,6 +6,7 @@ import com.retrobased.market.entities.Attribute;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.Category;
 import com.retrobased.market.entities.Tag;
+import com.retrobased.market.mappers.ProductMapper;
 import com.retrobased.market.services.AttributeService;
 import com.retrobased.market.services.CategoryService;
 import com.retrobased.market.services.ProductAttributeService;
@@ -91,7 +92,6 @@ public class ProductController {
      * This method ensures that the provided product is linked to valid categories, attributes, and tags,
      * and it registers the product in the product-seller table to establish a relationship between the product
      * and the seller.
-     *
      * The product is added to the database if all provided data is valid. Upon successful addition, a {@link ProductDTO}
      * is returned with the details of the added product, including its association with categories, attributes, and tags.
      * The product is also added to the product-seller table to ensure that it is linked with the specified seller.
@@ -136,7 +136,7 @@ public class ProductController {
             if (tag != null)
                 productTagService.create(tag, product);
 
-            ProductDTO productDTO = productService.convertToDTO(product);
+            ProductDTO productDTO = ProductMapper.toDTO(product);
             return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
         } catch (ArgumentValueNotValidException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));
