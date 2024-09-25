@@ -68,7 +68,7 @@ public class CartItemService {
      * @see CartItemRepository#findProductsByCartId(UUID, Pageable) CartItemRepository.findProductsByCartId
      */
     @Transactional(readOnly = true)
-    public List<ProductDTO> getCart(UUID customerId, int pageNumber) throws CustomerNotFoundException {
+    public List<ProductDTO> getCartItems(UUID customerId, int pageNumber) throws CustomerNotFoundException {
         Cart customerCart = getCustomerCart(customerId);
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.desc("createdAt")));
         Page<Product> cartItems = cartItemRepository.findProductsByCartId(customerCart.getId(), paging);

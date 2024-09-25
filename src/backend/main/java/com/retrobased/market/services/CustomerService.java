@@ -1,6 +1,8 @@
 package com.retrobased.market.services;
 
+import com.retrobased.market.dto.CustomerDTO;
 import com.retrobased.market.entities.Customer;
+import com.retrobased.market.mappers.CustomerMapper;
 import com.retrobased.market.repositories.CustomerRepository;
 import com.retrobased.market.support.exceptions.UserMailAlreadyExistsException;
 import org.springframework.stereotype.Service;
@@ -20,13 +22,12 @@ public class CustomerService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void registerCustomer(Customer customer) throws UserMailAlreadyExistsException {
+    public void registerCustomer(CustomerDTO customer) throws UserMailAlreadyExistsException {
 
-        if (existsByEmail(customer.getEmail()))
+        if (existsByEmail(customer.email()))
             throw new UserMailAlreadyExistsException();
 
-        Customer customerAdded = customerRepository.save(customer);
-        System.out.println("Saved user: " + customerAdded);
+        Customer customerAdded = customerRepository.save(CustomerMapper.toEntity(customer));
     }
 
     @Transactional(readOnly = true)

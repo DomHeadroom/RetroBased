@@ -29,4 +29,9 @@ public class SellerService {
     public Optional<Seller> get(UUID id) {
         return sellerRepository.findById(id);
     }
+
+    @Transactional(readOnly = true)
+    public boolean exists(UUID sellerId) {
+        return sellerRepository.existsById(sellerId);
+    }
 }

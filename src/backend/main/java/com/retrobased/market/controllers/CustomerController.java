@@ -1,7 +1,7 @@
 package com.retrobased.market.controllers;
 
 import com.retrobased.market.dto.CustomerAddressDTO;
-import com.retrobased.market.entities.Customer;
+import com.retrobased.market.dto.CustomerDTO;
 import com.retrobased.market.services.CustomerAddressService;
 import com.retrobased.market.services.CustomerService;
 import com.retrobased.market.support.ResponseMessage;
@@ -42,7 +42,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registerCustomer(@RequestBody @Valid @NotNull Customer customer) {
+    public ResponseEntity<?> registerCustomer(@RequestBody @Valid @NotNull CustomerDTO customer) {
         try {
             customerService.registerCustomer(customer);
             return ResponseEntity.status(HttpStatus.CREATED).build();

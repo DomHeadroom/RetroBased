@@ -4,6 +4,7 @@ import com.retrobased.market.dto.ProductDTO;
 import com.retrobased.market.entities.Seller;
 import com.retrobased.market.services.ProductSellerService;
 import com.retrobased.market.services.SellerService;
+import com.retrobased.market.support.ResponseMessage;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -38,7 +39,7 @@ public class SellerController {
         this.productSellerService = productSellerService;
     }
 
-    // aggiunta prodotto al carrello
+    // TODO cambiare sta roba con SELLER DTO
     @PostMapping
     public ResponseEntity<?> registerSeller(@RequestBody @Valid @NotNull Seller seller) {
         sellerService.registerSeller(seller);
@@ -51,10 +52,10 @@ public class SellerController {
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber,
             @RequestParam(value = "s", defaultValue = "id") String sortBy) {
 
-        List<ProductDTO> result = null;
+        if (!sellerService.exists(sellerId))
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("ERROR_USER_NOT_FOUND"));
 
-        // TODO rifare questo metodo per prendere prodotti venduti
-        result = productSellerService.getSellerProducts(sellerId, pageNumber, sortBy);
+        List<ProductDTO> result = productSellerService.getSellerProducts(sellerId, pageNumber, sortBy);
 
         if (result.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
