@@ -16,8 +16,11 @@ import com.retrobased.market.services.ProductService;
 import com.retrobased.market.services.ProductTagService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
+import com.retrobased.market.support.exceptions.AttributeNotFoundException;
+import com.retrobased.market.support.exceptions.CategoryNotFoundException;
 import com.retrobased.market.support.exceptions.ProductNotFoundException;
 import com.retrobased.market.support.exceptions.SellerNotFoundException;
+import com.retrobased.market.support.exceptions.TagNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -146,6 +149,12 @@ public class ProductController {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));
         } catch (SellerNotFoundException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage("ERROR_USER_NOT_FOUND"));
+        } catch (AttributeNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("ERROR_ATTRIBUTE_NOT_FOUND"));
+        } catch (CategoryNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("ERROR_CATEGORY_NOT_FOUND"));
+        } catch (TagNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("ERROR_TAG_NOT_FOUND"));
         }
     }
 
@@ -174,41 +183,27 @@ public class ProductController {
         }
     }
 
-    /*@GetMapping("/filter")
-    public ResponseEntity advancedSearchProduct(
-            @RequestParam(value = "page", defaultValue = "0") int pageNumber,
-            @RequestParam(value = "sort", defaultValue = "id") String sortBy,
-            @RequestParam(value = "keyword") String keyword) {
-
-        List<Prodotto> result = serviceProduct.searchProducts(keyword,pageNumber, sortBy);
-        if (result.isEmpty())
-            return new ResponseEntity<>(new ResponseMessage("No results!"), HttpStatus.OK);
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
-   }*/
-
-    // TODO reworkare ste robe per lanciare eccezioni specifiche
-    private Tag validateTag(UUID id) throws ArgumentValueNotValidException {
+    private Tag validateTag(UUID id) throws TagNotFoundException {
         if (id == null)
             return null;
 
         return productTagService.get(id)
-                .orElseThrow(ArgumentValueNotValidException::new);
+                .orElseThrow(TagNotFoundException::new);
     }
 
-    private Category validateCategory(UUID id) throws ArgumentValueNotValidException {
+    private Category validateCategory(UUID id) throws CategoryNotFoundException {
         if (id == null)
             return null;
 
         return categoryService.get(id)
-                .orElseThrow(ArgumentValueNotValidException::new);
+                .orElseThrow(CategoryNotFoundException::new);
     }
 
-    private Attribute validateAttribute(UUID id) throws ArgumentValueNotValidException {
+    private Attribute validateAttribute(UUID id) throws AttributeNotFoundException {
         if (id == null)
             return null;
 
         return attributeService.get(id)
-                .orElseThrow(ArgumentValueNotValidException::new);
+                .orElseThrow(AttributeNotFoundException::new);
     }
 }

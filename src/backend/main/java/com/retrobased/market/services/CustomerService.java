@@ -27,7 +27,7 @@ public class CustomerService {
         if (existsByEmail(customer.email()))
             throw new UserMailAlreadyExistsException();
 
-        Customer customerAdded = customerRepository.save(CustomerMapper.toEntity(customer));
+        customerRepository.save(CustomerMapper.toEntity(customer));
     }
 
     @Transactional(readOnly = true)
