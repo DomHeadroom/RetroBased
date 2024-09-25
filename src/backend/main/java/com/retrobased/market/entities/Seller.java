@@ -1,6 +1,7 @@
 package com.retrobased.market.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -37,8 +38,8 @@ public class Seller {
     private String addressLine2;
 
     @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false)
-    @NotBlank(message = "This field cannot be empty.")
+    @JoinColumn(name = "country_id")
+    @NotNull(message = "This field cannot be null.")
     private Country country;
 
     @Column(name = "city")

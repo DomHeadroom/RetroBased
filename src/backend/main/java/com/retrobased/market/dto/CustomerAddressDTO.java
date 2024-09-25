@@ -15,7 +15,7 @@ public record CustomerAddressDTO(
         String addressLine2,
 
         @NotBlank(message = "This field cannot be empty.")
-        String country,
+        Long country,
 
         @NotBlank(message = "This field cannot be empty.")
         String postalCode,

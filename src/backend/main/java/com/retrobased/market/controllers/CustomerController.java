@@ -5,6 +5,7 @@ import com.retrobased.market.entities.Customer;
 import com.retrobased.market.services.CustomerAddressService;
 import com.retrobased.market.services.CustomerService;
 import com.retrobased.market.support.ResponseMessage;
+import com.retrobased.market.support.exceptions.CountryNotFoundException;
 import com.retrobased.market.support.exceptions.CustomerNotFoundException;
 import com.retrobased.market.support.exceptions.UserMailAlreadyExistsException;
 import jakarta.validation.constraints.NotNull;
@@ -53,6 +54,8 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.CREATED).body(customerAddressService.addAddress(customerId, addressDTO));
         } catch (CustomerNotFoundException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_USER_NOT_FOUND"));
+        } catch (CountryNotFoundException e) {
+            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_COUNTRY_NOT_FOUND"));
         }
     }
 
