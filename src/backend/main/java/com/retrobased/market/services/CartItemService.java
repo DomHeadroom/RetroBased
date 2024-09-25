@@ -119,7 +119,7 @@ public class CartItemService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public List<ProductObjQuantityDTO> addProductToCart(@NotNull UUID customerId, @NotNull List<ProductQuantityDTO> productQuantities)
+    public List<ProductObjQuantityDTO> addProductsToCart(@NotNull UUID customerId, List<ProductQuantityDTO> productQuantities)
             throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
 
         Map<UUID, Long> productIds = new HashMap<>();
@@ -196,18 +196,8 @@ public class CartItemService {
     }
 
     @Transactional(readOnly = true)
-    public Long getProductQuantityInCart(UUID cartId, UUID productId) {
-        return cartItemRepository.findQuantityByCartIdAndProductId(cartId, productId);
-    }
-
-    @Transactional(readOnly = true)
     public Optional<CartItem> getCartItem(UUID cartId, UUID productId) {
         return cartItemRepository.findByCartIdAndProductId(cartId, productId);
-    }
-
-    @Transactional(readOnly = true)
-    public boolean existsProductInCart(UUID cartId, UUID productId) {
-        return cartItemRepository.existsByCartIdAndProductId(cartId, productId);
     }
 
 }

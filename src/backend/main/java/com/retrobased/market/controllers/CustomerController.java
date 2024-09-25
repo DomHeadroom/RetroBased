@@ -51,7 +51,8 @@ public class CustomerController {
             @RequestBody @Valid CustomerAddressDTO addressDTO,
             @RequestParam(value = "user") @NotNull UUID customerId) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(customerAddressService.addAddress(customerId, addressDTO));
+            CustomerAddressDTO customerAddress = customerAddressService.addAddress(customerId, addressDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(customerAddress);
         } catch (CustomerNotFoundException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_USER_NOT_FOUND"));
         } catch (CountryNotFoundException e) {

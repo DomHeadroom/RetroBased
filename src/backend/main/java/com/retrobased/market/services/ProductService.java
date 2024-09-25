@@ -1,5 +1,6 @@
 package com.retrobased.market.services;
 
+import com.retrobased.market.dto.OrderDTO;
 import com.retrobased.market.dto.ProductDTO;
 import com.retrobased.market.dto.ProductQuantityDTO;
 import com.retrobased.market.entities.Customer;
@@ -8,6 +9,7 @@ import com.retrobased.market.entities.Order;
 import com.retrobased.market.entities.OrderItem;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.Seller;
+import com.retrobased.market.mappers.OrderMapper;
 import com.retrobased.market.mappers.ProductMapper;
 import com.retrobased.market.repositories.ProductRepository;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;
@@ -111,7 +113,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Order lockAndReduceQuantities(List<ProductQuantityDTO> productQuantities, CustomerAddress address, UUID customerId) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
+    public OrderDTO lockAndReduceQuantities(List<ProductQuantityDTO> productQuantities, CustomerAddress address, UUID customerId) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
         Customer customer = customerService.get(customerId)
                 .orElseThrow(CustomerNotFoundException::new);
 
@@ -164,7 +166,7 @@ public class ProductService {
 
         productRepository.saveAll(products);
 
-        return currentOrder;
+        return OrderMapper.toDTO(currentOrder);
     }
 
     @Transactional(readOnly = true)

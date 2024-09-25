@@ -3,7 +3,6 @@ package com.retrobased.market.controllers;
 import com.retrobased.market.dto.ProductDTO;
 import com.retrobased.market.dto.ProductObjQuantityDTO;
 import com.retrobased.market.dto.ProductRequestCartDTO;
-import com.retrobased.market.entities.Product;
 import com.retrobased.market.services.CartItemService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.*;
@@ -55,7 +54,7 @@ public class CartController {
         try {
             UUID customerId = UUID.fromString("f3106b66-3ed0-4d61-a7ae-fcc0651eb8cf"); // TODO cambiare con metodo per estrarre id da token
 
-            List<ProductObjQuantityDTO> added = cartItemService.addProductToCart(customerId, productRequestCartDTO.products());
+            List<ProductObjQuantityDTO> added = cartItemService.addProductsToCart(customerId, productRequestCartDTO.products());
             return ResponseEntity.ok(added);
         } catch (ArgumentValueNotValidException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));

@@ -1,6 +1,7 @@
 package com.retrobased.market.controllers;
 
 import com.retrobased.market.dto.OrderDTO;
+import com.retrobased.market.dto.OrderItemDTO;
 import com.retrobased.market.dto.ProductRequestOrderDTO;
 import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.entities.Order;
@@ -74,7 +75,7 @@ public class OrderController {
         if (!orderService.existsOrderForCustomer(customerId, orderId))
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-        List<OrderItem> result = orderService.getByOrderId(orderId, pageNumber);
+        List<OrderItemDTO> result = orderService.getOrderedItems(orderId, pageNumber);
         if (result.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -82,7 +83,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<?> buyOrder(
+    public ResponseEntity<?> makeOrder(
             @RequestBody @Valid @NotNull ProductRequestOrderDTO productRequestOrder
     ) {
         try {
@@ -94,7 +95,7 @@ public class OrderController {
 
             CustomerAddress customerAddress = customerAddressService.get(productRequestOrder.addressId());
 
-            Order finalOrder = productService.lockAndReduceQuantities(productRequestOrder.products(), customerAddress, customerId);
+            OrderDTO finalOrder = productService.lockAndReduceQuantities(productRequestOrder.products(), customerAddress, customerId);
             return ResponseEntity.status(HttpStatus.CREATED).body(finalOrder);
         } catch (ArgumentValueNotValidException | ProductNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"));
