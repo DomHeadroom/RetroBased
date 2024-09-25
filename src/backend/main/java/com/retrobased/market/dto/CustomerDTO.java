@@ -7,13 +7,13 @@ import java.time.OffsetDateTime;
 
 public record CustomerDTO(
 
-        @NotBlank(message = "This field cannot be empty.")
+        @NotBlank(message = "First name cannot be empty.")
         String firstName,
 
-        @NotBlank(message = "This field cannot be empty.")
+        @NotBlank(message = "Last name cannot be empty.")
         String lastName,
 
-        @NotBlank(message = "This field cannot be empty.")
+        @NotBlank(message = "E-mail cannot be empty.")
         String email,
 
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)

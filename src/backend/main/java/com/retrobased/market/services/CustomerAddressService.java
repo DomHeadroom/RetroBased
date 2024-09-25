@@ -50,6 +50,7 @@ public class CustomerAddressService {
         newAddress.setCountry(country);
         newAddress.setPostalCode(addressDTO.postalCode());
         newAddress.setCity(addressDTO.city());
+        newAddress.setDeleted(false);
 
         CustomerAddress savedAddress = customerAddressRepository.save(newAddress);
         return CustomerAddressMapper.toDTO(savedAddress);

@@ -11,19 +11,19 @@ public record CustomerAddressDTO(
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         UUID id,
 
-        @NotBlank(message = "This field cannot be empty.")
+        @NotBlank(message = "Address line 1 cannot be empty.")
         String addressLine1,
 
         @JsonInclude(JsonInclude.Include.NON_NULL)
         String addressLine2,
 
-        @NotNull(message = "This field cannot be null.")
+        @NotNull(message = "Country is required.")
         Long country,
 
-        @NotBlank(message = "This field cannot be empty.")
+        @NotBlank(message = "Postal code cannot be empty.")
         String postalCode,
 
-        @NotBlank(message = "This field cannot be empty.")
+        @NotBlank(message = "City cannot be empty.")
         String city
 
 ) {

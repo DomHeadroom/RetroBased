@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record SellerDTO(
 
-        @NotBlank(message = "This field cannot be empty.")
+        @NotBlank(message = "Seller name cannot be empty.")
         String sellerName,
 
         String company,
@@ -14,12 +14,12 @@ public record SellerDTO(
         @NotBlank
         String phoneNumber,
 
-        @NotBlank(message = "This field cannot be empty.")
+        @NotBlank(message = "Address line 1 cannot be empty.")
         String addressLine1,
 
         String addressLine2,
 
-        @NotNull(message = "This field cannot be null.")
+        @NotNull(message = "Country is required.")
         Country country,
 
         String city,
