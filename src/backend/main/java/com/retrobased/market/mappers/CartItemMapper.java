@@ -12,23 +12,10 @@ public class CartItemMapper {
      * @return a ProductObjQuantityDTO representing the product and its quantity
      */
     public static ProductObjQuantityDTO toProductObjQuantityDTO(CartItem cartItem) {
-        if (cartItem == null || cartItem.getProduct() == null) {
-            return null; // or throw an exception if preferred
-        }
+        if (cartItem == null || cartItem.getProduct() == null)
+            return null;
 
-        ProductDTO productDTO = new ProductDTO(
-                cartItem.getProduct().getId(),
-                cartItem.getProduct().getSlug(),
-                cartItem.getProduct().getProductName(),
-                cartItem.getProduct().getSku(),
-                cartItem.getProduct().getSalePrice(),
-                cartItem.getProduct().getQuantity(),
-                cartItem.getProduct().getShortDescription(),
-                cartItem.getProduct().getProductDescription(),
-                cartItem.getProduct().getDisableOutOfStock(),
-                cartItem.getProduct().getNote(),
-                cartItem.getProduct().getCreatedAt()
-        );
+        ProductDTO productDTO = ProductMapper.toDTO(cartItem.getProduct());
 
         return new ProductObjQuantityDTO(productDTO, cartItem.getQuantity());
     }

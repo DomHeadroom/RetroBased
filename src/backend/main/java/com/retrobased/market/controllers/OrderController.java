@@ -107,7 +107,6 @@ public class OrderController {
 
             CustomerAddress customerAddress = customerAddressOpt.get();
 
-
             OrderDTO finalOrder = productService.lockAndReduceQuantities(productRequestOrder.products(), customerAddress, customerId);
             return ResponseEntity.status(HttpStatus.CREATED).body(finalOrder);
         } catch (ArgumentValueNotValidException | ProductNotFoundException e) {
