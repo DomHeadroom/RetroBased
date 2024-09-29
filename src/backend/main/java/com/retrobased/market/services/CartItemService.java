@@ -1,8 +1,8 @@
 package com.retrobased.market.services;
 
-import com.retrobased.market.dto.ProductDTO;
-import com.retrobased.market.dto.ProductObjQuantityDTO;
-import com.retrobased.market.dto.ProductQuantityDTO;
+import com.retrobased.market.dtos.ProductDTO;
+import com.retrobased.market.dtos.ProductObjQuantityDTO;
+import com.retrobased.market.dtos.ProductQuantityDTO;
 import com.retrobased.market.entities.Cart;
 import com.retrobased.market.entities.CartItem;
 import com.retrobased.market.entities.Product;

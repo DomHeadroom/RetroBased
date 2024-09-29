@@ -1,7 +1,7 @@
 package com.retrobased.market.controllers;
 
-import com.retrobased.market.dto.CustomerAddressDTO;
-import com.retrobased.market.dto.CustomerDTO;
+import com.retrobased.market.dtos.CustomerAddressDTO;
+import com.retrobased.market.dtos.CustomerDTO;
 import com.retrobased.market.services.CustomerAddressService;
 import com.retrobased.market.services.CustomerService;
 import com.retrobased.market.support.ResponseMessage;

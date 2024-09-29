@@ -1,6 +1,7 @@
-package com.retrobased.market.dto;
+package com.retrobased.market.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.OffsetDateTime;
@@ -14,6 +15,7 @@ public record CustomerDTO(
         String lastName,
 
         @NotBlank(message = "E-mail cannot be empty.")
+        @Email
         String email,
 
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)

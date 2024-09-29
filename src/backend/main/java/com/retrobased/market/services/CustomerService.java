@@ -1,6 +1,6 @@
 package com.retrobased.market.services;
 
-import com.retrobased.market.dto.CustomerDTO;
+import com.retrobased.market.dtos.CustomerDTO;
 import com.retrobased.market.entities.Customer;
 import com.retrobased.market.mappers.CustomerMapper;
 import com.retrobased.market.repositories.CustomerRepository;

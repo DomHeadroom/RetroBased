@@ -1,7 +1,7 @@
 package com.retrobased.market.controllers;
 
-import com.retrobased.market.dto.ProductCategoryDTO;
-import com.retrobased.market.dto.ProductDTO;
+import com.retrobased.market.dtos.ProductCategoryDTO;
+import com.retrobased.market.dtos.ProductDTO;
 import com.retrobased.market.entities.Attribute;
 import com.retrobased.market.entities.Category;
 import com.retrobased.market.entities.Product;

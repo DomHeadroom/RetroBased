@@ -1,6 +1,6 @@
 package com.retrobased.market.mappers;
 
-import com.retrobased.market.dto.ProductDTO;
+import com.retrobased.market.dtos.ProductDTO;
 import com.retrobased.market.entities.Product;
 
 public class ProductMapper {

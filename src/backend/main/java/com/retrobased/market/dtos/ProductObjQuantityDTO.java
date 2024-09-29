@@ -1,4 +1,4 @@
-package com.retrobased.market.dto;
+package com.retrobased.market.dtos;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

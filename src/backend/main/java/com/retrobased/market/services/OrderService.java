@@ -1,7 +1,7 @@
 package com.retrobased.market.services;
 
-import com.retrobased.market.dto.OrderDTO;
-import com.retrobased.market.dto.OrderItemDTO;
+import com.retrobased.market.dtos.OrderDTO;
+import com.retrobased.market.dtos.OrderItemDTO;
 import com.retrobased.market.entities.Order;
 import com.retrobased.market.entities.OrderItem;
 import com.retrobased.market.mappers.OrderItemMapper;

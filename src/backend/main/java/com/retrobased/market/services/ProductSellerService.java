@@ -1,6 +1,6 @@
 package com.retrobased.market.services;
 
-import com.retrobased.market.dto.ProductDTO;
+import com.retrobased.market.dtos.ProductDTO;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.ProductSeller;
 import com.retrobased.market.entities.Seller;

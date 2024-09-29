@@ -1,7 +1,7 @@
 package com.retrobased.market.controllers;
 
-import com.retrobased.market.dto.ProductObjQuantityDTO;
-import com.retrobased.market.dto.ProductRequestCartDTO;
+import com.retrobased.market.dtos.ProductObjQuantityDTO;
+import com.retrobased.market.dtos.ProductRequestCartDTO;
 import com.retrobased.market.services.CartItemService;
 import com.retrobased.market.support.ResponseMessage;
 import com.retrobased.market.support.exceptions.ArgumentValueNotValidException;

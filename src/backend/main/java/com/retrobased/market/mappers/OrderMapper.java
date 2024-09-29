@@ -1,6 +1,6 @@
 package com.retrobased.market.mappers;
 
-import com.retrobased.market.dto.OrderDTO;
+import com.retrobased.market.dtos.OrderDTO;
 import com.retrobased.market.entities.Order;
 
 public class OrderMapper {

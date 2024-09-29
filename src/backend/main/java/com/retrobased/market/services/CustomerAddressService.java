@@ -1,6 +1,6 @@
 package com.retrobased.market.services;
 
-import com.retrobased.market.dto.CustomerAddressDTO;
+import com.retrobased.market.dtos.CustomerAddressDTO;
 import com.retrobased.market.entities.Country;
 import com.retrobased.market.entities.Customer;
 import com.retrobased.market.entities.CustomerAddress;

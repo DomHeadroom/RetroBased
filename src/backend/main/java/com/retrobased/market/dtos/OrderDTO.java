@@ -1,4 +1,4 @@
-package com.retrobased.market.dto;
+package com.retrobased.market.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

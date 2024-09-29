@@ -1,4 +1,4 @@
-package com.retrobased.market.dto;
+package com.retrobased.market.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;

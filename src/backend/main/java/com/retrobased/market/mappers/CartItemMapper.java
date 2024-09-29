@@ -1,7 +1,7 @@
 package com.retrobased.market.mappers;
 
-import com.retrobased.market.dto.ProductDTO;
-import com.retrobased.market.dto.ProductObjQuantityDTO;
+import com.retrobased.market.dtos.ProductDTO;
+import com.retrobased.market.dtos.ProductObjQuantityDTO;
 import com.retrobased.market.entities.CartItem;
 
 public class CartItemMapper {

@@ -1,4 +1,4 @@
-package com.retrobased.market.dto;
+package com.retrobased.market.dtos;
 
 import com.retrobased.market.entities.Country;
 import jakarta.validation.constraints.NotBlank;
