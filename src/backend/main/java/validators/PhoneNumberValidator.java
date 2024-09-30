@@ -3,10 +3,10 @@ package validators;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class PhoneNumberValidator implements ConstraintValidator<ValidPhoneNumber, String> {
+public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, String> {
 
     @Override
-    public void initialize(ValidPhoneNumber constraintAnnotation) {
+    public void initialize(PhoneNumber constraintAnnotation) {
     }
 
     @Override
