@@ -16,6 +16,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,6 +53,7 @@ public class OrderController {
 
     // metodo per ottenere ordini
     @GetMapping
+    // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getOrder(
             @RequestParam(value = "user") @NotNull UUID customerId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber
@@ -77,6 +79,7 @@ public class OrderController {
      * (204 status) if the order doesn't exist or has no products.
      */
     @GetMapping("{order}/products")
+    // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getProductsFromOrder(
             @PathVariable("order") @NotNull UUID orderId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber
@@ -93,6 +96,7 @@ public class OrderController {
     }
 
     @PostMapping
+    // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> makeOrder(
             @RequestBody @Valid @NotNull ProductRequestOrderDTO productRequestOrder
     ) {

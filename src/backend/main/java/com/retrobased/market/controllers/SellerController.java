@@ -40,13 +40,13 @@ public class SellerController {
     }
 
     // TODO cambiare sta roba con SELLER DTO
-    @PostMapping
+    @PostMapping("public")
     public ResponseEntity<?> registerSeller(@RequestBody @Valid @NotNull SellerDTO seller) {
         sellerService.registerSeller(seller);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("{seller}/products")
+    @GetMapping("public/{seller}/products")
     public ResponseEntity<?> getSellerProducts(
             @PathVariable("seller") @NotNull UUID sellerId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber,

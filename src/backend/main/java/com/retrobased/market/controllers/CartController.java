@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,6 +53,7 @@ public class CartController {
      * </ul>
      */
     @PostMapping
+    // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> addProductsToCart(@RequestBody @Valid @NotNull ProductRequestCartDTO productRequestCartDTO) {
         try {
             UUID customerId = UUID.fromString("f3106b66-3ed0-4d61-a7ae-fcc0651eb8cf"); // TODO cambiare con metodo per estrarre id da token
@@ -86,6 +88,7 @@ public class CartController {
      * </ul>
      */
     @GetMapping
+    // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getCartProducts(
             @RequestParam @NotNull UUID customerId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber) {
@@ -105,6 +108,7 @@ public class CartController {
     }
 
     @PostMapping("{productId}")
+    // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> updateCartItemQuantity(
             @PathVariable @NotNull UUID productId,
             @RequestParam @NotNull @Min(0) Long quantity) {

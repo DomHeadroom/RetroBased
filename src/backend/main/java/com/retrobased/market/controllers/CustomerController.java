@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,6 +62,7 @@ public class CustomerController {
      * country is not found.
      */
     @PostMapping("addresses")
+    // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> addCustomerAddress(
             @RequestBody @Valid CustomerAddressDTO addressDTO,
             // TODO cacciare customerId per prenderlo da token
@@ -76,6 +78,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("addresses")
+    // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> removeCustomerAddress(
             @RequestParam(value = "id") @NotNull UUID addressId,
             // TODO cacciare customerId per prenderlo da token

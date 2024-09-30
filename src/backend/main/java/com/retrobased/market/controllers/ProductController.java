@@ -26,6 +26,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,7 +83,7 @@ public class ProductController {
      * sorting and pagination. The sort field defaults to "id" and the page number defaults to 0.
      * @see ProductService#searchProduct(String, int, String) ProductService.searchProduct
      */
-    @GetMapping
+    @GetMapping("public")
     public ResponseEntity<?> searchProduct(
             @RequestParam(value = "k") String keyword,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber,
@@ -111,6 +112,7 @@ public class ProductController {
      * In case of an invalid argument or seller not found, appropriate error messages are returned.
      */
     @PostMapping
+    // @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> addProduct(
             @RequestBody @Valid @NotNull ProductCategoryDTO productCategory
     ) {
@@ -169,6 +171,7 @@ public class ProductController {
      * the seller is not authorized to remove the product.
      */
     @DeleteMapping
+    // @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> removeProduct(@RequestParam(value = "product") @NotNull UUID productId) {
         try {
             // TODO estrarre sellerId da token
