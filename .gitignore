@@ -1,0 +1,44 @@
+Backend/HELP.md
+Frontend/README.md
+target/
+!**/.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### VS Code ###
+Frontend/.vscode/
+
+# Node
+Frontend/node_modules
+Frontend/npm-debug.log
+Frontend/yarn-error.log
+
+# Compiled output
+Frontend/dist
+Frontend/tmp
+Frontend/out-tsc
+Frontend/bazel-out
+
+# Miscellaneous
+Frontend/.angular/cache
+Frontend/.sass-cache/
+Frontend/connect.lock
+Frontend/coverage
+Frontend/libpeerconnection.log
+Frontend/testem.log
+Frontend/typings
