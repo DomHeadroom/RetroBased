@@ -2,11 +2,11 @@
   "name": "retro-base-frontend",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "ng": "../src/frontend/RetroBasedFrontend/node_modules/.bin/ng",
+    "start": "../src/frontend/RetroBasedFrontend/node_modules/.bin/ng serve",
+    "build": "../src/frontend/RetroBasedFrontend/node_modules/.bin/ng build",
+    "watch": "../src/frontend/RetroBasedFrontend/node_modules/.bin/ng build --watch --configuration development",
+    "test": "../src/frontend/RetroBasedFrontend/node_modules/.bin/ng test",
     "serve:ssr:RetroBaseFrontend": "node dist/retro-base-frontend/server/server.mjs"
   },
   "private": true,

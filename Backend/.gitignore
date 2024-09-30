@@ -1,5 +1,5 @@
 HELP.md
-src/frontend/RetroBasedFrontend/README.md
+Frontend/README.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -21,7 +21,7 @@ target/
 *.ipr
 
 ### VS Code ###
-src/frontend/RetroBasedFrontend/.vscode/
+Frontend/.vscode/
 
 # Node
 src/frontend/RetroBasedFrontend/node_modules
