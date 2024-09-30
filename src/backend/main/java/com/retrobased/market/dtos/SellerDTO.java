@@ -3,7 +3,7 @@ package com.retrobased.market.dtos;
 import com.retrobased.market.entities.Country;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import validators.PhoneNumber;
+import com.retrobased.market.validators.PhoneNumber;
 
 public record SellerDTO(
 

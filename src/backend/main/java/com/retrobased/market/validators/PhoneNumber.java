@@ -1,4 +1,4 @@
-package validators;
+package com.retrobased.market.validators;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

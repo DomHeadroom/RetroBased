@@ -44,6 +44,8 @@ public class SellerController {
     public ResponseEntity<?> registerSeller(@RequestBody @Valid @NotNull SellerDTO seller) {
         sellerService.registerSeller(seller);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+
+        // TODO aggiungere ruolo seller a roba su keycloak
     }
 
     @GetMapping("public/{seller}/products")
@@ -59,7 +61,6 @@ public class SellerController {
 
         if (result.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
         return ResponseEntity.ok(result);
 
     }
