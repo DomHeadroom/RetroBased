@@ -116,54 +116,41 @@ public class ProductService {
         Customer customer = customerService.get(customerId)
                 .orElseThrow(CustomerNotFoundException::new);
 
-        Map<UUID, Long> productIds = new HashMap<>();
-
-        for (ProductQuantityDTO productQuantity : productQuantities) {
-            UUID productId = productQuantity.productId();
-            if (!exists(productId) ||
-                    isDeleted(productId) ||
-                    isOutOfStock(productId) ||
-                    !isPublished(productId))
-                throw new ProductNotFoundException();
-
-            productIds.merge(productId, productQuantity.quantity(), Long::sum);
-        }
+        Map<UUID, Long> productIds = productQuantities.stream()
+                .collect(Collectors.toMap(ProductQuantityDTO::productId, ProductQuantityDTO::quantity, Long::sum));
 
         List<Product> products = productRepository.findByIdInWithLock(productIds.keySet());
 
-        for (Product product : products) {
-            Long quantityToAdd = productIds.get(product.getId());
-
-            if (product.getQuantity() < quantityToAdd)
-                throw new ArgumentValueNotValidException();
-
-            product.setQuantity(product.getQuantity() - quantityToAdd);
-        }
-
+        List<OrderItem> orderItems = new ArrayList<>();
         Order currentOrder = new Order();
         currentOrder.setCustomer(customer);
         currentOrder.setAddress(address);
-        Order savedOrder = orderService.save(currentOrder);
-
-        List<OrderItem> orderItems = new LinkedList<>();
-
 
         for (Product product : products) {
-            Long quantityToAdd = productIds.get(product.getId());
+            Long requestedQuantity  = productIds.get(product.getId());
+
+            if (requestedQuantity > product.getQuantity())
+                throw new ArgumentValueNotValidException();
+
+            if (product.getDeleted() ||
+                    product.getDisableOutOfStock() ||
+                    !product.getPublished())
+                throw new ProductNotFoundException();
+
+            product.setQuantity(product.getQuantity() - requestedQuantity);
 
             OrderItem orderItem = new OrderItem();
-
             orderItem.setProduct(product);
-            orderItem.setQuantity(quantityToAdd);
-            orderItem.setOrder(savedOrder);
+            orderItem.setQuantity(requestedQuantity);
+            orderItem.setOrder(currentOrder);
             orderItem.setPrice(product.getSalePrice());
 
             orderItems.add(orderItem);
         }
 
-        orderItemService.save(orderItems);
-
-        productRepository.saveAll(products);
+        Order savedOrder = orderService.save(currentOrder);
+        orderItems.forEach(orderItem -> orderItem.setOrder(savedOrder));
+        orderItemService.saveAll(orderItems);
 
         return OrderMapper.toDTO(currentOrder);
     }

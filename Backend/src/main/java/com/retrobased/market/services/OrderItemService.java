@@ -40,4 +40,9 @@ public class OrderItemService {
     public List<OrderItem> save(List<OrderItem> items) {
         return orderItemRepository.saveAll(items);
     }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void saveAll(List<OrderItem> orderItems) {
+        orderItemRepository.saveAll(orderItems);
+    }
 }
