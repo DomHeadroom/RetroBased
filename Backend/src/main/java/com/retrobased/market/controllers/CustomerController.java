@@ -25,7 +25,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("users")
 @Validated
 public class CustomerController {
 

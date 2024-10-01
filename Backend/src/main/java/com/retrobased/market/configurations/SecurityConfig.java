@@ -16,27 +16,24 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        System.out.println("Applying Security Configurations...");
         http
-                .csrf(AbstractHttpConfigurer::disable)  // Disable CSRF if needed
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/public/**").permitAll() // Allow public access
-                                .anyRequest().authenticated()  // Authorize all requests
+                                .requestMatchers("/products/public/**", "/sellers/public/**").permitAll()
+                                .anyRequest().authenticated()
                 )
-                .oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(jwt -> {
-                            // Here you can customize the JWT configuration
-                            jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()); // Custom JWT Authentication Converter
-                        })
-                );
-
-        http
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .oauth2ResourceServer(oauth2 ->
+                        oauth2.jwt(jwt ->
+                                jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())
+                        )
                 );
 
         return http.build();
-
     }
 
     @Bean

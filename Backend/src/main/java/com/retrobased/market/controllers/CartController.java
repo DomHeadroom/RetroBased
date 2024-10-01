@@ -26,7 +26,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("api/carts")
+@RequestMapping("carts")
 @Validated
 public class CartController {
 

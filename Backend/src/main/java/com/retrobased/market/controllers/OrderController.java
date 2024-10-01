@@ -30,7 +30,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("orders")
 @Validated
 public class OrderController {
 

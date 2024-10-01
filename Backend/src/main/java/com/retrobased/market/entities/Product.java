@@ -2,10 +2,13 @@ package com.retrobased.market.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -14,6 +17,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "products")
+@EntityListeners(AuditingEntityListener.class)
 public class Product {
 
     @Id
@@ -53,7 +57,8 @@ public class Product {
     @Column(name = "deleted")
     private Boolean deleted;
 
-    @Column(name = "created_at", nullable = false)
-    private OffsetDateTime createdAt = OffsetDateTime.now();
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private OffsetDateTime createdAt;
 
 }
