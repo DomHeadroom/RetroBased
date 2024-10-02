@@ -34,3 +34,10 @@ server:
   compression:
     enabled: true
   port: 8081
+
+keycloak:
+  auth-server-url: http://localhost:8080/auth
+  realm: keycloak-psw
+  client-id: admin-cli
+  client-secret: your-client-secret
+  resource: your-client-resource

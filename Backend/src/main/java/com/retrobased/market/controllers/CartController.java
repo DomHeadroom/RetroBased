@@ -33,9 +33,15 @@ import static com.retrobased.market.utils.ResponseUtils.createErrorResponse;
 public class CartController {
 
     private final CartItemService cartItemService;
+    private final JwtClaimExtractor jwtClaimExtractor;
 
-    public CartController(CartItemService cartItemService) {
+    public CartController(
+            CartItemService cartItemService,
+            JwtClaimExtractor jwtClaimExtractor
+    ) {
+
         this.cartItemService = cartItemService;
+        this.jwtClaimExtractor = jwtClaimExtractor;
     }
 
     /**
@@ -95,6 +101,9 @@ public class CartController {
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber) {
         // UUID customerId = TODO cambiare con metodo per estrarre id da token
         try {
+            UUID customer = jwtClaimExtractor.extractCustomerId()
+                    .orElseThrow(CustomerNotFoundException::new);
+
             List<ProductObjQuantityDTO> result = cartItemService.getCartItems(customerId, pageNumber);
 
             if (result.isEmpty())
