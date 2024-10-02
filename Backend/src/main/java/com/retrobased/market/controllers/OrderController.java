@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.retrobased.market.utils.ResponseUtils.createErrorResponse;
+
 @RestController
 @RequestMapping("orders")
 @Validated
@@ -106,16 +108,16 @@ public class OrderController {
             Optional<CustomerAddress> customerAddressOpt = customerAddressService.getIfExistsAndNotDeleted(customerId, productRequestOrder.addressId());
 
             if (customerAddressOpt.isEmpty())
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("ERROR_ADDRESS_NOT_FOUND"));
+                return createErrorResponse("ERROR_ADDRESS_NOT_FOUND", HttpStatus.BAD_REQUEST);
 
             CustomerAddress customerAddress = customerAddressOpt.get();
 
             OrderDTO finalOrder = productService.lockAndReduceQuantities(productRequestOrder.products(), customerAddress, customerId);
             return ResponseEntity.status(HttpStatus.CREATED).body(finalOrder);
         } catch (ArgumentValueNotValidException | ProductNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"));
+            return createErrorResponse("ERROR_VALUE_NOT_PERMITTED", HttpStatus.BAD_REQUEST);
         } catch (CustomerNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage("ERROR_TOKEN_USER"));
+            return createErrorResponse("ERROR_TOKEN_USER", HttpStatus.FORBIDDEN);
         }
     }
 }

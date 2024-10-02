@@ -35,6 +35,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.retrobased.market.utils.ResponseUtils.createErrorResponse;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -165,15 +167,15 @@ public class ProductController {
             ProductDTO productDTO = ProductMapper.toDTO(product);
             return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
         } catch (ArgumentValueNotValidException e) {
-            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));
+            return createErrorResponse("ERROR_ARGUMENT_VALUE_NOT_VALID", HttpStatus.BAD_REQUEST);
         } catch (SellerNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage("ERROR_USER_NOT_FOUND"));
+            return createErrorResponse("ERROR_USER_NOT_FOUND", HttpStatus.FORBIDDEN);
         } catch (AttributeNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("ERROR_ATTRIBUTE_NOT_FOUND"));
+            return createErrorResponse("ERROR_ATTRIBUTE_NOT_FOUND", HttpStatus.NOT_FOUND);
         } catch (CategoryNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("ERROR_CATEGORY_NOT_FOUND"));
+            return createErrorResponse("ERROR_CATEGORY_NOT_FOUND", HttpStatus.NOT_FOUND);
         } catch (TagNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("ERROR_TAG_NOT_FOUND"));
+            return createErrorResponse("ERROR_TAG_NOT_FOUND", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -194,13 +196,12 @@ public class ProductController {
             // TODO estrarre sellerId da token
             UUID sellerId = null;
             if (!productSellerService.existsProductForSeller(productId, sellerId))
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("ERROR_VALUE_NOT_PERMITTED"));
+                return createErrorResponse("ERROR_VALUE_NOT_PERMITTED", HttpStatus.BAD_REQUEST);
 
             productService.removeProduct(productId);
             return ResponseEntity.noContent().build();
         } catch (ProductNotFoundException e) {
-            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ARGUMENT_VALUE_NOT_VALID"));
-        }
+            return createErrorResponse("ERROR_ARGUMENT_VALUE_NOT_VALID", HttpStatus.BAD_REQUEST);        }
     }
 
     private Tag validateTag(UUID id) throws TagNotFoundException {

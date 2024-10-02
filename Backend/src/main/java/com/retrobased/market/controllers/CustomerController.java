@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
+import static com.retrobased.market.utils.ResponseUtils.createErrorResponse;
+
 
 @RestController
 @RequestMapping("users")
@@ -47,7 +49,7 @@ public class CustomerController {
             customerService.registerCustomer(customer);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (UserMailAlreadyExistsException e) {
-            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_EMAIL_ALREADY_REGISTERED"));
+            return createErrorResponse("ERROR_EMAIL_ALREADY_REGISTERED", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -70,9 +72,9 @@ public class CustomerController {
             CustomerAddressDTO customerAddress = customerAddressService.addAddress(customerId, addressDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(customerAddress);
         } catch (CustomerNotFoundException e) {
-            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_USER_NOT_FOUND"));
+            return createErrorResponse("ERROR_USER_NOT_FOUND", HttpStatus.NOT_FOUND);
         } catch (CountryNotFoundException e) {
-            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_COUNTRY_NOT_FOUND"));
+            return createErrorResponse("ERROR_COUNTRY_NOT_FOUND", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -86,9 +88,9 @@ public class CustomerController {
             customerAddressService.removeAddress(customerId, addressId);
             return ResponseEntity.ok(new ResponseMessage("SUCCESSFUL_ADDRESS_DELETION"));
         } catch (CustomerNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("ERROR_USER_NOT_FOUND"));
+            return createErrorResponse("ERROR_USER_NOT_FOUND", HttpStatus.NOT_FOUND);
         } catch (AddressNotFoundException e) {
-            return ResponseEntity.badRequest().body(new ResponseMessage("ERROR_ADDRESS_NOT_FOUND"));
+            return createErrorResponse("ERROR_ADDRESS_NOT_FOUND", HttpStatus.BAD_REQUEST);
         }
     }
 

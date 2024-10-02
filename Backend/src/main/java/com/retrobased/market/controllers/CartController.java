@@ -1,9 +1,9 @@
 package com.retrobased.market.controllers;
 
+import com.retrobased.market.authentications.JwtClaimExtractor;
 import com.retrobased.market.dtos.ProductObjQuantityDTO;
 import com.retrobased.market.dtos.ProductRequestCartDTO;
 import com.retrobased.market.services.CartItemService;
-import com.retrobased.market.utils.ResponseMessage;
 import com.retrobased.market.utils.exceptions.ArgumentValueNotValidException;
 import com.retrobased.market.utils.exceptions.CustomerNotFoundException;
 import com.retrobased.market.utils.exceptions.ProductNotFoundException;
@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
+
+import static com.retrobased.market.utils.ResponseUtils.createErrorResponse;
 
 
 @RestController
@@ -123,10 +125,6 @@ public class CartController {
         } catch (CustomerNotFoundException e) {
             return createErrorResponse("ERROR_USER_NOT_FOUND", HttpStatus.NOT_FOUND);
         }
-    }
-
-    private ResponseEntity<?> createErrorResponse(String message, HttpStatus status) {
-        return ResponseEntity.status(status).body(new ResponseMessage(message));
     }
 
 }
