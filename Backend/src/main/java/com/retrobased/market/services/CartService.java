@@ -3,7 +3,7 @@ package com.retrobased.market.services;
 import com.retrobased.market.entities.Cart;
 import com.retrobased.market.entities.Customer;
 import com.retrobased.market.repositories.CartRepository;
-import com.retrobased.market.support.exceptions.CustomerNotFoundException;
+import com.retrobased.market.utils.exceptions.CustomerNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

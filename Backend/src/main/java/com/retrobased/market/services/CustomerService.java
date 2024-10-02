@@ -4,7 +4,7 @@ import com.retrobased.market.dtos.CustomerDTO;
 import com.retrobased.market.entities.Customer;
 import com.retrobased.market.mappers.CustomerMapper;
 import com.retrobased.market.repositories.CustomerRepository;
-import com.retrobased.market.support.exceptions.UserMailAlreadyExistsException;
+import com.retrobased.market.utils.exceptions.UserMailAlreadyExistsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

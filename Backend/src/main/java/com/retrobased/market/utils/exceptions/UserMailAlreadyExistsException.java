@@ -1,4 +1,4 @@
-package com.retrobased.market.support.exceptions;
+package com.retrobased.market.utils.exceptions;
 
 public class UserMailAlreadyExistsException extends Exception {
 

@@ -6,7 +6,7 @@ import com.retrobased.market.entities.ProductSeller;
 import com.retrobased.market.entities.Seller;
 import com.retrobased.market.mappers.ProductMapper;
 import com.retrobased.market.repositories.ProductSellerRepository;
-import com.retrobased.market.support.exceptions.SellerNotFoundException;
+import com.retrobased.market.utils.exceptions.SellerNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

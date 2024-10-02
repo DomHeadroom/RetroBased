@@ -4,7 +4,7 @@ import com.retrobased.market.dtos.ProductDTO;
 import com.retrobased.market.dtos.SellerDTO;
 import com.retrobased.market.services.ProductSellerService;
 import com.retrobased.market.services.SellerService;
-import com.retrobased.market.support.ResponseMessage;
+import com.retrobased.market.utils.ResponseMessage;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
