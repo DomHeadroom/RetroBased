@@ -78,7 +78,7 @@ public class ProductController {
      * @return A {@link ResponseEntity} containing the list of random products,
      * or a status of 204 No Content if no products are found.
      */
-    @GetMapping("/random-products")
+    @GetMapping("public/products")
     public ResponseEntity<?> getRandomProducts(
             @RequestParam(value = "limit", defaultValue = "10") @Min(1) int limit) {
 
