@@ -188,4 +188,12 @@ public class ProductService {
         return productRepository.findQuantityById(productId);
     }
 
+    @Transactional(readOnly = true)
+    public List<ProductDTO> getRandomProducts(int limit) {
+        List<Product> randomProducts = productRepository.findRandomProducts(limit);
+
+        return randomProducts.stream()
+                .map(ProductMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }

@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("products")
+@RequestMapping("product")
 @Validated
 public class ProductController {
 
@@ -67,6 +67,24 @@ public class ProductController {
         this.attributeService = attributeService;
         this.productAttributeService = productAttributeService;
         this.productTagService = productTagService;
+    }
+
+    /**
+     * Fetch a list of random products for public homepage display.
+     *
+     * @param limit The number of random products to return. Defaults to 10.
+     * @return A {@link ResponseEntity} containing the list of random products,
+     * or a status of 204 No Content if no products are found.
+     */
+    @GetMapping("/random-products")
+    public ResponseEntity<?> getRandomProducts(
+            @RequestParam(value = "limit", defaultValue = "10") @Min(1) int limit) {
+
+        List<ProductDTO> randomProducts = productService.getRandomProducts(limit);
+        if (randomProducts.isEmpty())
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+        return ResponseEntity.ok(randomProducts);
     }
 
     /**
