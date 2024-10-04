@@ -7,7 +7,6 @@ import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.services.CustomerAddressService;
 import com.retrobased.market.services.OrderService;
 import com.retrobased.market.services.ProductService;
-import com.retrobased.market.utils.ResponseMessage;
 import com.retrobased.market.utils.exceptions.ArgumentValueNotValidException;
 import com.retrobased.market.utils.exceptions.CustomerNotFoundException;
 import com.retrobased.market.utils.exceptions.ProductNotFoundException;

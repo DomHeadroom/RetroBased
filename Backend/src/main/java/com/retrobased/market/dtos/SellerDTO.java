@@ -1,9 +1,9 @@
 package com.retrobased.market.dtos;
 
 import com.retrobased.market.entities.Country;
+import com.retrobased.market.validators.PhoneNumber;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import com.retrobased.market.validators.PhoneNumber;
 
 public record SellerDTO(
 

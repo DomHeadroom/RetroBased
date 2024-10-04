@@ -14,7 +14,6 @@ import com.retrobased.market.services.ProductCategoryService;
 import com.retrobased.market.services.ProductSellerService;
 import com.retrobased.market.services.ProductService;
 import com.retrobased.market.services.ProductTagService;
-import com.retrobased.market.utils.ResponseMessage;
 import com.retrobased.market.utils.exceptions.ArgumentValueNotValidException;
 import com.retrobased.market.utils.exceptions.AttributeNotFoundException;
 import com.retrobased.market.utils.exceptions.CategoryNotFoundException;
@@ -35,10 +34,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.retrobased.market.utils.ResponseUtils.createErrorResponse;
-
 import java.util.List;
 import java.util.UUID;
+
+import static com.retrobased.market.utils.ResponseUtils.createErrorResponse;
 
 @RestController
 @RequestMapping("product")
@@ -201,7 +200,8 @@ public class ProductController {
             productService.removeProduct(productId);
             return ResponseEntity.noContent().build();
         } catch (ProductNotFoundException e) {
-            return createErrorResponse("ERROR_ARGUMENT_VALUE_NOT_VALID", HttpStatus.BAD_REQUEST);        }
+            return createErrorResponse("ERROR_ARGUMENT_VALUE_NOT_VALID", HttpStatus.BAD_REQUEST);
+        }
     }
 
     private Tag validateTag(UUID id) throws TagNotFoundException {

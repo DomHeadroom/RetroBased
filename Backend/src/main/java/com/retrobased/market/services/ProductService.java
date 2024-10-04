@@ -125,7 +125,7 @@ public class ProductService {
         currentOrder.setAddress(address);
 
         for (Product product : products) {
-            Long requestedQuantity  = productIds.get(product.getId());
+            Long requestedQuantity = productIds.get(product.getId());
 
             if (requestedQuantity > product.getQuantity())
                 throw new ArgumentValueNotValidException();
