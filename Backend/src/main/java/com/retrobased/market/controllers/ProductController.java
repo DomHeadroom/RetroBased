@@ -28,6 +28,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.retrobased.market.utils.ResponseUtils.createErrorResponse;
@@ -89,6 +91,24 @@ public class ProductController {
     }
 
     /**
+     * Fetch a product for public page display based on the provided product ID.
+     *
+     * @param productId The UUID of the product to be fetched; must not be {@code null}.
+     * @return A {@link ResponseEntity} containing the {@link ProductDTO} if the product is found,
+     *         or a status of 204 No Content if the product does not exist.
+     */
+    @GetMapping("public/{productId}")
+    public ResponseEntity<?> getProduct(
+            @PathVariable @NotNull UUID productId) {
+
+        Optional<ProductDTO> product = productService.getProduct(productId);
+        if (product.isEmpty())
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+        return ResponseEntity.ok(product);
+    }
+
+    /**
      * Searches for products based on the provided keyword. Supports pagination and sorting.
      *
      * @param keyword    The search keyword used to filter products.
@@ -102,7 +122,7 @@ public class ProductController {
      * @see ProductService#searchProduct(String, int, String) ProductService.searchProduct
      */
     @GetMapping("public")
-    public ResponseEntity<?> searchProduct(
+    public ResponseEntity<?> searchProducts(
             @RequestParam(value = "k") String keyword,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber,
             @RequestParam(value = "s", defaultValue = "id") String sortBy) {

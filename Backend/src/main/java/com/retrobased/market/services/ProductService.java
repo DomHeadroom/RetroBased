@@ -196,4 +196,8 @@ public class ProductService {
                 .map(ProductMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public Optional<ProductDTO> getProduct(UUID productId) {
+        return productRepository.findByIdAndDeletedIsFalseAndPublishedIsTrue(productId).map(ProductMapper::toDTO);
+    }
 }
