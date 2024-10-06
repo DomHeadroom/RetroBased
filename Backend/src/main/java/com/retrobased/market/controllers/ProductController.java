@@ -95,7 +95,7 @@ public class ProductController {
      *
      * @param productId The UUID of the product to be fetched; must not be {@code null}.
      * @return A {@link ResponseEntity} containing the {@link ProductDTO} if the product is found,
-     *         or a status of 204 No Content if the product does not exist.
+     * or a status of 204 No Content if the product does not exist.
      */
     @GetMapping("public/{productId}")
     public ResponseEntity<?> getProduct(
