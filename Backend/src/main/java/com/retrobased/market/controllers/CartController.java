@@ -133,11 +133,11 @@ public class CartController {
      * @param quantity  The new quantity for the product in the cart.
      *                  Must be a non-negative value (>= 0).
      * @return A {@link ResponseEntity} with an appropriate HTTP status code:
-     *         <ul>
-     *           <li>200 OK if the quantity update is successful.</li>
-     *           <li>422 UNPROCESSABLE ENTITY if the provided quantity value is invalid.</li>
-     *           <li>404 NOT FOUND if the product is not found in the cart or the user is not found.</li>
-     *         </ul>
+     * <ul>
+     *   <li>200 OK if the quantity update is successful.</li>
+     *   <li>422 UNPROCESSABLE ENTITY if the provided quantity value is invalid.</li>
+     *   <li>404 NOT FOUND if the product is not found in the cart or the user is not found.</li>
+     * </ul>
      */
     @PostMapping("{productId}")
     // @PreAuthorize("hasRole('USER')")

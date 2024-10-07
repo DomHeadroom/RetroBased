@@ -65,7 +65,8 @@ public class ProductController {
             AttributeService attributeService,
             ProductAttributeService productAttributeService,
             ProductTagService productTagService,
-            AuthenticationService authenticationService) {
+            AuthenticationService authenticationService
+    ) {
         this.productService = productService;
         this.productSellerService = productSellerService;
         this.productCategoryService = productCategoryService;
@@ -77,11 +78,22 @@ public class ProductController {
     }
 
     /**
-     * Fetch a list of random products for public homepage display.
+     * <p>This method retrieves a list of random products to be displayed on the public homepage.</p>
+     * <p>
+     * The number of products returned can be specified via the {@code limit} parameter,
+     * which defaults to 10. If no products are available, a <strong>204 No Content</strong>
+     * response is returned.
+     * </p>
      *
-     * @param limit The number of random products to return. Defaults to 10.
-     * @return A {@link ResponseEntity} containing the list of random products,
-     * or a status of 204 No Content if no products are found.
+     * @param limit The number of random products to return; must be a positive integer
+     *              greater than or equal to 1. Defaults to 10 if not provided.
+     * @return A {@link ResponseEntity} containing a list of {@link ProductDTO} objects
+     * representing the random products. If no products are found, it returns a
+     * status of <strong>204 No Content</strong>.
+     * <ul>
+     *     <li><strong>200 OK</strong> – If random products are successfully retrieved.</li>
+     *     <li><strong>204 No Content</strong> – If no products are available.</li>
+     * </ul>
      */
     @GetMapping("public/products")
     public ResponseEntity<?> getRandomProducts(
@@ -95,11 +107,20 @@ public class ProductController {
     }
 
     /**
-     * Fetch a product for public page display based on the provided product ID.
+     * <p>This method retrieves a specific product based on the provided product ID
+     * for public page display.</p>
+     * <p>
+     * If the product exists, it returns the corresponding {@link ProductDTO}.
+     * If the product does not exist, it returns a status of <strong>204 No Content</strong>.
+     * </p>
      *
      * @param productId The UUID of the product to be fetched; must not be {@code null}.
      * @return A {@link ResponseEntity} containing the {@link ProductDTO} if the product is found,
-     * or a status of 204 No Content if the product does not exist.
+     * or a status of <strong>204 No Content</strong> if the product does not exist.
+     * <ul>
+     *     <li><strong>200 OK</strong> – If the product is successfully retrieved.</li>
+     *     <li><strong>204 No Content</strong> – If the product with the specified ID does not exist.</li>
+     * </ul>
      */
     @GetMapping("public/{productId}")
     public ResponseEntity<?> getProduct(
@@ -113,16 +134,22 @@ public class ProductController {
     }
 
     /**
-     * Searches for products based on the provided keyword. Supports pagination and sorting.
+     * <p>Searches for products based on the provided keyword. Supports pagination and sorting.</p>
      *
-     * @param keyword    The search keyword used to filter products.
-     * @param pageNumber The page number for paginated results (default is 0).
-     *                   Must be a non-negative integer.
-     * @param sortBy     The field by which to sort the products (default is "id").
-     * @return A {@link ResponseEntity} containing the list of products that match the search criteria,
-     * or a status of 204 No Content if no products are found.
-     * @apiNote This method allows clients to search for products using a keyword and optionally specify
-     * sorting and pagination. The sort field defaults to "id" and the page number defaults to 0.
+     * <p>This method allows clients to search for products using a keyword and optionally specify
+     * sorting and pagination. The sort field defaults to "id" and the page number defaults to 0.</p>
+     *
+     * @param keyword    The search keyword used to filter products; must not be {@code null}.
+     * @param pageNumber The page number for paginated results (default is 0); must be a non-negative integer.
+     * @param sortBy     The field by which to sort the products (default is "id"); should match an existing product field.
+     * @return A {@link ResponseEntity} containing a list of products that match the search criteria,
+     * or a status of <strong>204 No Content</strong> if no products are found.
+     * <ul>
+     *     <li><strong>200 OK</strong> – If products matching the search criteria are successfully retrieved.</li>
+     *     <li><strong>204 No Content</strong> – If no products match the search criteria.</li>
+     * </ul>
+     * @apiNote This method supports full-text search on product names, descriptions, or other fields based on the
+     * provided keyword.
      * @see ProductService#searchProduct(String, int, String) ProductService.searchProduct
      */
     @GetMapping("public")
@@ -139,19 +166,24 @@ public class ProductController {
     }
 
     /**
-     * Adds a product to the database and associates it with a seller, categories, attributes, and tags.
-     * This method ensures that the provided product is linked to valid categories, attributes, and tags,
+     * <p>Adds a product to the database and associates it with a seller, categories, attributes, and tags.</p>
+     *
+     * <p>This method ensures that the provided product is linked to valid categories, attributes, and tags,
      * and it registers the product in the product-seller table to establish a relationship between the product
-     * and the seller.
-     * The product is added to the database if all provided data is valid. Upon successful addition, a {@link ProductDTO}
-     * is returned with the details of the added product, including its association with categories, attributes, and tags.
-     * The product is also added to the product-seller table to ensure that it is linked with the specified seller.
+     * and the seller. The product is added to the database if all provided data is valid.</p>
+     *
+     * <p>Upon successful addition, a {@link ProductDTO} is returned with the details of the added product,
+     * including its associations with categories, attributes, and tags.</p>
      *
      * @param productCategory a {@link ProductCategoryDTO} object containing the product information,
      *                        categories, attributes, and tags. It must not be null and should be validated.
-     * @return a {@link ResponseEntity} containing the status and body of the response. If the product is
-     * successfully added, a {@link ProductDTO} is returned with an HTTP status of 201 (Created).
-     * In case of an invalid argument or seller not found, appropriate error messages are returned.
+     * @return a {@link ResponseEntity} containing the status and body of the response.
+     * <ul>
+     *     <li><strong>201 Created</strong> – If the product is successfully added, a {@link ProductDTO} is returned.</li>
+     *     <li><strong>400 Bad Request</strong> – If there is an invalid argument provided.</li>
+     *     <li><strong>403 Forbidden</strong> – If the seller is not found or the user is not authorized.</li>
+     *     <li><strong>404 Not Found</strong> – If the specified category, attribute, or tag does not exist.</li>
+     * </ul>
      */
     @PostMapping
     // @PreAuthorize("hasRole('SELLER')")
@@ -205,14 +237,16 @@ public class ProductController {
     }
 
     /**
-     * <p>This method attempts to remove a product associated with the seller.
-     * The seller ID is currently not implemented and will be extracted from
-     * the token in the future.</p>
+     * <p>This method attempts to remove a product associated with the seller.</p>
+     *
+     * <p>The seller ID extraction from the token is currently not implemented and will be addressed in the future.</p>
      *
      * @param productId The UUID of the product to be removed. This value must not be {@code null}.
-     * @return A {@link ResponseEntity} with no content (204 status) if the product is successfully removed,
-     * or a bad request (400 status) with an error message if the product does not exist or if
-     * the seller is not authorized to remove the product.
+     * @return A {@link ResponseEntity} indicating the result of the operation:
+     * <ul>
+     *     <li><strong>204 No Content</strong> – If the product is successfully removed.</li>
+     *     <li><strong>400 Bad Request</strong> – If the product does not exist or if the seller is not authorized to remove the product.</li>
+     * </ul>
      */
     @DeleteMapping
     // @PreAuthorize("hasRole('SELLER')")

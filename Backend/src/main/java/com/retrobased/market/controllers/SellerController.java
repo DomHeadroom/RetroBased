@@ -24,7 +24,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("sellers")
+@RequestMapping("seller")
 @Validated
 public class SellerController {
     private final SellerService sellerService;
@@ -46,6 +46,24 @@ public class SellerController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    /**
+     * Fetches a list of products associated with a specific seller.
+     *
+     * <p>This method retrieves products for the given seller ID. It supports pagination
+     * and sorting options. If the seller does not exist, a 404 Not Found response is returned.</p>
+     *
+     * @param sellerId   The UUID of the seller whose products are being requested; must not be {@code null}.
+     * @param pageNumber The page number for paginated results, starting from 0; defaults to 0 if not specified.
+     *                   This value must be a non-negative integer.
+     * @param sortBy     The field by which to sort the products; defaults to "id" if not specified.
+     * @return A {@link ResponseEntity} containing a list of {@link ProductDTO} objects representing the seller's products,
+     * or a status of 204 No Content if no products are found.
+     * <ul>
+     *     <li><strong>200 OK</strong> – If products are successfully retrieved.</li>
+     *     <li><strong>204 No Content</strong> – If the seller has no products available.</li>
+     *     <li><strong>404 Not Found</strong> – If the specified seller does not exist.</li>
+     * </ul>
+     */
     @GetMapping("public/{seller}/products")
     public ResponseEntity<?> getSellerProducts(
             @PathVariable("seller") @NotNull UUID sellerId,
