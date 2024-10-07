@@ -2,12 +2,12 @@ package com.retrobased.market.controllers;
 
 import com.retrobased.market.dtos.CustomerAddressDTO;
 import com.retrobased.market.services.CustomerAddressService;
-import com.retrobased.market.services.CustomerService;
 import com.retrobased.market.utils.ResponseMessage;
 import com.retrobased.market.utils.exceptions.AddressNotFoundException;
 import com.retrobased.market.utils.exceptions.CountryNotFoundException;
 import com.retrobased.market.utils.exceptions.CustomerNotFoundException;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,18 +29,14 @@ import static com.retrobased.market.utils.ResponseUtils.createErrorResponse;
 @RestController
 @RequestMapping("user/addresses")
 @Validated
-public class CustomerController {
+public class CustomerAddressController {
 
     private final CustomerAddressService customerAddressService;
 
-    private final CustomerService customerService;
-
-    public CustomerController(
-            CustomerAddressService customerAddressService,
-            CustomerService customerService
+    public CustomerAddressController(
+            CustomerAddressService customerAddressService
     ) {
         this.customerAddressService = customerAddressService;
-        this.customerService = customerService;
     }
 
     @GetMapping
@@ -69,7 +65,7 @@ public class CustomerController {
     public ResponseEntity<?> addCustomerAddress(
             @RequestBody @Valid CustomerAddressDTO addressDTO,
             // TODO cacciare customerId per prenderlo da token
-            @RequestParam(value = "user") @NotNull String customerId) {
+            @RequestParam(value = "user") @NotEmpty String customerId) {
         try {
             CustomerAddressDTO customerAddress = customerAddressService.addAddress(customerId, addressDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(customerAddress);
@@ -85,7 +81,7 @@ public class CustomerController {
     public ResponseEntity<?> removeCustomerAddress(
             @RequestParam(value = "id") @NotNull UUID addressId,
             // TODO cacciare customerId per prenderlo da token
-            @RequestParam(value = "user") @NotNull String customerId) {
+            @RequestParam(value = "user") @NotEmpty String customerId) {
         try {
             customerAddressService.removeAddress(customerId, addressId);
             return ResponseEntity.ok(new ResponseMessage("SUCCESSFUL_ADDRESS_DELETION"));

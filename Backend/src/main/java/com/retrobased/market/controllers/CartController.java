@@ -9,6 +9,7 @@ import com.retrobased.market.utils.exceptions.CustomerNotFoundException;
 import com.retrobased.market.utils.exceptions.ProductNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -97,7 +98,7 @@ public class CartController {
     @GetMapping
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getCartProducts(
-            @RequestParam @NotNull String customerId,
+            @RequestParam @NotEmpty String customerId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber) {
         // UUID customerId = TODO cambiare con metodo per estrarre id da token
         try {

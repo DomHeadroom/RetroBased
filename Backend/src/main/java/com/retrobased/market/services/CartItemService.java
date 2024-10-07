@@ -13,6 +13,7 @@ import com.retrobased.market.utils.exceptions.ArgumentValueNotValidException;
 import com.retrobased.market.utils.exceptions.CustomerNotFoundException;
 import com.retrobased.market.utils.exceptions.ProductNotFoundException;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,18 +39,15 @@ public class CartItemService {
 
     private final CartService cartService;
     private final ProductService productService;
-    private final CustomerService customerService;
 
     public CartItemService(
             CartItemRepository cartItemRepository,
             CartService cartService,
-            ProductService productService,
-            CustomerService customerService
+            ProductService productService
     ) {
         this.cartItemRepository = cartItemRepository;
         this.cartService = cartService;
         this.productService = productService;
-        this.customerService = customerService;
     }
 
     /**
@@ -65,7 +63,7 @@ public class CartItemService {
      * If the cart is empty or the page is out of range, returns an empty list.
      * @apiNote This method is read-only, utilizing pagination to manage the number of products returned per request.
      * The products are sorted by their creation timestamp in descending order to show the most recent products first.
-     * @see CartService#getCustomerCart(UUID) CartService.getCustomerCart
+     * @see CartService#getCustomerCart(String) CartService.getCustomerCart
      * @see CartItemRepository#findByCartId(UUID, Pageable) CartItemRepository.findProductsByCartId
      */
     @Transactional(readOnly = true)
@@ -101,7 +99,7 @@ public class CartItemService {
      * @throws CustomerNotFoundException      if the customer does not exist in the system
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public void changeQuantity(@NotNull String customerId, @NotNull UUID productId, @NotNull @Min(0) Long quantity) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
+    public void changeQuantity(@NotEmpty String customerId, @NotNull UUID productId, @NotNull @Min(0) Long quantity) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
         checkProduct(productId);
 
         if (productService.getQuantity(productId) < quantity)
@@ -122,7 +120,7 @@ public class CartItemService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public List<CartItemDTO> addProductsToCart(@NotNull String customerId, List<ProductQuantityDTO> productQuantities)
+    public List<CartItemDTO> addProductsToCart(@NotEmpty String customerId, List<ProductQuantityDTO> productQuantities)
             throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
 
         Map<UUID, Long> productIds = new HashMap<>();
@@ -192,7 +190,7 @@ public class CartItemService {
     }
 
     @Transactional(readOnly = true)
-    public Cart getCustomerCart(String customerId) throws CustomerNotFoundException {
+    public Cart getCustomerCart(@NotEmpty String customerId) throws CustomerNotFoundException {
         return cartService.getCustomerCart(customerId);
     }
 

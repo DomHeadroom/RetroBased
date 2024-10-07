@@ -2,13 +2,13 @@ package com.retrobased.market.services;
 
 import com.retrobased.market.dtos.CustomerAddressDTO;
 import com.retrobased.market.entities.Country;
-import com.retrobased.market.entities.Customer;
 import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.mappers.CustomerAddressMapper;
 import com.retrobased.market.repositories.CustomerAddressRepository;
 import com.retrobased.market.utils.exceptions.AddressNotFoundException;
 import com.retrobased.market.utils.exceptions.CountryNotFoundException;
 import com.retrobased.market.utils.exceptions.CustomerNotFoundException;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,21 +24,18 @@ public class CustomerAddressService {
 
     private final CustomerAddressRepository customerAddressRepository;
 
-    private final CustomerService customerService;
     private final CountryService countryService;
 
     public CustomerAddressService(
             CustomerAddressRepository customerAddressRepository,
-            CustomerService customerService,
             CountryService countryService
     ) {
         this.customerAddressRepository = customerAddressRepository;
-        this.customerService = customerService;
         this.countryService = countryService;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public CustomerAddressDTO addAddress(@NotNull String customerId, @NotNull CustomerAddressDTO addressDTO) throws CustomerNotFoundException, CountryNotFoundException {
+    public CustomerAddressDTO addAddress(@NotEmpty String customerId, @NotNull CustomerAddressDTO addressDTO) throws CustomerNotFoundException, CountryNotFoundException {
 
         Country country = countryService.get(addressDTO.country())
                 .orElseThrow(CountryNotFoundException::new);
@@ -58,7 +55,7 @@ public class CustomerAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void removeAddress(@NotNull String customerId, @NotNull UUID addressId) throws AddressNotFoundException, CustomerNotFoundException {
+    public void removeAddress(@NotEmpty String customerId, @NotNull UUID addressId) throws AddressNotFoundException, CustomerNotFoundException {
 
         CustomerAddress address = customerAddressRepository.findByIdAndCustomerIdAndDeletedFalse(addressId, customerId)
                 .orElseThrow(AddressNotFoundException::new);
