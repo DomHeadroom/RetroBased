@@ -11,6 +11,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -80,10 +82,11 @@ public class CustomerAddressController {
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> removeCustomerAddress(
             @RequestParam(value = "id") @NotNull UUID addressId,
-            // TODO cacciare customerId per prenderlo da token
-            @RequestParam(value = "user") @NotEmpty String customerId) {
+            @AuthenticationPrincipal Jwt jwt
+    ) {
         try {
-            customerAddressService.removeAddress(customerId, addressId);
+            String keycloakUserId = jwt.getClaim("sub");
+            customerAddressService.removeAddress(keycloakUserId, addressId);
             return ResponseEntity.ok(new ResponseMessage("SUCCESSFUL_ADDRESS_DELETION"));
         } catch (CustomerNotFoundException e) {
             return createErrorResponse("ERROR_USER_NOT_FOUND", HttpStatus.NOT_FOUND);

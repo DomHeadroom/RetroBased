@@ -12,9 +12,12 @@ import com.retrobased.market.utils.exceptions.CustomerNotFoundException;
 import com.retrobased.market.utils.exceptions.ProductNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,11 +58,11 @@ public class OrderController {
     @GetMapping
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getOrder(
-            @RequestParam(value = "user") @NotNull String customerId,
-            @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber
+            @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber,
+            @AuthenticationPrincipal Jwt jwt
     ) {
-        // UUID customerId = TODO cambiare con metodo per estrarre id da token
-        List<OrderDTO> result = orderService.getOrders(customerId, pageNumber);
+        String keycloakUserId = jwt.getClaim("sub");
+        List<OrderDTO> result = orderService.getOrders(keycloakUserId, pageNumber);
         if (result.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -82,10 +85,11 @@ public class OrderController {
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getProductsFromOrder(
             @PathVariable("order") @NotNull UUID orderId,
-            @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber
+            @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber,
+            @AuthenticationPrincipal Jwt jwt
     ) {
-        String customerId = "a6cd2287-bb39-48b8-b1d7-62ec612ba064"; // TODO cambiare con metodo per estrarre id da token
-        if (!orderService.existsOrderForCustomer(customerId, orderId))
+        String keycloakUserId = jwt.getClaim("sub");
+        if (!orderService.existsOrderForCustomer(keycloakUserId, orderId))
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
         List<OrderItemDTO> result = orderService.getOrderedItems(orderId, pageNumber);
@@ -98,20 +102,20 @@ public class OrderController {
     @PostMapping
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> makeOrder(
-            @RequestBody @Valid @NotNull ProductRequestOrderDTO productRequestOrder
+            @RequestBody @Valid @NotNull ProductRequestOrderDTO productRequestOrder,
+            @AuthenticationPrincipal Jwt jwt
     ) {
         try {
-            // a6cd2287-bb39-48b8-b1d7-62ec612ba064
-            String customerId = "a6cd2287-bb39-48b8-b1d7-62ec612ba064"; // TODO cambiare con metodo per estrarre id da token
+            String keycloakUserId = jwt.getClaim("sub");
 
-            Optional<CustomerAddress> customerAddressOpt = customerAddressService.getIfExistsAndNotDeleted(customerId, productRequestOrder.addressId());
+            Optional<CustomerAddress> customerAddressOpt = customerAddressService.getIfExistsAndNotDeleted(keycloakUserId, productRequestOrder.addressId());
 
             if (customerAddressOpt.isEmpty())
                 return createErrorResponse("ERROR_ADDRESS_NOT_FOUND", HttpStatus.BAD_REQUEST);
 
             CustomerAddress customerAddress = customerAddressOpt.get();
 
-            OrderDTO finalOrder = productService.lockAndReduceQuantities(productRequestOrder.products(), customerAddress, customerId);
+            OrderDTO finalOrder = productService.lockAndReduceQuantities(productRequestOrder.products(), customerAddress, keycloakUserId);
             return ResponseEntity.status(HttpStatus.CREATED).body(finalOrder);
         } catch (ArgumentValueNotValidException | ProductNotFoundException e) {
             return createErrorResponse("ERROR_VALUE_NOT_PERMITTED", HttpStatus.BAD_REQUEST);

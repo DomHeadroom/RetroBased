@@ -9,10 +9,11 @@ import com.retrobased.market.utils.exceptions.CustomerNotFoundException;
 import com.retrobased.market.utils.exceptions.ProductNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,16 +35,11 @@ import static com.retrobased.market.utils.ResponseUtils.createErrorResponse;
 public class CartController {
 
     private final CartItemService cartItemService;
-    private final JwtClaimExtractor jwtClaimExtractor;
-
     public CartController(
-            CartItemService cartItemService,
-            JwtClaimExtractor jwtClaimExtractor
+            CartItemService cartItemService
     ) {
 
-        this.cartItemService = cartItemService;
-        this.jwtClaimExtractor = jwtClaimExtractor;
-    }
+        this.cartItemService = cartItemService;}
 
     /**
      * Adds one or more products to the customer's shopping cart.
@@ -62,11 +58,14 @@ public class CartController {
      */
     @PostMapping
     // @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> addProductsToCart(@RequestBody @Valid @NotNull ProductRequestCartDTO productRequestCartDTO) {
+    public ResponseEntity<?> addProductsToCart(
+            @RequestBody @Valid @NotNull ProductRequestCartDTO productRequestCartDTO,
+            @AuthenticationPrincipal Jwt jwt
+    ) {
         try {
-            String customerId = "f3106b66-3ed0-4d61-a7ae-fcc0651eb8cf"; // TODO cambiare con metodo per estrarre id da token
+            String keycloakUserId = jwt.getClaim("sub");
 
-            List<CartItemDTO> added = cartItemService.addProductsToCart(customerId, productRequestCartDTO.products());
+            List<CartItemDTO> added = cartItemService.addProductsToCart(keycloakUserId, productRequestCartDTO.products());
             return ResponseEntity.ok(added);
         } catch (ArgumentValueNotValidException e) {
             return createErrorResponse("ERROR_QUANTITY_VALUE_NOT_VALID", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -86,7 +85,6 @@ public class CartController {
      * Otherwise, it returns the list of products in the cart.
      * </p>
      *
-     * @param customerId the UUID of the customer whose cart products are being retrieved; must not be null
      * @param pageNumber the page number of the products to retrieve, starting from 0; defaults to 0 if not specified, must be a non-negative integer
      * @return a response entity containing either the list of products in the cart or a status indicating no content
      * <ul>
@@ -98,14 +96,13 @@ public class CartController {
     @GetMapping
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getCartProducts(
-            @RequestParam @NotEmpty String customerId,
-            @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber) {
-        // UUID customerId = TODO cambiare con metodo per estrarre id da token
+            @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber,
+            @AuthenticationPrincipal Jwt jwt
+    ) {
         try {
-            UUID customer = jwtClaimExtractor.extractCustomerId()
-                    .orElseThrow(CustomerNotFoundException::new);
+            String keycloakUserId = jwt.getClaim("sub");
 
-            List<CartItemDTO> result = cartItemService.getCartItems(customerId, pageNumber);
+            List<CartItemDTO> result = cartItemService.getCartItems(keycloakUserId, pageNumber);
 
             if (result.isEmpty())
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -122,11 +119,13 @@ public class CartController {
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> updateCartItemQuantity(
             @PathVariable @NotNull UUID productId,
-            @RequestParam @NotNull @Min(0) Long quantity) {
+            @RequestParam @NotNull @Min(0) Long quantity,
+            @AuthenticationPrincipal Jwt jwt
+    ) {
         // TODO cambiare con metodo per estrarre id da token
-        String customerId = null;
+        String keycloakUserId = jwt.getClaim("sub");
         try {
-            cartItemService.changeQuantity(customerId, productId, quantity);
+            cartItemService.changeQuantity(keycloakUserId, productId, quantity);
             return ResponseEntity.ok().build();
         } catch (ArgumentValueNotValidException e) {
             return createErrorResponse("ERROR_QUANTITY_VALUE_NOT_VALID", HttpStatus.UNPROCESSABLE_ENTITY);

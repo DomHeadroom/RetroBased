@@ -39,13 +39,11 @@ public class SellerController {
         this.productSellerService = productSellerService;
     }
 
-    // TODO cambiare sta roba con SELLER DTO
+    // TODO forse sta roba è da deprecare
     @PostMapping("public")
     public ResponseEntity<?> registerSeller(@RequestBody @Valid @NotNull SellerDTO seller) {
         sellerService.registerSeller(seller);
         return ResponseEntity.status(HttpStatus.CREATED).build();
-
-        // TODO aggiungere ruolo seller a roba su keycloak
     }
 
     @GetMapping("public/{seller}/products")

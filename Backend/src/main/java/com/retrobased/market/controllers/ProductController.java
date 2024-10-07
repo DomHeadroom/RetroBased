@@ -25,6 +25,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -152,11 +154,14 @@ public class ProductController {
     @PostMapping
     // @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> addProduct(
-            @RequestBody @Valid @NotNull ProductCategoryDTO productCategory
+            @RequestBody @Valid @NotNull ProductCategoryDTO productCategory,
+            @AuthenticationPrincipal Jwt jwt
     ) {
         try {
-            // TODO estrarre sellerId da token
-            UUID sellerId = UUID.fromString("c2e56bdd-1a5b-4a14-bc5b-ef069c20060f");
+            // TODO cambiare gestione venditore a keycloak
+            String keycloakUserId = jwt.getClaim("sub");
+
+            UUID sellerId = null;
 
             Category firstCategory = validateCategory(productCategory.firstCategoryId());
             Category secondCategory = validateCategory(productCategory.secondCategoryId());
@@ -210,9 +215,14 @@ public class ProductController {
      */
     @DeleteMapping
     // @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<?> removeProduct(@RequestParam(value = "product") @NotNull UUID productId) {
+    public ResponseEntity<?> removeProduct(
+            @RequestParam(value = "product") @NotNull UUID productId,
+            @AuthenticationPrincipal Jwt jwt
+    ) {
         try {
-            // TODO estrarre sellerId da token
+            // TODO cambiare gestione venditore a keycloak
+            String keycloakUserId = jwt.getClaim("sub");
+
             UUID sellerId = null;
             if (!productSellerService.existsProductForSeller(productId, sellerId))
                 return createErrorResponse("ERROR_VALUE_NOT_PERMITTED", HttpStatus.BAD_REQUEST);

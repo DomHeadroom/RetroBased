@@ -25,8 +25,8 @@ public class JwtClaimExtractor {
 
         if (authentication.getPrincipal() instanceof Jwt jwt) {
             // Extract the 'sub' (subject) or use a custom claim like 'customer_id'
-            String customerIdStr = jwt.getClaimAsString("sub"); // Or use a custom claim like 'customer_id'
-            return Optional.of(UUID.fromString(customerIdStr));
+            String customerId = jwt.getClaimAsString("sub"); // Or use a custom claim like 'customer_id'
+            return Optional.of(UUID.fromString(customerId));
         }
 
         return Optional.empty();
