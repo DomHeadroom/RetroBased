@@ -11,6 +11,8 @@ import java.util.UUID;
 @Component
 public class JwtClaimExtractor {
 
+    // TODO questa pure è da deprecare me sa
+
     /**
      * Extracts a specific claim (customerId) from the JWT token present in the SecurityContext.
      *

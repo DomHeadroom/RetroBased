@@ -55,7 +55,7 @@ public class OrderController {
     @GetMapping
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getOrder(
-            @RequestParam(value = "user") @NotNull UUID customerId,
+            @RequestParam(value = "user") @NotNull String customerId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber
     ) {
         // UUID customerId = TODO cambiare con metodo per estrarre id da token
@@ -84,7 +84,7 @@ public class OrderController {
             @PathVariable("order") @NotNull UUID orderId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber
     ) {
-        UUID customerId = UUID.fromString("a6cd2287-bb39-48b8-b1d7-62ec612ba064"); // TODO cambiare con metodo per estrarre id da token
+        String customerId = "a6cd2287-bb39-48b8-b1d7-62ec612ba064"; // TODO cambiare con metodo per estrarre id da token
         if (!orderService.existsOrderForCustomer(customerId, orderId))
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -102,7 +102,7 @@ public class OrderController {
     ) {
         try {
             // a6cd2287-bb39-48b8-b1d7-62ec612ba064
-            UUID customerId = UUID.fromString("a6cd2287-bb39-48b8-b1d7-62ec612ba064"); // TODO cambiare con metodo per estrarre id da token
+            String customerId = "a6cd2287-bb39-48b8-b1d7-62ec612ba064"; // TODO cambiare con metodo per estrarre id da token
 
             Optional<CustomerAddress> customerAddressOpt = customerAddressService.getIfExistsAndNotDeleted(customerId, productRequestOrder.addressId());
 

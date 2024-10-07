@@ -1,33 +1,33 @@
 package com.retrobased.market.controllers;
 
 import com.retrobased.market.dtos.CustomerAddressDTO;
-import com.retrobased.market.dtos.CustomerDTO;
 import com.retrobased.market.services.CustomerAddressService;
 import com.retrobased.market.services.CustomerService;
 import com.retrobased.market.utils.ResponseMessage;
 import com.retrobased.market.utils.exceptions.AddressNotFoundException;
 import com.retrobased.market.utils.exceptions.CountryNotFoundException;
 import com.retrobased.market.utils.exceptions.CustomerNotFoundException;
-import com.retrobased.market.utils.exceptions.UserMailAlreadyExistsException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 import static com.retrobased.market.utils.ResponseUtils.createErrorResponse;
 
-
+// TODO rinominare CustomerAddressController ?
 @RestController
-@RequestMapping("users")
+@RequestMapping("user/addresses")
 @Validated
 public class CustomerController {
 
@@ -43,15 +43,17 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PostMapping
-    public ResponseEntity<?> registerCustomer(@RequestBody @Valid @NotNull CustomerDTO customer) {
-        try {
-            customerService.registerCustomer(customer);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (UserMailAlreadyExistsException e) {
-            return createErrorResponse("ERROR_EMAIL_ALREADY_REGISTERED", HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping
+    public ResponseEntity<?> getCustomerAddresses() {
+        String customerId = null; // TODO cambiare con id estratto da token
+        List<CustomerAddressDTO> randomProducts = customerAddressService.getAddresses(customerId);
+        if (randomProducts.isEmpty())
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+        return ResponseEntity.ok(randomProducts);
     }
+
+    // TODO fare metodo get degli indirizzi
 
     /**
      * Adds an address to a customer.
@@ -62,12 +64,12 @@ public class CustomerController {
      * if the operation is successful, or an error message if the customer or
      * country is not found.
      */
-    @PostMapping("addresses")
+    @PostMapping
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> addCustomerAddress(
             @RequestBody @Valid CustomerAddressDTO addressDTO,
             // TODO cacciare customerId per prenderlo da token
-            @RequestParam(value = "user") @NotNull UUID customerId) {
+            @RequestParam(value = "user") @NotNull String customerId) {
         try {
             CustomerAddressDTO customerAddress = customerAddressService.addAddress(customerId, addressDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(customerAddress);
@@ -78,12 +80,12 @@ public class CustomerController {
         }
     }
 
-    @DeleteMapping("addresses")
+    @DeleteMapping
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> removeCustomerAddress(
             @RequestParam(value = "id") @NotNull UUID addressId,
             // TODO cacciare customerId per prenderlo da token
-            @RequestParam(value = "user") @NotNull UUID customerId) {
+            @RequestParam(value = "user") @NotNull String customerId) {
         try {
             customerAddressService.removeAddress(customerId, addressId);
             return ResponseEntity.ok(new ResponseMessage("SUCCESSFUL_ADDRESS_DELETION"));

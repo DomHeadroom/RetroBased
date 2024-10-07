@@ -110,9 +110,7 @@ public class ProductService {
     }
 
     @Transactional
-    public OrderDTO lockAndReduceQuantities(List<ProductQuantityDTO> productQuantities, CustomerAddress address, UUID customerId) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
-        Customer customer = customerService.get(customerId)
-                .orElseThrow(CustomerNotFoundException::new);
+    public OrderDTO lockAndReduceQuantities(List<ProductQuantityDTO> productQuantities, CustomerAddress address, String customerId) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
 
         Map<UUID, Long> productIds = productQuantities.stream()
                 .collect(Collectors.toMap(ProductQuantityDTO::productId, ProductQuantityDTO::quantity, Long::sum));
@@ -121,7 +119,7 @@ public class ProductService {
 
         List<OrderItem> orderItems = new ArrayList<>();
         Order currentOrder = new Order();
-        currentOrder.setCustomer(customer);
+        currentOrder.setCustomerId(customerId);
         currentOrder.setAddress(address);
 
         for (Product product : products) {

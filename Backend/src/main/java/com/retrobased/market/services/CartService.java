@@ -27,16 +27,14 @@ public class CartService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Cart getCustomerCart(UUID customerId) throws CustomerNotFoundException {
-        Customer customer = customerService.get(customerId)
-                .orElseThrow(CustomerNotFoundException::new);
-        Optional<Cart> cart = cartRepository.getCartByCustomerId(customer.getId());
+    public Cart getCustomerCart(String customerId) throws CustomerNotFoundException {
+        Optional<Cart> cart = cartRepository.getCartByCustomerId(customerId);
 
         if (cart.isPresent())
             return cart.get();
 
         Cart customerCart = new Cart();
-        customerCart.setCustomer(customer);
+        customerCart.setCustomerId(customerId);
 
         return cartRepository.save(customerCart);
 

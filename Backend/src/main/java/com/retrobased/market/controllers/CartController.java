@@ -63,7 +63,7 @@ public class CartController {
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> addProductsToCart(@RequestBody @Valid @NotNull ProductRequestCartDTO productRequestCartDTO) {
         try {
-            UUID customerId = UUID.fromString("f3106b66-3ed0-4d61-a7ae-fcc0651eb8cf"); // TODO cambiare con metodo per estrarre id da token
+            String customerId = "f3106b66-3ed0-4d61-a7ae-fcc0651eb8cf"; // TODO cambiare con metodo per estrarre id da token
 
             List<CartItemDTO> added = cartItemService.addProductsToCart(customerId, productRequestCartDTO.products());
             return ResponseEntity.ok(added);
@@ -97,7 +97,7 @@ public class CartController {
     @GetMapping
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getCartProducts(
-            @RequestParam @NotNull UUID customerId,
+            @RequestParam @NotNull String customerId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber) {
         // UUID customerId = TODO cambiare con metodo per estrarre id da token
         try {
@@ -123,7 +123,7 @@ public class CartController {
             @PathVariable @NotNull UUID productId,
             @RequestParam @NotNull @Min(0) Long quantity) {
         // TODO cambiare con metodo per estrarre id da token
-        UUID customerId = null;
+        String customerId = null;
         try {
             cartItemService.changeQuantity(customerId, productId, quantity);
             return ResponseEntity.ok().build();

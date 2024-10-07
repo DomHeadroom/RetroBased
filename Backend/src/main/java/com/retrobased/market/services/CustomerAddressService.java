@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerAddressService {
@@ -36,15 +38,13 @@ public class CustomerAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public CustomerAddressDTO addAddress(@NotNull UUID customerId, @NotNull CustomerAddressDTO addressDTO) throws CustomerNotFoundException, CountryNotFoundException {
-        Customer customer = customerService.get(customerId)
-                .orElseThrow(CustomerNotFoundException::new);
+    public CustomerAddressDTO addAddress(@NotNull String customerId, @NotNull CustomerAddressDTO addressDTO) throws CustomerNotFoundException, CountryNotFoundException {
 
         Country country = countryService.get(addressDTO.country())
                 .orElseThrow(CountryNotFoundException::new);
 
         CustomerAddress newAddress = new CustomerAddress();
-        newAddress.setCustomer(customer);
+        newAddress.setCustomerId(customerId);
         newAddress.setAddressLine1(addressDTO.addressLine1());
         newAddress.setAddressLine2(addressDTO.addressLine2());
         newAddress.setCountry(country);
@@ -58,9 +58,7 @@ public class CustomerAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void removeAddress(@NotNull UUID customerId, @NotNull UUID addressId) throws AddressNotFoundException, CustomerNotFoundException {
-        if (!customerService.exists(customerId))
-            throw new CustomerNotFoundException();
+    public void removeAddress(@NotNull String customerId, @NotNull UUID addressId) throws AddressNotFoundException, CustomerNotFoundException {
 
         CustomerAddress address = customerAddressRepository.findByIdAndCustomerIdAndDeletedFalse(addressId, customerId)
                 .orElseThrow(AddressNotFoundException::new);
@@ -76,7 +74,17 @@ public class CustomerAddressService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<CustomerAddress> getIfExistsAndNotDeleted(UUID customerId, UUID addressId) {
+    public Optional<CustomerAddress> getIfExistsAndNotDeleted(String customerId, UUID addressId) {
         return customerAddressRepository.findByIdAndCustomerIdAndDeletedFalse(addressId, customerId);
+    }
+
+    @Transactional
+    public List<CustomerAddressDTO> getAddresses(String customerId) {
+        List<CustomerAddress> customerAddress = customerAddressRepository.findByCustomerIdAndDeletedFalse(customerId);
+
+        return customerAddress.stream()
+                .map(CustomerAddressMapper::toDTO)
+                .collect(Collectors.toList());
+
     }
 }

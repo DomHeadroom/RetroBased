@@ -19,6 +19,8 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 public class Customer {
 
+    // TODO da deprecare
+
     @Id
     @UuidGenerator
     @Column(name = "id", updatable = false, nullable = false)

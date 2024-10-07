@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface CartRepository extends JpaRepository<Cart, UUID>, JpaSpecificationExecutor<Cart> {
-    boolean existsByCustomerId(UUID customerId);
+    boolean existsByCustomerId(String customerId);
 
-    Optional<Cart> getCartByCustomerId(UUID customerId);
+    Optional<Cart> getCartByCustomerId(String customerId);
 }

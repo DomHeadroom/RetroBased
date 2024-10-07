@@ -47,10 +47,10 @@ public class OrderService {
      * If no orders exist for the customer or the page is empty, returns an empty list.
      * @apiNote This method is read-only, using pagination to manage the number of orders returned per request.
      * Orders are sorted by their creation timestamp in descending order to show the most recent orders first.
-     * @see OrderRepository#findByCustomerId(UUID, Pageable) OrderRepository.findByCustomerId
+     * @see OrderRepository#findByCustomerId(String, Pageable) OrderRepository.findByCustomerId
      */
     @Transactional(readOnly = true)
-    public List<OrderDTO> getOrders(UUID customerId, int pageNumber) {
+    public List<OrderDTO> getOrders(String customerId, int pageNumber) {
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.desc("createdAt")));
         Page<Order> orders = orderRepository.findByCustomerId(customerId, paging);
 
@@ -93,7 +93,7 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public boolean existsOrderForCustomer(UUID customerId, UUID orderId) {
+    public boolean existsOrderForCustomer(String customerId, UUID orderId) {
         return orderRepository.existsByCustomerIdAndId(customerId, orderId);
     }
 

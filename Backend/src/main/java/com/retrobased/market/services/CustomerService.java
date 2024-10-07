@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
-
+// TODO da deprecare
 @Service
 public class CustomerService {
     private final CustomerRepository customerRepository;

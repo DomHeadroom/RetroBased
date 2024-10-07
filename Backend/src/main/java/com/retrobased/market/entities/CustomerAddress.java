@@ -20,10 +20,9 @@ public class CustomerAddress {
     @UuidGenerator
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
-
-    @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    
+    @Column(name = "customer_id", nullable = false)
+    private String customerId;
 
     @Column(name = "address_line1", nullable = false)
     private String addressLine1;

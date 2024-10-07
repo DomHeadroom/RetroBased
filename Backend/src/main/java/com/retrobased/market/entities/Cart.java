@@ -1,11 +1,8 @@
 package com.retrobased.market.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
@@ -22,9 +19,7 @@ public class Cart {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @OneToOne
-    @JoinColumn(name = "customer_id", unique = true)
-    @JsonIgnore
-    private Customer customer;
+    @Column(name = "customer_id", unique = true, nullable = false)
+    private String customerId;
 
 }
