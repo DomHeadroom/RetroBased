@@ -20,7 +20,7 @@ public class CustomerAddress {
     @UuidGenerator
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
-    
+
     @Column(name = "customer_id", nullable = false)
     private String customerId;
 

@@ -1,5 +1,6 @@
 package com.retrobased.market.controllers;
 
+import com.retrobased.market.authentications.AuthenticationService;
 import com.retrobased.market.dtos.ProductCategoryDTO;
 import com.retrobased.market.dtos.ProductDTO;
 import com.retrobased.market.entities.Attribute;
@@ -17,6 +18,7 @@ import com.retrobased.market.services.ProductTagService;
 import com.retrobased.market.utils.exceptions.ArgumentValueNotValidException;
 import com.retrobased.market.utils.exceptions.AttributeNotFoundException;
 import com.retrobased.market.utils.exceptions.CategoryNotFoundException;
+import com.retrobased.market.utils.exceptions.CustomerNotFoundException;
 import com.retrobased.market.utils.exceptions.ProductNotFoundException;
 import com.retrobased.market.utils.exceptions.SellerNotFoundException;
 import com.retrobased.market.utils.exceptions.TagNotFoundException;
@@ -25,8 +27,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,6 +55,7 @@ public class ProductController {
     private final ProductCategoryService productCategoryService;
     private final ProductAttributeService productAttributeService;
     private final ProductTagService productTagService;
+    private final AuthenticationService authenticationService;
 
     public ProductController(
             ProductService productService,
@@ -63,8 +64,8 @@ public class ProductController {
             CategoryService categoryService,
             AttributeService attributeService,
             ProductAttributeService productAttributeService,
-            ProductTagService productTagService
-    ) {
+            ProductTagService productTagService,
+            AuthenticationService authenticationService) {
         this.productService = productService;
         this.productSellerService = productSellerService;
         this.productCategoryService = productCategoryService;
@@ -72,6 +73,7 @@ public class ProductController {
         this.attributeService = attributeService;
         this.productAttributeService = productAttributeService;
         this.productTagService = productTagService;
+        this.authenticationService = authenticationService;
     }
 
     /**
@@ -154,12 +156,11 @@ public class ProductController {
     @PostMapping
     // @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> addProduct(
-            @RequestBody @Valid @NotNull ProductCategoryDTO productCategory,
-            @AuthenticationPrincipal Jwt jwt
+            @RequestBody @Valid @NotNull ProductCategoryDTO productCategory
     ) {
         try {
             // TODO cambiare gestione venditore a keycloak
-            String keycloakUserId = jwt.getClaim("sub");
+            String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
             UUID sellerId = null;
 
@@ -192,7 +193,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
         } catch (ArgumentValueNotValidException e) {
             return createErrorResponse("ERROR_ARGUMENT_VALUE_NOT_VALID", HttpStatus.BAD_REQUEST);
-        } catch (SellerNotFoundException e) {
+        } catch (CustomerNotFoundException | SellerNotFoundException e) {
             return createErrorResponse("ERROR_USER_NOT_FOUND", HttpStatus.FORBIDDEN);
         } catch (AttributeNotFoundException e) {
             return createErrorResponse("ERROR_ATTRIBUTE_NOT_FOUND", HttpStatus.NOT_FOUND);
@@ -216,12 +217,11 @@ public class ProductController {
     @DeleteMapping
     // @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> removeProduct(
-            @RequestParam(value = "product") @NotNull UUID productId,
-            @AuthenticationPrincipal Jwt jwt
+            @RequestParam(value = "product") @NotNull UUID productId
     ) {
         try {
             // TODO cambiare gestione venditore a keycloak
-            String keycloakUserId = jwt.getClaim("sub");
+            String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
             UUID sellerId = null;
             if (!productSellerService.existsProductForSeller(productId, sellerId))
@@ -231,6 +231,8 @@ public class ProductController {
             return ResponseEntity.noContent().build();
         } catch (ProductNotFoundException e) {
             return createErrorResponse("ERROR_ARGUMENT_VALUE_NOT_VALID", HttpStatus.BAD_REQUEST);
+        } catch (CustomerNotFoundException e) {
+            return createErrorResponse("ERROR_USER_NOT_FOUND", HttpStatus.FORBIDDEN);
         }
     }
 

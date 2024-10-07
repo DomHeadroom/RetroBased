@@ -1,6 +1,6 @@
 package com.retrobased.market.controllers;
 
-import com.retrobased.market.authentications.JwtClaimExtractor;
+import com.retrobased.market.authentications.AuthenticationService;
 import com.retrobased.market.dtos.CartItemDTO;
 import com.retrobased.market.dtos.ProductRequestCartDTO;
 import com.retrobased.market.services.CartItemService;
@@ -12,8 +12,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,11 +33,15 @@ import static com.retrobased.market.utils.ResponseUtils.createErrorResponse;
 public class CartController {
 
     private final CartItemService cartItemService;
-    public CartController(
-            CartItemService cartItemService
-    ) {
+    private final AuthenticationService authenticationService;
 
-        this.cartItemService = cartItemService;}
+    public CartController(
+            CartItemService cartItemService,
+            AuthenticationService authenticationService
+    ) {
+        this.cartItemService = cartItemService;
+        this.authenticationService = authenticationService;
+    }
 
     /**
      * Adds one or more products to the customer's shopping cart.
@@ -59,11 +61,10 @@ public class CartController {
     @PostMapping
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> addProductsToCart(
-            @RequestBody @Valid @NotNull ProductRequestCartDTO productRequestCartDTO,
-            @AuthenticationPrincipal Jwt jwt
+            @RequestBody @Valid @NotNull ProductRequestCartDTO productRequestCartDTO
     ) {
         try {
-            String keycloakUserId = jwt.getClaim("sub");
+            String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
             List<CartItemDTO> added = cartItemService.addProductsToCart(keycloakUserId, productRequestCartDTO.products());
             return ResponseEntity.ok(added);
@@ -96,11 +97,10 @@ public class CartController {
     @GetMapping
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getCartProducts(
-            @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber,
-            @AuthenticationPrincipal Jwt jwt
+            @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber
     ) {
         try {
-            String keycloakUserId = jwt.getClaim("sub");
+            String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
             List<CartItemDTO> result = cartItemService.getCartItems(keycloakUserId, pageNumber);
 
@@ -119,12 +119,12 @@ public class CartController {
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> updateCartItemQuantity(
             @PathVariable @NotNull UUID productId,
-            @RequestParam @NotNull @Min(0) Long quantity,
-            @AuthenticationPrincipal Jwt jwt
+            @RequestParam @NotNull @Min(0) Long quantity
     ) {
         // TODO cambiare con metodo per estrarre id da token
-        String keycloakUserId = jwt.getClaim("sub");
         try {
+            String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
+
             cartItemService.changeQuantity(keycloakUserId, productId, quantity);
             return ResponseEntity.ok().build();
         } catch (ArgumentValueNotValidException e) {

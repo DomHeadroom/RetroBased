@@ -6,31 +6,28 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Component
-public class JwtClaimExtractor {
-
-    // TODO questa pure è da deprecare me sa
+public class AuthenticationService {
 
     /**
-     * Extracts a specific claim (customerId) from the JWT token present in the SecurityContext.
+     * Extracts a specific claim (Keycloak user ID) from the JWT token present in the SecurityContext.
      *
-     * @return Optional of customerId (UUID)
+     * @return Optional of Keycloak user ID (String)
      */
-    public Optional<UUID> extractCustomerId() {
+    public Optional<String> extractUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated())
             return Optional.empty();
 
         if (authentication.getPrincipal() instanceof Jwt jwt) {
-            // Extract the 'sub' (subject) or use a custom claim like 'customer_id'
-            String customerId = jwt.getClaimAsString("sub"); // Or use a custom claim like 'customer_id'
-            return Optional.of(UUID.fromString(customerId));
+            String customerId = jwt.getClaimAsString("sub");
+            return Optional.ofNullable(customerId);
         }
 
         return Optional.empty();
     }
+
 
 }
 

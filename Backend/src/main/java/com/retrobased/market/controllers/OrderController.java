@@ -1,5 +1,6 @@
 package com.retrobased.market.controllers;
 
+import com.retrobased.market.authentications.AuthenticationService;
 import com.retrobased.market.dtos.OrderDTO;
 import com.retrobased.market.dtos.OrderItemDTO;
 import com.retrobased.market.dtos.ProductRequestOrderDTO;
@@ -12,12 +13,9 @@ import com.retrobased.market.utils.exceptions.CustomerNotFoundException;
 import com.retrobased.market.utils.exceptions.ProductNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,24 +42,33 @@ public class OrderController {
 
     private final CustomerAddressService customerAddressService;
 
+    private final AuthenticationService authenticationService;
+
     public OrderController(
             OrderService orderService,
             ProductService productService,
-            CustomerAddressService customerAddressService
+            CustomerAddressService customerAddressService,
+            AuthenticationService authenticationService
     ) {
         this.orderService = orderService;
         this.productService = productService;
         this.customerAddressService = customerAddressService;
+        this.authenticationService = authenticationService;
     }
 
     // metodo per ottenere ordini
     @GetMapping
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getOrder(
-            @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber,
-            @AuthenticationPrincipal Jwt jwt
+            @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber
     ) {
-        String keycloakUserId = jwt.getClaim("sub");
+        Optional<String> keycloakUserIdOpt = authenticationService.extractUserId();
+
+        if (keycloakUserIdOpt.isEmpty())
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        String keycloakUserId = keycloakUserIdOpt.get();
+
         List<OrderDTO> result = orderService.getOrders(keycloakUserId, pageNumber);
         if (result.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -85,10 +92,15 @@ public class OrderController {
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getProductsFromOrder(
             @PathVariable("order") @NotNull UUID orderId,
-            @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber,
-            @AuthenticationPrincipal Jwt jwt
+            @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber
     ) {
-        String keycloakUserId = jwt.getClaim("sub");
+        Optional<String> keycloakUserIdOpt = authenticationService.extractUserId();
+
+        if (keycloakUserIdOpt.isEmpty())
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        String keycloakUserId = keycloakUserIdOpt.get();
+
         if (!orderService.existsOrderForCustomer(keycloakUserId, orderId))
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -102,11 +114,10 @@ public class OrderController {
     @PostMapping
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> makeOrder(
-            @RequestBody @Valid @NotNull ProductRequestOrderDTO productRequestOrder,
-            @AuthenticationPrincipal Jwt jwt
+            @RequestBody @Valid @NotNull ProductRequestOrderDTO productRequestOrder
     ) {
         try {
-            String keycloakUserId = jwt.getClaim("sub");
+            String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
             Optional<CustomerAddress> customerAddressOpt = customerAddressService.getIfExistsAndNotDeleted(keycloakUserId, productRequestOrder.addressId());
 
