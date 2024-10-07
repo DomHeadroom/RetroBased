@@ -1,7 +1,7 @@
 package com.retrobased.market.controllers;
 
 import com.retrobased.market.authentications.JwtClaimExtractor;
-import com.retrobased.market.dtos.ProductObjQuantityDTO;
+import com.retrobased.market.dtos.CartItemDTO;
 import com.retrobased.market.dtos.ProductRequestCartDTO;
 import com.retrobased.market.services.CartItemService;
 import com.retrobased.market.utils.exceptions.ArgumentValueNotValidException;
@@ -65,7 +65,7 @@ public class CartController {
         try {
             UUID customerId = UUID.fromString("f3106b66-3ed0-4d61-a7ae-fcc0651eb8cf"); // TODO cambiare con metodo per estrarre id da token
 
-            List<ProductObjQuantityDTO> added = cartItemService.addProductsToCart(customerId, productRequestCartDTO.products());
+            List<CartItemDTO> added = cartItemService.addProductsToCart(customerId, productRequestCartDTO.products());
             return ResponseEntity.ok(added);
         } catch (ArgumentValueNotValidException e) {
             return createErrorResponse("ERROR_QUANTITY_VALUE_NOT_VALID", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -104,7 +104,7 @@ public class CartController {
             UUID customer = jwtClaimExtractor.extractCustomerId()
                     .orElseThrow(CustomerNotFoundException::new);
 
-            List<ProductObjQuantityDTO> result = cartItemService.getCartItems(customerId, pageNumber);
+            List<CartItemDTO> result = cartItemService.getCartItems(customerId, pageNumber);
 
             if (result.isEmpty())
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

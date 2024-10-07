@@ -1,22 +1,22 @@
 package com.retrobased.market.mappers;
 
 import com.retrobased.market.dtos.ProductDTO;
-import com.retrobased.market.dtos.ProductObjQuantityDTO;
+import com.retrobased.market.dtos.CartItemDTO;
 import com.retrobased.market.entities.CartItem;
 
 public class CartItemMapper {
     /**
-     * Maps a CartItem entity to a ProductObjQuantityDTO.
+     * Maps a CartItem entity to a CartItemDTO.
      *
      * @param cartItem the CartItem entity to be mapped
-     * @return a ProductObjQuantityDTO representing the product and its quantity
+     * @return a CartItemDTO representing the product and its quantity
      */
-    public static ProductObjQuantityDTO toProductObjQuantityDTO(CartItem cartItem) {
+    public static CartItemDTO toDTO(CartItem cartItem) {
         if (cartItem == null || cartItem.getProduct() == null)
             return null;
 
         ProductDTO productDTO = ProductMapper.toDTO(cartItem.getProduct());
 
-        return new ProductObjQuantityDTO(productDTO, cartItem.getQuantity());
+        return new CartItemDTO(productDTO, cartItem.getQuantity());
     }
 }

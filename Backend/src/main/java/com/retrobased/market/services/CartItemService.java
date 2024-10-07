@@ -1,7 +1,7 @@
 package com.retrobased.market.services;
 
 import com.retrobased.market.dtos.ProductDTO;
-import com.retrobased.market.dtos.ProductObjQuantityDTO;
+import com.retrobased.market.dtos.CartItemDTO;
 import com.retrobased.market.dtos.ProductQuantityDTO;
 import com.retrobased.market.entities.Cart;
 import com.retrobased.market.entities.CartItem;
@@ -69,14 +69,14 @@ public class CartItemService {
      * @see CartItemRepository#findByCartId(UUID, Pageable) CartItemRepository.findProductsByCartId
      */
     @Transactional(readOnly = true)
-    public List<ProductObjQuantityDTO> getCartItems(UUID customerId, int pageNumber) throws CustomerNotFoundException {
+    public List<CartItemDTO> getCartItems(UUID customerId, int pageNumber) throws CustomerNotFoundException {
         Cart customerCart = getCustomerCart(customerId);
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.desc("createdAt")));
         Page<CartItem> cartItems = cartItemRepository.findByCartId(customerCart.getId(), paging);
         if (cartItems.hasContent())
             return cartItems.getContent()
                     .stream()
-                    .map(CartItemMapper::toProductObjQuantityDTO)
+                    .map(CartItemMapper::toDTO)
                     .collect(Collectors.toList());
 
         return new ArrayList<>();
@@ -122,7 +122,7 @@ public class CartItemService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public List<ProductObjQuantityDTO> addProductsToCart(@NotNull UUID customerId, List<ProductQuantityDTO> productQuantities)
+    public List<CartItemDTO> addProductsToCart(@NotNull UUID customerId, List<ProductQuantityDTO> productQuantities)
             throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
 
         Map<UUID, Long> productIds = new HashMap<>();
@@ -143,7 +143,7 @@ public class CartItemService {
         Cart cart = getCustomerCart(customerId);
 
         List<CartItem> newItems = new LinkedList<>();
-        List<ProductObjQuantityDTO> resultItems = new LinkedList<>();
+        List<CartItemDTO> resultItems = new LinkedList<>();
 
         for (Product product : products) {
             UUID productId = product.getId();
@@ -181,8 +181,8 @@ public class CartItemService {
         return resultItems;
     }
 
-    private ProductObjQuantityDTO createProductObjQuantityDTO(ProductDTO product, Long quantity) {
-        return new ProductObjQuantityDTO(product, quantity);
+    private CartItemDTO createProductObjQuantityDTO(ProductDTO product, Long quantity) {
+        return new CartItemDTO(product, quantity);
     }
 
     private void checkValues(UUID customerId, UUID productId) throws ProductNotFoundException, CustomerNotFoundException {
