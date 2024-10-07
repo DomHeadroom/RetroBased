@@ -56,7 +56,23 @@ public class OrderController {
         this.authenticationService = authenticationService;
     }
 
-    // metodo per ottenere ordini
+    /**
+     * Retrieves a paginated list of orders associated with the authenticated customer.
+     * <p>
+     * This method extracts the user ID from the JWT token to identify the customer and fetches
+     * their orders. If the customer is not authenticated, it returns a <strong>401 Unauthorized</strong>
+     * response. If no orders are found for the customer, a <strong>204 No Content</strong> response is returned.
+     * </p>
+     *
+     * @param pageNumber the page number of orders to retrieve, starting from 0; defaults to 0 if not specified, must be a non-negative integer
+     * @return A {@link ResponseEntity} containing a list of {@link OrderDTO} if the operation is successful,
+     * or an error message if the customer is not authenticated or no orders are found.
+     * <ul>
+     *     <li><strong>200 OK</strong> – If orders are successfully retrieved.</li>
+     *     <li><strong>204 No Content</strong> – If the customer has no orders in the system.</li>
+     *     <li><strong>401 Unauthorized</strong> – If the user ID cannot be extracted from the JWT token.</li>
+     * </ul>
+     */
     @GetMapping
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getOrder(
@@ -79,6 +95,12 @@ public class OrderController {
     /**
      * <p>This method fetches products for the given order ID. The order must belong to the
      * authenticated customer.</p>
+     * <p>
+     * This method extracts the user ID from the JWT token to verify that the order
+     * is associated with the authenticated customer. If the user is not authenticated,
+     * a <strong>401 Unauthorized</strong> response is returned. If the order does not exist
+     * or has no products, a <strong>204 No Content</strong> response is returned.
+     * </p>
      *
      * @param orderId    The UUID of the order for which products are being requested.
      *                   This value must not be {@code null}.
@@ -87,6 +109,12 @@ public class OrderController {
      * @return A {@link ResponseEntity} containing a list of {@link OrderItemDTO}
      * objects if products are found for the order, or {@code NO_CONTENT}
      * (204 status) if the order doesn't exist or has no products.
+     * <ul>
+     *     <li><strong>200 OK</strong> – If products are successfully retrieved for the order.</li>
+     *     <li><strong>204 No Content</strong> – If the order doesn't exist, has no products,
+     *         or does not belong to the authenticated customer.</li>
+     *     <li><strong>401 Unauthorized</strong> – If the user ID cannot be extracted from the JWT token.</li>
+     * </ul>
      */
     @GetMapping("{order}/products")
     // @PreAuthorize("hasRole('USER')")
@@ -111,6 +139,32 @@ public class OrderController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * <p>This method allows the customer to create a new order based on the products
+     * they wish to purchase and the address provided.</p>
+     * <p>
+     * The user ID is extracted from the JWT token to ensure that the order is being
+     * placed by the authenticated customer. If the user is not authenticated, a
+     * <strong>403 Forbidden</strong> response is returned. The method also checks if
+     * the provided address ID exists and is not deleted. If the address is invalid,
+     * a <strong>400 Bad Request</strong> response is returned.
+     * </p>
+     *
+     * @param productRequestOrder The DTO object containing the order details, including
+     *                            the products to be ordered and the address ID. This
+     *                            must be a valid {@link ProductRequestOrderDTO} object
+     *                            as per the validation constraints.
+     * @return A {@link ResponseEntity} containing the created {@link OrderDTO} if the
+     * operation is successful, or an error message if the address is not found or
+     * any of the product quantities are invalid.
+     * <ul>
+     *     <li><strong>201 Created</strong> – If the order is successfully created.</li>
+     *     <li><strong>400 Bad Request</strong> – If the address does not exist, the
+     *         provided address is deleted, or the product quantities are invalid.</li>
+     *     <li><strong>403 Forbidden</strong> – If the user ID cannot be extracted from
+     *         the JWT token.</li>
+     * </ul>
+     */
     @PostMapping
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> makeOrder(

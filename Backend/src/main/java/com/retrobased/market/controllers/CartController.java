@@ -47,15 +47,18 @@ public class CartController {
      * Adds one or more products to the customer's shopping cart.
      * <p>
      * This method receives a list of products from the request body, attempts to add them to the customer's cart,
-     * and returns the added products along with their quantities. If any issues arise, such as invalid argument values
-     * or non-existent products, the method will return an appropriate error response.
+     * and returns the added products along with their quantities. The user's identity is extracted from the JWT token
+     * present in the request's security context. If any issues arise, such as invalid argument values or non-existent
+     * products, the method will return an appropriate error response.
      * </p>
      *
      * @param productRequestCartDTO the request body containing the list of products to add to the cart; must be valid and not null
      * @return a response entity containing either the added products or an error message if an exception occurs
      * <ul>
      *     <li><strong>200 OK</strong> – If the products were successfully added to the cart.</li>
-     *     <li><strong>400 Bad Request</strong> – If the input is invalid or the product does not exist.</li>
+     *     <li><strong>422 UNPROCESSABLE ENTITY</strong> – If the quantity value is invalid.</li>
+     *     <li><strong>404 NOT FOUND</strong> – If any of the products do not exist.</li>
+     *     <li><strong>403 FORBIDDEN</strong> – If the user could not be found based on the token.</li>
      * </ul>
      */
     @PostMapping
@@ -81,8 +84,9 @@ public class CartController {
      * Retrieves the products in the customer's shopping cart.
      * <p>
      * This method fetches a paginated list of products that are present in the customer's cart.
-     * It accepts the customer's UUID and the page number as parameters. If the cart is empty or no products
-     * are found for the specified page, the method returns a <strong>204 No Content</strong> response.
+     * It accepts the page number as a parameter. The user's identity is extracted from the JWT token
+     * present in the request's security context. If the cart is empty or no products are found
+     * for the specified page, the method returns a <strong>204 No Content</strong> response.
      * Otherwise, it returns the list of products in the cart.
      * </p>
      *
@@ -115,6 +119,26 @@ public class CartController {
 
     }
 
+    /**
+     * Updates the quantity of a specific product in the user's cart.
+     *
+     * <p>This method handles requests to update the quantity of a cart item based on the product's ID.
+     * The user's unique Keycloak ID is extracted from the JWT token, and the cart item's quantity is updated
+     * accordingly. If the specified quantity is invalid (e.g., less than 0), a custom exception is thrown.
+     * Additionally, this method handles various exceptions related to invalid product IDs, missing user details,
+     * or invalid argument values, providing appropriate HTTP responses.</p>
+     *
+     * @param productId The UUID of the product whose quantity in the cart is to be updated.
+     *                  Must not be null.
+     * @param quantity  The new quantity for the product in the cart.
+     *                  Must be a non-negative value (>= 0).
+     * @return A {@link ResponseEntity} with an appropriate HTTP status code:
+     *         <ul>
+     *           <li>200 OK if the quantity update is successful.</li>
+     *           <li>422 UNPROCESSABLE ENTITY if the provided quantity value is invalid.</li>
+     *           <li>404 NOT FOUND if the product is not found in the cart or the user is not found.</li>
+     *         </ul>
+     */
     @PostMapping("{productId}")
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> updateCartItemQuantity(
