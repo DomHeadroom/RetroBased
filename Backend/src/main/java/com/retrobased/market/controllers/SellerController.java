@@ -4,7 +4,7 @@ import com.retrobased.market.dtos.ProductDTO;
 import com.retrobased.market.dtos.SellerDTO;
 import com.retrobased.market.services.ProductSellerService;
 import com.retrobased.market.services.SellerService;
-import com.retrobased.market.utils.ResponseMessage;
+import com.retrobased.market.utils.exceptions.SellerNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -68,10 +68,10 @@ public class SellerController {
     public ResponseEntity<?> getSellerProducts(
             @PathVariable("seller") @NotNull UUID sellerId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber,
-            @RequestParam(value = "s", defaultValue = "id") String sortBy) {
+            @RequestParam(value = "s", defaultValue = "id") String sortBy) throws SellerNotFoundException {
 
         if (!sellerService.exists(sellerId))
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("ERROR_USER_NOT_FOUND"));
+            throw new SellerNotFoundException();
 
         List<ProductDTO> result = productSellerService.getSellerProducts(sellerId, pageNumber, sortBy);
 

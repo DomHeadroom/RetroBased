@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.retrobased.market.utils.ResponseUtils.createErrorResponse;
-
 // TODO rinominare CustomerAddressController ?
 @RestController
 @RequestMapping("user/addresses")
@@ -98,17 +96,11 @@ public class CustomerAddressController {
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> addCustomerAddress(
             @RequestBody @Valid CustomerAddressDTO addressDTO
-    ) {
-        try {
-            String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
+    ) throws CustomerNotFoundException, CountryNotFoundException {
+        String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
-            CustomerAddressDTO customerAddress = customerAddressService.addAddress(keycloakUserId, addressDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(customerAddress);
-        } catch (CustomerNotFoundException e) {
-            return createErrorResponse("ERROR_USER_NOT_FOUND", HttpStatus.NOT_FOUND);
-        } catch (CountryNotFoundException e) {
-            return createErrorResponse("ERROR_COUNTRY_NOT_FOUND", HttpStatus.BAD_REQUEST);
-        }
+        CustomerAddressDTO customerAddress = customerAddressService.addAddress(keycloakUserId, addressDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerAddress);
     }
 
     /**
@@ -132,17 +124,11 @@ public class CustomerAddressController {
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> removeCustomerAddress(
             @RequestParam(value = "id") @NotNull UUID addressId
-    ) {
-        try {
-            String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
+    ) throws AddressNotFoundException, CustomerNotFoundException {
+        String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
-            customerAddressService.removeAddress(keycloakUserId, addressId);
-            return ResponseEntity.ok(new ResponseMessage("SUCCESSFUL_ADDRESS_DELETION"));
-        } catch (CustomerNotFoundException e) {
-            return createErrorResponse("ERROR_USER_NOT_FOUND", HttpStatus.NOT_FOUND);
-        } catch (AddressNotFoundException e) {
-            return createErrorResponse("ERROR_ADDRESS_NOT_FOUND", HttpStatus.BAD_REQUEST);
-        }
+        customerAddressService.removeAddress(keycloakUserId, addressId);
+        return ResponseEntity.ok(new ResponseMessage("SUCCESSFUL_ADDRESS_DELETION"));
     }
 
 }

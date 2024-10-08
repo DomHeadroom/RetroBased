@@ -41,8 +41,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.retrobased.market.utils.ResponseUtils.createErrorResponse;
-
 @RestController
 @RequestMapping("product")
 @Validated
@@ -189,51 +187,39 @@ public class ProductController {
     // @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> addProduct(
             @RequestBody @Valid @NotNull ProductCategoryDTO productCategory
-    ) {
-        try {
-            // TODO cambiare gestione venditore a keycloak
-            String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
+    ) throws CustomerNotFoundException, CategoryNotFoundException, ArgumentValueNotValidException, AttributeNotFoundException, TagNotFoundException, SellerNotFoundException {
+        // TODO cambiare gestione venditore a keycloak
+        String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
-            UUID sellerId = null;
+        UUID sellerId = null;
 
-            Category firstCategory = validateCategory(productCategory.firstCategoryId());
-            Category secondCategory = validateCategory(productCategory.secondCategoryId());
+        Category firstCategory = validateCategory(productCategory.firstCategoryId());
+        Category secondCategory = validateCategory(productCategory.secondCategoryId());
 
-            if (firstCategory != null &&
-                    secondCategory != null &&
-                    !categoryService.areCategoriesValid(firstCategory, secondCategory))
-                throw new ArgumentValueNotValidException();
+        if (firstCategory != null &&
+                secondCategory != null &&
+                !categoryService.areCategoriesValid(firstCategory, secondCategory))
+            throw new ArgumentValueNotValidException();
 
-            Attribute attribute = validateAttribute(productCategory.attributeId());
-            Tag tag = validateTag(productCategory.tagId());
+        Attribute attribute = validateAttribute(productCategory.attributeId());
+        Tag tag = validateTag(productCategory.tagId());
 
-            Product product = productService.addProduct(productCategory.product(), sellerId);
+        Product product = productService.addProduct(productCategory.product(), sellerId);
 
-            if (firstCategory != null)
-                productCategoryService.create(firstCategory, product);
+        if (firstCategory != null)
+            productCategoryService.create(firstCategory, product);
 
-            if (secondCategory != null)
-                productCategoryService.create(secondCategory, product);
+        if (secondCategory != null)
+            productCategoryService.create(secondCategory, product);
 
-            if (attribute != null)
-                productAttributeService.create(attribute, product);
+        if (attribute != null)
+            productAttributeService.create(attribute, product);
 
-            if (tag != null)
-                productTagService.create(tag, product);
+        if (tag != null)
+            productTagService.create(tag, product);
 
-            ProductDTO productDTO = ProductMapper.toDTO(product);
-            return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
-        } catch (ArgumentValueNotValidException e) {
-            return createErrorResponse("ERROR_ARGUMENT_VALUE_NOT_VALID", HttpStatus.BAD_REQUEST);
-        } catch (CustomerNotFoundException | SellerNotFoundException e) {
-            return createErrorResponse("ERROR_USER_NOT_FOUND", HttpStatus.FORBIDDEN);
-        } catch (AttributeNotFoundException e) {
-            return createErrorResponse("ERROR_ATTRIBUTE_NOT_FOUND", HttpStatus.NOT_FOUND);
-        } catch (CategoryNotFoundException e) {
-            return createErrorResponse("ERROR_CATEGORY_NOT_FOUND", HttpStatus.NOT_FOUND);
-        } catch (TagNotFoundException e) {
-            return createErrorResponse("ERROR_TAG_NOT_FOUND", HttpStatus.NOT_FOUND);
-        }
+        ProductDTO productDTO = ProductMapper.toDTO(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
     }
 
     /**
@@ -252,22 +238,16 @@ public class ProductController {
     // @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<?> removeProduct(
             @RequestParam(value = "product") @NotNull UUID productId
-    ) {
-        try {
-            // TODO cambiare gestione venditore a keycloak
-            String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
+    ) throws ProductNotFoundException, CustomerNotFoundException {
+        // TODO cambiare gestione venditore a keycloak
+        String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
-            UUID sellerId = null;
-            if (!productSellerService.existsProductForSeller(productId, sellerId))
-                return createErrorResponse("ERROR_VALUE_NOT_PERMITTED", HttpStatus.BAD_REQUEST);
+        UUID sellerId = null;
+        if (!productSellerService.existsProductForSeller(productId, sellerId))
+            throw new ProductNotFoundException();
 
-            productService.removeProduct(productId);
-            return ResponseEntity.noContent().build();
-        } catch (ProductNotFoundException e) {
-            return createErrorResponse("ERROR_ARGUMENT_VALUE_NOT_VALID", HttpStatus.BAD_REQUEST);
-        } catch (CustomerNotFoundException e) {
-            return createErrorResponse("ERROR_USER_NOT_FOUND", HttpStatus.FORBIDDEN);
-        }
+        productService.removeProduct(productId);
+        return ResponseEntity.noContent().build();
     }
 
     private Tag validateTag(UUID id) throws TagNotFoundException {

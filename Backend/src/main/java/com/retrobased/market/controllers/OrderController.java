@@ -8,6 +8,7 @@ import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.services.CustomerAddressService;
 import com.retrobased.market.services.OrderService;
 import com.retrobased.market.services.ProductService;
+import com.retrobased.market.utils.exceptions.AddressNotFoundException;
 import com.retrobased.market.utils.exceptions.ArgumentValueNotValidException;
 import com.retrobased.market.utils.exceptions.CustomerNotFoundException;
 import com.retrobased.market.utils.exceptions.ProductNotFoundException;
@@ -28,8 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import static com.retrobased.market.utils.ResponseUtils.createErrorResponse;
 
 @RestController
 @RequestMapping("orders")
@@ -169,23 +168,17 @@ public class OrderController {
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> makeOrder(
             @RequestBody @Valid @NotNull ProductRequestOrderDTO productRequestOrder
-    ) {
-        try {
-            String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
+    ) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException, AddressNotFoundException {
+        String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
-            Optional<CustomerAddress> customerAddressOpt = customerAddressService.getIfExistsAndNotDeleted(keycloakUserId, productRequestOrder.addressId());
+        Optional<CustomerAddress> customerAddressOpt = customerAddressService.getIfExistsAndNotDeleted(keycloakUserId, productRequestOrder.addressId());
 
-            if (customerAddressOpt.isEmpty())
-                return createErrorResponse("ERROR_ADDRESS_NOT_FOUND", HttpStatus.BAD_REQUEST);
+        if (customerAddressOpt.isEmpty())
+            throw new AddressNotFoundException();
 
-            CustomerAddress customerAddress = customerAddressOpt.get();
+        CustomerAddress customerAddress = customerAddressOpt.get();
 
-            OrderDTO finalOrder = productService.lockAndReduceQuantities(productRequestOrder.products(), customerAddress, keycloakUserId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(finalOrder);
-        } catch (ArgumentValueNotValidException | ProductNotFoundException e) {
-            return createErrorResponse("ERROR_VALUE_NOT_PERMITTED", HttpStatus.BAD_REQUEST);
-        } catch (CustomerNotFoundException e) {
-            return createErrorResponse("ERROR_TOKEN_USER", HttpStatus.FORBIDDEN);
-        }
+        OrderDTO finalOrder = productService.lockAndReduceQuantities(productRequestOrder.products(), customerAddress, keycloakUserId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(finalOrder);
     }
 }

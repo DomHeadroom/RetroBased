@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.UUID;
 
-import static com.retrobased.market.utils.ResponseUtils.createErrorResponse;
-
 
 @RestController
 @RequestMapping("carts")
@@ -65,19 +63,12 @@ public class CartController {
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> addProductsToCart(
             @RequestBody @Valid @NotNull ProductRequestCartDTO productRequestCartDTO
-    ) {
-        try {
-            String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
+    ) throws CustomerNotFoundException, ArgumentValueNotValidException, ProductNotFoundException {
+        String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
-            List<CartItemDTO> added = cartItemService.addProductsToCart(keycloakUserId, productRequestCartDTO.products());
-            return ResponseEntity.ok(added);
-        } catch (ArgumentValueNotValidException e) {
-            return createErrorResponse("ERROR_QUANTITY_VALUE_NOT_VALID", HttpStatus.UNPROCESSABLE_ENTITY);
-        } catch (ProductNotFoundException e) {
-            return createErrorResponse("ERROR_PRODUCT_NOT_FOUND", HttpStatus.NOT_FOUND);
-        } catch (CustomerNotFoundException e) {
-            return createErrorResponse("ERROR_TOKEN_USER", HttpStatus.FORBIDDEN);
-        }
+        List<CartItemDTO> added = cartItemService.addProductsToCart(keycloakUserId, productRequestCartDTO.products());
+        return ResponseEntity.ok(added);
+
     }
 
     /**
@@ -102,20 +93,15 @@ public class CartController {
     // @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getCartProducts(
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber
-    ) {
-        try {
-            String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
+    ) throws CustomerNotFoundException {
+        String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
-            List<CartItemDTO> result = cartItemService.getCartItems(keycloakUserId, pageNumber);
+        List<CartItemDTO> result = cartItemService.getCartItems(keycloakUserId, pageNumber);
 
-            if (result.isEmpty())
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        if (result.isEmpty())
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-            return ResponseEntity.ok(result);
-
-        } catch (CustomerNotFoundException e) {
-            return createErrorResponse("ERROR_USER_NOT_FOUND", HttpStatus.NOT_FOUND);
-        }
+        return ResponseEntity.ok(result);
 
     }
 
@@ -144,20 +130,12 @@ public class CartController {
     public ResponseEntity<?> updateCartItemQuantity(
             @PathVariable @NotNull UUID productId,
             @RequestParam @NotNull @Min(0) Long quantity
-    ) {
+    ) throws CustomerNotFoundException, ArgumentValueNotValidException, ProductNotFoundException {
         // TODO cambiare con metodo per estrarre id da token
-        try {
-            String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
+        String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
-            cartItemService.changeQuantity(keycloakUserId, productId, quantity);
-            return ResponseEntity.ok().build();
-        } catch (ArgumentValueNotValidException e) {
-            return createErrorResponse("ERROR_QUANTITY_VALUE_NOT_VALID", HttpStatus.UNPROCESSABLE_ENTITY);
-        } catch (ProductNotFoundException e) {
-            return createErrorResponse("ERROR_PRODUCT_NOT_IN_CART", HttpStatus.NOT_FOUND);
-        } catch (CustomerNotFoundException e) {
-            return createErrorResponse("ERROR_USER_NOT_FOUND", HttpStatus.NOT_FOUND);
-        }
+        cartItemService.changeQuantity(keycloakUserId, productId, quantity);
+        return ResponseEntity.ok().build();
     }
 
 }
