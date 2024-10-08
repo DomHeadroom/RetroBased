@@ -54,7 +54,7 @@ public class ProductService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Product addProduct(ProductDTO productDTO, UUID sellerId) throws ArgumentValueNotValidException, SellerNotFoundException {
+    public Product addProduct(ProductDTO productDTO, UUID sellerId) throws SellerNotFoundException {
         Product product = ProductMapper.toEntity(productDTO);
         product.setDeleted(false);
         product.setPublished(true);
@@ -145,6 +145,11 @@ public class ProductService {
         orderItemService.saveAll(orderItems);
 
         return OrderMapper.toDTO(currentOrder);
+    }
+
+    public Product findProductWithLock(UUID productId) throws ProductNotFoundException {
+        return productRepository.findByIdWithLock(productId)
+                .orElseThrow(ProductNotFoundException::new);
     }
 
     @Transactional(readOnly = true)

@@ -32,6 +32,10 @@ public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpec
     @Query("SELECT p FROM Product p WHERE p.id IN :productIds")
     List<Product> findByIdInWithLock(Set<UUID> productIds);
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT p FROM Product p WHERE p.id = :productId AND p.deleted = false AND p.published = true")
+    Optional<Product> findByIdWithLock(UUID productId);
+
     @Query(value = "SELECT * FROM products ORDER BY RANDOM() LIMIT :limit", nativeQuery = true)
     List<Product> findRandomProducts(@Param("limit") int limit);
 

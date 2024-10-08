@@ -121,33 +121,35 @@ public class CartItemService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public List<CartItemDTO> addProductsToCart(@NotEmpty String customerId, List<ProductQuantityDTO> productQuantities)
-            throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
+            throws ArgumentValueNotValidException, ProductNotFoundException {
 
-        Map<UUID, Long> productIds = new HashMap<>();
-
+        Map<UUID, Long> aggregatedProductQuantities = new HashMap<>();
         for (ProductQuantityDTO productQuantity : productQuantities) {
             UUID productId = productQuantity.productId();
-            if (!productService.exists(productId) ||
-                    productService.isDeleted(productId) ||
-                    productService.isOutOfStock(productId) ||
-                    !productService.isPublished(productId))
-                throw new ProductNotFoundException();
+            Long quantityToAdd = productQuantity.quantity();
 
-            productIds.merge(productId, productQuantity.quantity(), Long::sum);
+            aggregatedProductQuantities.merge(productId, quantityToAdd, Long::sum);
         }
 
-        List<Product> products = productService.get(productIds.keySet());
+        Cart cart = cartService.findCartByCustomerIdWithLock(customerId);
 
-        Cart cart = getCustomerCart(customerId);
-
-        List<CartItem> newItems = new LinkedList<>();
         List<CartItemDTO> resultItems = new LinkedList<>();
+        List<CartItem> newItems = new LinkedList<>();
 
-        for (Product product : products) {
-            UUID productId = product.getId();
-            Long quantityToAdd = productIds.get(productId);
+        for (Map.Entry<UUID, Long> entry : aggregatedProductQuantities.entrySet()) {
+            UUID productId = entry.getKey();
+            Long totalQuantityToAdd = entry.getValue();
 
-            if (product.getQuantity() < quantityToAdd)
+            Product product = productService.findProductWithLock(productId);
+
+            if (product.getDeleted() ||
+                    product.getDisableOutOfStock() ||
+                    !product.getPublished()
+            )
+                throw new ProductNotFoundException();
+
+
+            if (product.getQuantity() < totalQuantityToAdd)
                 throw new ArgumentValueNotValidException();
 
             Optional<CartItem> existingCartItemOpt = cartItemRepository.findByCartIdAndProductId(cart.getId(), productId);
@@ -155,7 +157,7 @@ public class CartItemService {
 
             if (existingCartItemOpt.isPresent()) {
                 CartItem existingCartItem = existingCartItemOpt.get();
-                Long newQuantity = existingCartItem.getQuantity() + quantityToAdd;
+                Long newQuantity = existingCartItem.getQuantity() + totalQuantityToAdd;
                 existingCartItem.setQuantity(newQuantity);
                 cartItemRepository.save(existingCartItem);
 
@@ -166,10 +168,10 @@ public class CartItemService {
             CartItem newItem = new CartItem();
             newItem.setProduct(product);
             newItem.setCart(cart);
-            newItem.setQuantity(quantityToAdd);
+            newItem.setQuantity(totalQuantityToAdd);
             newItems.add(newItem);
 
-            resultItems.add(createProductObjQuantityDTO(productDTO, quantityToAdd));
+            resultItems.add(createProductObjQuantityDTO(productDTO, totalQuantityToAdd));
 
         }
 
