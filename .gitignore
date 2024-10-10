@@ -1,9 +1,9 @@
 Backend/HELP.md
 Frontend/README.md
 target/
-!**/.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+**/.mvn/wrapper/maven-wrapper.jar
+**/src/main/**/target/
+**/src/test/**/target/
 Backend/mvnw
 Backend/mvnw.cmd
 
@@ -24,6 +24,7 @@ Backend/mvnw.cmd
 
 ### VS Code ###
 Frontend/.vscode/
+Frontend/.history/*
 
 # Node
 Frontend/node_modules
