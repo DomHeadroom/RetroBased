@@ -54,7 +54,10 @@ public class ProductService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Product addProduct(ProductDTO productDTO, UUID sellerId) throws SellerNotFoundException {
+    public Product addProduct(ProductDTO productDTO, UUID sellerId) throws SellerNotFoundException, ArgumentValueNotValidException {
+        if (existSlug(productDTO.slug()))
+            throw new ArgumentValueNotValidException();
+
         Product product = ProductMapper.toEntity(productDTO);
         product.setDeleted(false);
         product.setPublished(true);
@@ -156,6 +159,9 @@ public class ProductService {
     public Boolean exists(UUID id) {
         return productRepository.existsById(id);
     }
+
+    @Transactional(readOnly = true)
+    public Boolean existSlug(String slug){return productRepository.findBySlug(slug).isPresent();}
 
     @Transactional(readOnly = true)
     public List<Product> get(Set<UUID> ids) {

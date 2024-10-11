@@ -16,6 +16,10 @@ import java.util.UUID;
 @Table(name = "sellers")
 public class Seller {
 
+    // TODO da deprecare
+    // in ogni caso mi sa che su keycloak uso solo il ruolo user
+    // e faccio che possono sia vendere che acquistare
+
     @Id
     @UuidGenerator
     @Column(name = "id", updatable = false, nullable = false)

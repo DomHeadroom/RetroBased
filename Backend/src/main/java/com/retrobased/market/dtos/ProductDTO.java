@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record ProductDTO(
@@ -45,6 +45,6 @@ public record ProductDTO(
         String note,
 
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-        OffsetDateTime createdAt
+        LocalDateTime createdAt
 ) {
 }

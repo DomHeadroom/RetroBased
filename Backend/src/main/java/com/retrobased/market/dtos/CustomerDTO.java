@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 public record CustomerDTO(
 
@@ -19,7 +19,7 @@ public record CustomerDTO(
         String email,
 
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-        OffsetDateTime registeredAt
+        LocalDateTime registeredAt
 
 ) {
 }

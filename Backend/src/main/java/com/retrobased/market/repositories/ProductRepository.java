@@ -46,4 +46,6 @@ public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpec
     boolean existsByIdAndPublished(UUID id, boolean published);
 
     Optional<Product> findByIdAndDeletedIsFalseAndPublishedIsTrue(UUID id);
+
+    Optional<Product> findBySlug(String slug);
 }

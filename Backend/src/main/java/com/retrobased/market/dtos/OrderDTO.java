@@ -3,7 +3,7 @@ package com.retrobased.market.dtos;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record OrderDTO(
@@ -12,14 +12,14 @@ public record OrderDTO(
 
         CustomerAddressDTO address,
 
-        OffsetDateTime orderApprovedAt,
+        LocalDateTime orderApprovedAt,
 
         @JsonInclude(JsonInclude.Include.NON_NULL)
-        OffsetDateTime orderDeliveredCarrierDate,
+        LocalDateTime orderDeliveredCarrierDate,
 
         @JsonInclude(JsonInclude.Include.NON_NULL)
-        OffsetDateTime orderDeliveredCustomerDate,
+        LocalDateTime orderDeliveredCustomerDate,
 
-        OffsetDateTime createdAt
+        LocalDateTime createdAt
 ) {
 }

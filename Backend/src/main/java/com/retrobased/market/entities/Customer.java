@@ -10,7 +10,7 @@ import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -37,6 +37,6 @@ public class Customer {
 
     @CreatedDate
     @Column(name = "registered_at", updatable = false)
-    private OffsetDateTime registeredAt;
+    private LocalDateTime registeredAt;
 
 }
