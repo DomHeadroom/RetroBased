@@ -25,29 +25,17 @@ public class Seller {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "seller_name", nullable = false)
-    private String sellerName;
+    @Column(name = "seller_first_name", nullable = false)
+    private String firstName;
 
-    @Column(name = "company")
-    private String company;
+    @Column(name = "seller_last_name", nullable = false)
+    private String lastName;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @Column(name = "keycloak_id", updatable = false, nullable = false, unique = true)
+    private String keycloakId;
 
-    @Column(name = "address_line1", nullable = false)
-    private String addressLine1;
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
 
-    @Column(name = "address_line2")
-    private String addressLine2;
-
-    @ManyToOne
-    @JoinColumn(name = "country_id")
-    private Country country;
-
-    @Column(name = "city")
-    private String city;
-
-    @Column(name = "note")
-    private String note;
 
 }

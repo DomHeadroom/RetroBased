@@ -19,8 +19,6 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 public class Customer {
 
-    // TODO da deprecare
-
     @Id
     @UuidGenerator
     @Column(name = "id", updatable = false, nullable = false)
@@ -39,4 +37,6 @@ public class Customer {
     @Column(name = "registered_at", updatable = false)
     private LocalDateTime registeredAt;
 
+    @Column(name = "keycloak_id", updatable = false, nullable = false, unique = true)
+    private String keycloakId;
 }

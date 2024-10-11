@@ -35,4 +35,13 @@ public class SellerService {
     public boolean exists(UUID sellerId) {
         return sellerRepository.existsById(sellerId);
     }
+
+    public Seller findByKeycloakId(String userId) {
+        return null;
+        // TODO da completare
+    }
+
+    public void save(Seller seller) {
+        // TODO da completare
+    }
 }
