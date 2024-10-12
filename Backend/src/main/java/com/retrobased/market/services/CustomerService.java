@@ -1,8 +1,6 @@
 package com.retrobased.market.services;
 
-import com.retrobased.market.dtos.CustomerDTO;
 import com.retrobased.market.entities.Customer;
-import com.retrobased.market.mappers.CustomerMapper;
 import com.retrobased.market.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,9 +27,8 @@ public class CustomerService {
         return customerRepository.findById(id);
     }
 
-    public Customer findByKeycloakId(String userId) {
-        return null;
-        // TODO da completare
+    public Customer findByKeycloakId(String id) {
+        return customerRepository.findByKeycloakId(id);
     }
 
     public void save(Customer customer) {

@@ -1,32 +1,29 @@
 package com.retrobased.market.dtos;
 
-import com.retrobased.market.entities.Country;
-import com.retrobased.market.validators.PhoneNumber;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record SellerDTO(
 
-        @NotBlank(message = "Seller name cannot be empty.")
-        String sellerName,
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+        UUID id,
 
-        String company,
+        @NotBlank(message = "First name cannot be empty.")
+        String firstName,
 
-        @NotBlank(message = "Phone number cannot be empty.")
-        @PhoneNumber
-        String phoneNumber,
+        @NotBlank(message = "Last name cannot be empty.")
+        String lastName,
 
-        @NotBlank(message = "Address line 1 cannot be empty.")
-        String addressLine1,
+        @NotBlank(message = "E-mail cannot be empty.")
+        @Email
+        String email,
 
-        String addressLine2,
-
-        @NotNull(message = "Country is required.")
-        Country country,
-
-        String city,
-
-        String note
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+        LocalDateTime registeredAt
 
 ) {
 }

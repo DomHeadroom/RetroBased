@@ -26,8 +26,9 @@ public class Order {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "customer_id", nullable = false)
-    private String customerId;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "addresses_id")
