@@ -23,7 +23,7 @@ public enum BusinessErrorCodes {
     ATTRIBUTE_NOT_FOUND(305, NOT_FOUND, "Attribute not found"),
     CATEGORY_NOT_FOUND(306, NOT_FOUND, "Category not found"),
     TAG_NOT_FOUND(307, NOT_FOUND, "Tag not found"),
-
+    USER_CREATION_FAILED(400, INTERNAL_SERVER_ERROR, "User creation failed"),
 
     ;
 

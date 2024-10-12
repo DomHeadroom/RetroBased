@@ -8,6 +8,7 @@ import com.retrobased.market.utils.exceptions.CustomerNotFoundException;
 import com.retrobased.market.utils.exceptions.ProductNotFoundException;
 import com.retrobased.market.utils.exceptions.SellerNotFoundException;
 import com.retrobased.market.utils.exceptions.TagNotFoundException;
+import com.retrobased.market.utils.exceptions.UserSaveException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -141,6 +142,19 @@ public class GlobalExceptionHandler {
                                 .businessErrorCode(CATEGORY_NOT_FOUND.getCode())
                                 .businessErrorDescription(CATEGORY_NOT_FOUND.getDescription())
                                 .error(CATEGORY_NOT_FOUND.getDescription())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(UserSaveException.class)
+    public ResponseEntity<ExceptionResponse> handleException(UserSaveException exp) {
+        return ResponseEntity
+                .status(USER_CREATION_FAILED.getHttpStatus())
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(USER_CREATION_FAILED.getCode())
+                                .businessErrorDescription(USER_CREATION_FAILED.getDescription())
+                                .error(USER_CREATION_FAILED.getDescription())
                                 .build()
                 );
     }
