@@ -2,6 +2,7 @@ package com.retrobased.market.services;
 
 import com.retrobased.market.dtos.CustomerAddressDTO;
 import com.retrobased.market.entities.Country;
+import com.retrobased.market.entities.Customer;
 import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.mappers.CustomerAddressMapper;
 import com.retrobased.market.repositories.CustomerAddressRepository;
@@ -25,23 +26,27 @@ public class CustomerAddressService {
     private final CustomerAddressRepository customerAddressRepository;
 
     private final CountryService countryService;
+    private final CustomerService customerService;
 
     public CustomerAddressService(
             CustomerAddressRepository customerAddressRepository,
-            CountryService countryService
-    ) {
+            CountryService countryService,
+            CustomerService customerService) {
         this.customerAddressRepository = customerAddressRepository;
         this.countryService = countryService;
+        this.customerService = customerService;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public CustomerAddressDTO addAddress(@NotEmpty String customerId, @NotNull CustomerAddressDTO addressDTO) throws CustomerNotFoundException, CountryNotFoundException {
+    public CustomerAddressDTO addAddress(@NotEmpty String keycloakId, @NotNull CustomerAddressDTO addressDTO) throws CustomerNotFoundException, CountryNotFoundException {
+
+        Customer customer = customerService.findByKeycloakId(keycloakId);
 
         Country country = countryService.get(addressDTO.country())
                 .orElseThrow(CountryNotFoundException::new);
 
         CustomerAddress newAddress = new CustomerAddress();
-        newAddress.setCustomerId(customerId);
+        newAddress.setCustomer(customer);
         newAddress.setAddressLine1(addressDTO.addressLine1());
         newAddress.setAddressLine2(addressDTO.addressLine2());
         newAddress.setCountry(country);
@@ -55,7 +60,7 @@ public class CustomerAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void removeAddress(@NotEmpty String customerId, @NotNull UUID addressId) throws AddressNotFoundException, CustomerNotFoundException {
+    public void removeAddress(@NotEmpty UUID customerId, @NotNull UUID addressId) throws AddressNotFoundException, CustomerNotFoundException {
 
         CustomerAddress address = customerAddressRepository.findByIdAndCustomerIdAndDeletedFalse(addressId, customerId)
                 .orElseThrow(AddressNotFoundException::new);
@@ -71,12 +76,12 @@ public class CustomerAddressService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<CustomerAddress> getIfExistsAndNotDeleted(String customerId, UUID addressId) {
+    public Optional<CustomerAddress> getIfExistsAndNotDeleted(UUID customerId, UUID addressId) {
         return customerAddressRepository.findByIdAndCustomerIdAndDeletedFalse(addressId, customerId);
     }
 
     @Transactional
-    public List<CustomerAddressDTO> getAddresses(String customerId) {
+    public List<CustomerAddressDTO> getAddresses(UUID customerId) {
         List<CustomerAddress> customerAddress = customerAddressRepository.findByCustomerIdAndDeletedFalse(customerId);
 
         return customerAddress.stream()

@@ -2,7 +2,9 @@ package com.retrobased.market.controllers;
 
 import com.retrobased.market.authentications.AuthenticationService;
 import com.retrobased.market.dtos.CustomerAddressDTO;
+import com.retrobased.market.entities.Customer;
 import com.retrobased.market.services.CustomerAddressService;
+import com.retrobased.market.services.CustomerService;
 import com.retrobased.market.utils.ResponseMessage;
 import com.retrobased.market.utils.exceptions.AddressNotFoundException;
 import com.retrobased.market.utils.exceptions.CountryNotFoundException;
@@ -32,13 +34,15 @@ public class CustomerAddressController {
 
     private final CustomerAddressService customerAddressService;
     private final AuthenticationService authenticationService;
+    private final CustomerService customerService;
 
     public CustomerAddressController(
             CustomerAddressService customerAddressService,
-            AuthenticationService authenticationService
-    ) {
+            AuthenticationService authenticationService,
+            CustomerService customerService) {
         this.customerAddressService = customerAddressService;
         this.authenticationService = authenticationService;
+        this.customerService = customerService;
     }
 
     /**
@@ -58,15 +62,16 @@ public class CustomerAddressController {
      * </ul>
      */
     @GetMapping
-    public ResponseEntity<?> getCustomerAddresses() {
+    public ResponseEntity<?> getCustomerAddresses() throws CustomerNotFoundException {
         Optional<String> keycloakUserIdOpt = authenticationService.extractUserId();
 
         if (keycloakUserIdOpt.isEmpty())
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-        String keycloakUserId = keycloakUserIdOpt.get();
+        String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
+        Customer customer = customerService.findByKeycloakId(keycloakUserId);
 
-        List<CustomerAddressDTO> randomProducts = customerAddressService.getAddresses(keycloakUserId);
+        List<CustomerAddressDTO> randomProducts = customerAddressService.getAddresses(customer.getId());
         if (randomProducts.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -127,7 +132,9 @@ public class CustomerAddressController {
     ) throws AddressNotFoundException, CustomerNotFoundException {
         String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
-        customerAddressService.removeAddress(keycloakUserId, addressId);
+        Customer customer = customerService.findByKeycloakId(keycloakUserId);
+
+        customerAddressService.removeAddress(customer.getId(), addressId);
         return ResponseEntity.ok(new ResponseMessage("SUCCESSFUL_ADDRESS_DELETION"));
     }
 

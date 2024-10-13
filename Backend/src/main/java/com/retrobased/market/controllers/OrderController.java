@@ -4,8 +4,10 @@ import com.retrobased.market.authentications.AuthenticationService;
 import com.retrobased.market.dtos.OrderDTO;
 import com.retrobased.market.dtos.OrderItemDTO;
 import com.retrobased.market.dtos.ProductRequestOrderDTO;
+import com.retrobased.market.entities.Customer;
 import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.services.CustomerAddressService;
+import com.retrobased.market.services.CustomerService;
 import com.retrobased.market.services.OrderService;
 import com.retrobased.market.services.ProductService;
 import com.retrobased.market.utils.exceptions.AddressNotFoundException;
@@ -42,17 +44,19 @@ public class OrderController {
     private final CustomerAddressService customerAddressService;
 
     private final AuthenticationService authenticationService;
+    private final CustomerService customerService;
 
     public OrderController(
             OrderService orderService,
             ProductService productService,
             CustomerAddressService customerAddressService,
-            AuthenticationService authenticationService
-    ) {
+            AuthenticationService authenticationService,
+            CustomerService customerService) {
         this.orderService = orderService;
         this.productService = productService;
         this.customerAddressService = customerAddressService;
         this.authenticationService = authenticationService;
+        this.customerService = customerService;
     }
 
     /**
@@ -120,15 +124,11 @@ public class OrderController {
     public ResponseEntity<?> getProductsFromOrder(
             @PathVariable("order") @NotNull UUID orderId,
             @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber
-    ) {
-        Optional<String> keycloakUserIdOpt = authenticationService.extractUserId();
+    ) throws CustomerNotFoundException {
+        String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
+        Customer customer = customerService.findByKeycloakId(keycloakUserId);
 
-        if (keycloakUserIdOpt.isEmpty())
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-
-        String keycloakUserId = keycloakUserIdOpt.get();
-
-        if (!orderService.existsOrderForCustomer(keycloakUserId, orderId))
+        if (!orderService.existsOrderForCustomer(customer.getId(), orderId))
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
         List<OrderItemDTO> result = orderService.getOrderedItems(orderId, pageNumber);
@@ -170,8 +170,8 @@ public class OrderController {
             @RequestBody @Valid @NotNull ProductRequestOrderDTO productRequestOrder
     ) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException, AddressNotFoundException {
         String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
-
-        Optional<CustomerAddress> customerAddressOpt = customerAddressService.getIfExistsAndNotDeleted(keycloakUserId, productRequestOrder.addressId());
+        Customer customer = customerService.findByKeycloakId(keycloakUserId);
+        Optional<CustomerAddress> customerAddressOpt = customerAddressService.getIfExistsAndNotDeleted(customer.getId(), productRequestOrder.addressId());
 
         if (customerAddressOpt.isEmpty())
             throw new AddressNotFoundException();

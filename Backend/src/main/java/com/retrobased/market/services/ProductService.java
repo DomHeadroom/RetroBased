@@ -3,6 +3,7 @@ package com.retrobased.market.services;
 import com.retrobased.market.dtos.OrderDTO;
 import com.retrobased.market.dtos.ProductDTO;
 import com.retrobased.market.dtos.ProductQuantityDTO;
+import com.retrobased.market.entities.Customer;
 import com.retrobased.market.entities.CustomerAddress;
 import com.retrobased.market.entities.Order;
 import com.retrobased.market.entities.OrderItem;
@@ -10,6 +11,7 @@ import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.Seller;
 import com.retrobased.market.mappers.OrderMapper;
 import com.retrobased.market.mappers.ProductMapper;
+import com.retrobased.market.repositories.CustomerRepository;
 import com.retrobased.market.repositories.ProductRepository;
 import com.retrobased.market.utils.exceptions.ArgumentValueNotValidException;
 import com.retrobased.market.utils.exceptions.CustomerNotFoundException;
@@ -38,19 +40,21 @@ public class ProductService {
     private final OrderItemService orderItemService;
     private final OrderService orderService;
     private final SellerService sellerService;
+    private final CustomerRepository customerRepository;
 
     public ProductService(
             ProductRepository productRepository,
             ProductSellerService productSellerService,
             OrderItemService orderItemService,
             OrderService orderService,
-            SellerService sellerService
-    ) {
+            SellerService sellerService,
+            CustomerRepository customerRepository) {
         this.productRepository = productRepository;
         this.productSellerService = productSellerService;
         this.orderItemService = orderItemService;
         this.orderService = orderService;
         this.sellerService = sellerService;
+        this.customerRepository = customerRepository;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -109,7 +113,7 @@ public class ProductService {
     }
 
     @Transactional
-    public OrderDTO lockAndReduceQuantities(List<ProductQuantityDTO> productQuantities, CustomerAddress address, String customerId) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
+    public OrderDTO lockAndReduceQuantities(List<ProductQuantityDTO> productQuantities, CustomerAddress address, String keycloakId) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
 
         Map<UUID, Long> productIds = productQuantities.stream()
                 .collect(Collectors.toMap(ProductQuantityDTO::productId, ProductQuantityDTO::quantity, Long::sum));
@@ -117,8 +121,10 @@ public class ProductService {
         List<Product> products = productRepository.findByIdInWithLock(productIds.keySet());
 
         List<OrderItem> orderItems = new ArrayList<>();
+
+        Customer customer = customerRepository.findByKeycloakId(keycloakId);
         Order currentOrder = new Order();
-        currentOrder.setCustomerId(customerId);
+        currentOrder.setCustomer(customer);
         currentOrder.setAddress(address);
 
         for (Product product : products) {

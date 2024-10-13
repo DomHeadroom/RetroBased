@@ -18,10 +18,6 @@ public record SellerDTO(
         @NotBlank(message = "Last name cannot be empty.")
         String lastName,
 
-        @NotBlank(message = "E-mail cannot be empty.")
-        @Email
-        String email,
-
         @JsonProperty(access = JsonProperty.Access.READ_ONLY)
         LocalDateTime registeredAt
 

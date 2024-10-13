@@ -5,11 +5,13 @@ import com.retrobased.market.dtos.ProductCategoryDTO;
 import com.retrobased.market.dtos.ProductDTO;
 import com.retrobased.market.entities.Attribute;
 import com.retrobased.market.entities.Category;
+import com.retrobased.market.entities.Customer;
 import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.Tag;
 import com.retrobased.market.mappers.ProductMapper;
 import com.retrobased.market.services.AttributeService;
 import com.retrobased.market.services.CategoryService;
+import com.retrobased.market.services.CustomerService;
 import com.retrobased.market.services.ProductAttributeService;
 import com.retrobased.market.services.ProductCategoryService;
 import com.retrobased.market.services.ProductSellerService;
@@ -54,6 +56,7 @@ public class ProductController {
     private final ProductAttributeService productAttributeService;
     private final ProductTagService productTagService;
     private final AuthenticationService authenticationService;
+    private final CustomerService customerService;
 
     public ProductController(
             ProductService productService,
@@ -63,8 +66,8 @@ public class ProductController {
             AttributeService attributeService,
             ProductAttributeService productAttributeService,
             ProductTagService productTagService,
-            AuthenticationService authenticationService
-    ) {
+            AuthenticationService authenticationService,
+            CustomerService customerService) {
         this.productService = productService;
         this.productSellerService = productSellerService;
         this.productCategoryService = productCategoryService;
@@ -73,6 +76,7 @@ public class ProductController {
         this.productAttributeService = productAttributeService;
         this.productTagService = productTagService;
         this.authenticationService = authenticationService;
+        this.customerService = customerService;
     }
 
     /**
@@ -191,7 +195,7 @@ public class ProductController {
         // TODO cambiare gestione venditore a keycloak
         String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
-        UUID sellerId = null;
+        Customer customer = customerService.findByKeycloakId(keycloakUserId);
 
         Category firstCategory = validateCategory(productCategory.firstCategoryId());
         Category secondCategory = validateCategory(productCategory.secondCategoryId());
@@ -204,7 +208,7 @@ public class ProductController {
         Attribute attribute = validateAttribute(productCategory.attributeId());
         Tag tag = validateTag(productCategory.tagId());
 
-        Product product = productService.addProduct(productCategory.product(), sellerId);
+        Product product = productService.addProduct(productCategory.product(), customer.getId());
 
         if (firstCategory != null)
             productCategoryService.create(firstCategory, product);

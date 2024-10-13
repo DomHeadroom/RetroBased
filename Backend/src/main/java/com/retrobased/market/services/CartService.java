@@ -1,6 +1,7 @@
 package com.retrobased.market.services;
 
 import com.retrobased.market.entities.Cart;
+import com.retrobased.market.entities.Customer;
 import com.retrobased.market.repositories.CartRepository;
 import com.retrobased.market.utils.exceptions.CustomerNotFoundException;
 import jakarta.persistence.LockModeType;
@@ -15,36 +16,40 @@ import java.util.Optional;
 public class CartService {
 
     private final CartRepository cartRepository;
+    private final CustomerService customerService;
 
     public CartService(
-            CartRepository cartRepository
-    ) {
+            CartRepository cartRepository,
+            CustomerService customerService) {
         this.cartRepository = cartRepository;
+        this.customerService = customerService;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Cart getCustomerCart(String customerId) throws CustomerNotFoundException {
-        Optional<Cart> cart = cartRepository.getCartByCustomerId(customerId);
+    public Cart getCustomerCart(String keycloakId) throws CustomerNotFoundException {
+        Customer customer = customerService.findByKeycloakId(keycloakId);
+        Optional<Cart> cart = cartRepository.getCartByCustomerId(customer.getId());
 
         if (cart.isPresent())
             return cart.get();
 
         Cart customerCart = new Cart();
-        customerCart.setCustomerId(customerId);
+        customerCart.setCustomer(customer);
 
         return cartRepository.save(customerCart);
 
     }
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    public Cart findCartByCustomerIdWithLock(String customerId) {
-        Optional<Cart> cart = cartRepository.getCartByCustomerId(customerId);
+    public Cart findCartByKeycloakIdWithLock(String keycloakId) {
+        Customer customer = customerService.findByKeycloakId(keycloakId);
+        Optional<Cart> cart = cartRepository.getCartByCustomerId(customer.getId());
 
         if (cart.isPresent())
             return cart.get();
 
         Cart customerCart = new Cart();
-        customerCart.setCustomerId(customerId);
+        customerCart.setCustomer(customer);
 
         return cartRepository.save(customerCart);
     }

@@ -22,6 +22,7 @@ public class KeycloakAuthenticationSuccessListener implements ApplicationListene
     @Override
     public void onApplicationEvent(AuthenticationSuccessEvent event) {
         if (event.getAuthentication() instanceof OAuth2AuthenticationToken authToken) {
+            // TODO non entra qui se non è
             Map<String, Object> claims = authToken.getPrincipal().getAttributes();
             keycloakService.saveUserFromKeycloak(claims);
         }

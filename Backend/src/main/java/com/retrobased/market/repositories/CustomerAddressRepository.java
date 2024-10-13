@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface CustomerAddressRepository extends JpaRepository<CustomerAddress, UUID>, JpaSpecificationExecutor<CustomerAddress> {
 
-    Optional<CustomerAddress> findByIdAndCustomerIdAndDeletedFalse(UUID addressId, String customerId);
+    Optional<CustomerAddress> findByIdAndCustomerIdAndDeletedFalse(UUID addressId, UUID customerId);
 
-    List<CustomerAddress> findByCustomerIdAndDeletedFalse(String customerId);
+    List<CustomerAddress> findByCustomerIdAndDeletedFalse(UUID customerId);
 }

@@ -24,6 +24,7 @@ public class SecurityConfig {
                         request.requestMatchers(
                                         "/product/public/**",
                                         "/sellers/public/**",
+
                                         "/v2/api-docs",
                                         "/v3/api-docs",
                                         "/v3/api-docs/**",

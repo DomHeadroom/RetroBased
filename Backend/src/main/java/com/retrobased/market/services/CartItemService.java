@@ -67,8 +67,8 @@ public class CartItemService {
      * @see CartItemRepository#findByCartId(UUID, Pageable) CartItemRepository.findProductsByCartId
      */
     @Transactional(readOnly = true)
-    public List<CartItemDTO> getCartItems(String customerId, int pageNumber) throws CustomerNotFoundException {
-        Cart customerCart = getCustomerCart(customerId);
+    public List<CartItemDTO> getCartItems(String keycloakId, int pageNumber) throws CustomerNotFoundException {
+        Cart customerCart = getCustomerCart(keycloakId);
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.desc("createdAt")));
         Page<CartItem> cartItems = cartItemRepository.findByCartId(customerCart.getId(), paging);
         if (cartItems.hasContent())
@@ -91,7 +91,7 @@ public class CartItemService {
      * <p><strong>Transaction:</strong> This method is executed within a required transaction scope. If a transaction
      * is already in progress, this method will participate in it. If not, a new transaction is started.</p>
      *
-     * @param customerId the ID of the customer whose cart is being modified; must not be null
+     * @param keycloakId the keycloak ID of the customer whose cart is being modified; must not be null
      * @param productId  the ID of the product to update in the cart; must not be null
      * @param quantity   the new quantity for the product in the cart; must be non-negative (0 will remove the item)
      * @throws ArgumentValueNotValidException if the requested quantity exceeds available stock
@@ -99,13 +99,13 @@ public class CartItemService {
      * @throws CustomerNotFoundException      if the customer does not exist in the system
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public void changeQuantity(@NotEmpty String customerId, @NotNull UUID productId, @NotNull @Min(0) Long quantity) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
+    public void changeQuantity(@NotEmpty String keycloakId, @NotNull UUID productId, @NotNull @Min(0) Long quantity) throws ArgumentValueNotValidException, ProductNotFoundException, CustomerNotFoundException {
         checkProduct(productId);
 
         if (productService.getQuantity(productId) < quantity)
             throw new ArgumentValueNotValidException();
 
-        Cart cart = getCustomerCart(customerId);
+        Cart cart = getCustomerCart(keycloakId);
 
         CartItem cartItem = getCartItem(cart.getId(), productId)
                 .orElseThrow(ProductNotFoundException::new);
@@ -120,7 +120,7 @@ public class CartItemService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public List<CartItemDTO> addProductsToCart(@NotEmpty String customerId, List<ProductQuantityDTO> productQuantities)
+    public List<CartItemDTO> addProductsToCart(@NotEmpty String keycloakId, List<ProductQuantityDTO> productQuantities)
             throws ArgumentValueNotValidException, ProductNotFoundException {
 
         Map<UUID, Long> aggregatedProductQuantities = new HashMap<>();
@@ -131,7 +131,7 @@ public class CartItemService {
             aggregatedProductQuantities.merge(productId, quantityToAdd, Long::sum);
         }
 
-        Cart cart = cartService.findCartByCustomerIdWithLock(customerId);
+        Cart cart = cartService.findCartByKeycloakIdWithLock(keycloakId);
 
         List<CartItemDTO> resultItems = new LinkedList<>();
         List<CartItem> newItems = new LinkedList<>();
@@ -192,8 +192,8 @@ public class CartItemService {
     }
 
     @Transactional(readOnly = true)
-    public Cart getCustomerCart(@NotEmpty String customerId) throws CustomerNotFoundException {
-        return cartService.getCustomerCart(customerId);
+    public Cart getCustomerCart(@NotEmpty String keycloakId) throws CustomerNotFoundException {
+        return cartService.getCustomerCart(keycloakId);
     }
 
     @Transactional(readOnly = true)

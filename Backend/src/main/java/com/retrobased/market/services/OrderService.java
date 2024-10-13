@@ -93,7 +93,7 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public boolean existsOrderForCustomer(String customerId, UUID orderId) {
+    public boolean existsOrderForCustomer(UUID customerId, UUID orderId) {
         return orderRepository.existsByCustomerIdAndId(customerId, orderId);
     }
 
