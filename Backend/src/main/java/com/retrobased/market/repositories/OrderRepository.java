@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface OrderRepository extends JpaRepository<Order, UUID>, JpaSpecificationExecutor<Order> {
 
-    Page<Order> findByCustomerId(String customerId, Pageable paging);
+    Page<Order> findByCustomerId(UUID customerId, Pageable paging);
 
     boolean existsByCustomerIdAndId(UUID customerId, UUID orderId);
 }

@@ -99,9 +99,9 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductDTO> searchProduct(String name, int pageNumber, String sortBy) {
+    public List<ProductDTO> searchProduct(String data, int pageNumber, String sortBy) {
         Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(sortBy));
-        Page<Product> pagedResult = productRepository.findByNameIgnoreCase(name, paging);
+        Page<Product> pagedResult = productRepository.findByProductNameContainingIgnoreCaseOrProductDescriptionContainingIgnoreCase(data, data, paging);
 
         if (pagedResult.hasContent())
             return pagedResult.getContent()
@@ -119,6 +119,9 @@ public class ProductService {
                 .collect(Collectors.toMap(ProductQuantityDTO::productId, ProductQuantityDTO::quantity, Long::sum));
 
         List<Product> products = productRepository.findByIdInWithLock(productIds.keySet());
+
+        if (products.size() != productIds.size())
+            throw new ProductNotFoundException();
 
         List<OrderItem> orderItems = new ArrayList<>();
 

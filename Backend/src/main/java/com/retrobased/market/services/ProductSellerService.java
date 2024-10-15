@@ -5,6 +5,7 @@ import com.retrobased.market.entities.Product;
 import com.retrobased.market.entities.ProductSeller;
 import com.retrobased.market.entities.Seller;
 import com.retrobased.market.mappers.ProductMapper;
+import com.retrobased.market.repositories.ProductRepository;
 import com.retrobased.market.repositories.ProductSellerRepository;
 import com.retrobased.market.utils.exceptions.SellerNotFoundException;
 import org.springframework.data.domain.Page;
@@ -24,13 +25,15 @@ import java.util.stream.Collectors;
 public class ProductSellerService {
     private final ProductSellerRepository productSellerRepository;
     private final SellerService sellerService;
+    private final ProductRepository productRepository;
 
     public ProductSellerService(
             ProductSellerRepository productSellerRepository,
-            SellerService sellerService
-    ) {
+            SellerService sellerService,
+            ProductRepository productRepository) {
         this.productSellerRepository = productSellerRepository;
         this.sellerService = sellerService;
+        this.productRepository = productRepository;
     }
 
     // TODO get Seller Product
@@ -50,7 +53,8 @@ public class ProductSellerService {
 
     @Transactional(readOnly = true)
     public boolean existsProductForSeller(UUID productId, UUID sellerId) {
-        return productSellerRepository.existsByIdProductIdAndIdSellerId(productId, sellerId);
+        return productSellerRepository.existsByIdProductIdAndIdSellerId(productId, sellerId)
+                && productRepository.existsByIdAndDeleted(productId,false);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

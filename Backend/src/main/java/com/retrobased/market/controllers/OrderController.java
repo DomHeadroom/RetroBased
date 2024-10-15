@@ -87,8 +87,9 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         String keycloakUserId = keycloakUserIdOpt.get();
+        Customer customer = customerService.findByKeycloakId(keycloakUserId);
 
-        List<OrderDTO> result = orderService.getOrders(keycloakUserId, pageNumber);
+        List<OrderDTO> result = orderService.getOrders(customer.getId(), pageNumber);
         if (result.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 

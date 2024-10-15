@@ -39,13 +39,6 @@ public class SellerController {
         this.productSellerService = productSellerService;
     }
 
-    // TODO forse sta roba è da deprecare
-    @PostMapping("public")
-    public ResponseEntity<?> registerSeller(@RequestBody @Valid @NotNull SellerDTO seller) {
-        sellerService.registerSeller(seller);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
     /**
      * Fetches a list of products associated with a specific seller.
      *
