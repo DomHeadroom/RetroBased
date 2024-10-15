@@ -5,8 +5,8 @@ import com.retrobased.market.dtos.ProductCategoryDTO;
 import com.retrobased.market.dtos.ProductDTO;
 import com.retrobased.market.entities.Attribute;
 import com.retrobased.market.entities.Category;
-import com.retrobased.market.entities.Customer;
 import com.retrobased.market.entities.Product;
+import com.retrobased.market.entities.Seller;
 import com.retrobased.market.entities.Tag;
 import com.retrobased.market.mappers.ProductMapper;
 import com.retrobased.market.services.AttributeService;
@@ -17,6 +17,7 @@ import com.retrobased.market.services.ProductCategoryService;
 import com.retrobased.market.services.ProductSellerService;
 import com.retrobased.market.services.ProductService;
 import com.retrobased.market.services.ProductTagService;
+import com.retrobased.market.services.SellerService;
 import com.retrobased.market.utils.exceptions.ArgumentValueNotValidException;
 import com.retrobased.market.utils.exceptions.AttributeNotFoundException;
 import com.retrobased.market.utils.exceptions.CategoryNotFoundException;
@@ -57,6 +58,7 @@ public class ProductController {
     private final ProductTagService productTagService;
     private final AuthenticationService authenticationService;
     private final CustomerService customerService;
+    private final SellerService sellerService;
 
     public ProductController(
             ProductService productService,
@@ -67,7 +69,7 @@ public class ProductController {
             ProductAttributeService productAttributeService,
             ProductTagService productTagService,
             AuthenticationService authenticationService,
-            CustomerService customerService) {
+            CustomerService customerService, SellerService sellerService) {
         this.productService = productService;
         this.productSellerService = productSellerService;
         this.productCategoryService = productCategoryService;
@@ -77,6 +79,7 @@ public class ProductController {
         this.productTagService = productTagService;
         this.authenticationService = authenticationService;
         this.customerService = customerService;
+        this.sellerService = sellerService;
     }
 
     /**
@@ -194,7 +197,7 @@ public class ProductController {
     ) throws CustomerNotFoundException, CategoryNotFoundException, ArgumentValueNotValidException, AttributeNotFoundException, TagNotFoundException, SellerNotFoundException {
         String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
-        Customer customer = customerService.findByKeycloakId(keycloakUserId);
+        Seller seller = sellerService.findByKeycloakId(keycloakUserId);
 
         Category firstCategory = validateCategory(productCategory.firstCategoryId());
         Category secondCategory = validateCategory(productCategory.secondCategoryId());
@@ -207,7 +210,7 @@ public class ProductController {
         Attribute attribute = validateAttribute(productCategory.attributeId());
         Tag tag = validateTag(productCategory.tagId());
 
-        Product product = productService.addProduct(productCategory.product(), customer.getId());
+        Product product = productService.addProduct(productCategory.product(), seller.getId());
 
         if (firstCategory != null)
             productCategoryService.create(firstCategory, product);
@@ -245,8 +248,8 @@ public class ProductController {
         // TODO cambiare gestione venditore a keycloak
         String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
-        UUID sellerId = null;
-        if (!productSellerService.existsProductForSeller(productId, sellerId))
+        Seller seller = sellerService.findByKeycloakId(keycloakUserId);
+        if (!productSellerService.existsProductForSeller(productId, seller.getId()))
             throw new ProductNotFoundException();
 
         productService.removeProduct(productId);

@@ -47,22 +47,15 @@ public class KeycloakService {
                     seller.setFirstName(givenName);
                     seller.setLastName(familyName);
                     sellerService.save(seller);
-                } else {
-                    seller.setFirstName(givenName);
-                    seller.setLastName(familyName);
-                    sellerService.save(seller);
                 }
 
             } else {
                 Customer customer = customerService.findByKeycloakId(userId);
+
                 if (customer == null) {
                     customer = new Customer();
                     customer.setKeycloakId(userId);
                     customer.setEmail(email);
-                    customer.setFirstName(givenName);
-                    customer.setLastName(familyName);
-                    customerService.save(customer);
-                } else {
                     customer.setFirstName(givenName);
                     customer.setLastName(familyName);
                     customerService.save(customer);

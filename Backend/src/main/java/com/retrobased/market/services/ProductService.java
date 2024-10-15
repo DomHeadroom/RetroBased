@@ -62,14 +62,14 @@ public class ProductService {
         if (existSlug(productDTO.slug()))
             throw new ArgumentValueNotValidException();
 
+        Seller seller = sellerService.get(sellerId)
+                .orElseThrow(SellerNotFoundException::new);
+
         Product product = ProductMapper.toEntity(productDTO);
         product.setDeleted(false);
         product.setPublished(true);
 
         Product productAdded = productRepository.save(product);
-
-        Seller seller = sellerService.get(sellerId)
-                .orElseThrow(SellerNotFoundException::new);
 
         productSellerService.createAndSave(productAdded, seller);
         return productAdded;
