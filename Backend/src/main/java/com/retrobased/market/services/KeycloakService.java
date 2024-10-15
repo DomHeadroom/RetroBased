@@ -17,7 +17,7 @@ public class KeycloakService {
     public KeycloakService(
             SellerService sellerService,
             CustomerService customerService
-    ){
+    ) {
         this.sellerService = sellerService;
         this.customerService = customerService;
     }

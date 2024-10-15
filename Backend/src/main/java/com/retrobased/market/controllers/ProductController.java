@@ -90,8 +90,8 @@ public class ProductController {
      * response is returned.
      * </p>
      *
-     * @param limit The number of random products to return; must be a positive integer
-     *              greater than or equal to 1. Defaults to 10 if not provided.
+     * @param pageNumber the page number of the products to retrieve, starting from 0;
+     *                   defaults to 0 if not specified, must be a non-negative integer
      * @return A {@link ResponseEntity} containing a list of {@link ProductDTO} objects
      * representing the random products. If no products are found, it returns a
      * status of <strong>204 No Content</strong>.
@@ -102,9 +102,9 @@ public class ProductController {
      */
     @GetMapping("public/products")
     public ResponseEntity<?> getRandomProducts(
-            @RequestParam(value = "limit", defaultValue = "10") @Min(1) int limit) {
+            @RequestParam(value = "page", defaultValue = "0") @Min(0) int pageNumber) {
 
-        List<ProductDTO> randomProducts = productService.getRandomProducts(limit);
+        List<ProductDTO> randomProducts = productService.getRandomProducts(pageNumber);
         if (randomProducts.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 

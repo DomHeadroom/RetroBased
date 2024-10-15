@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,20 +20,16 @@ public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpec
 
     Long findQuantityById(UUID id);
 
-    // TODO riscrivere ste robe con metodi autogenerati da spring
-    @Query("SELECT p FROM Product p WHERE (p.id IN :productIds) AND p.deleted = FALSE")
+    List<Product> findByIdInAndDeletedFalse(Set<UUID> productIds);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     List<Product> findByIdIn(Set<UUID> productIds);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT p FROM Product p WHERE p.id IN :productIds")
-    List<Product> findByIdInWithLock(Set<UUID> productIds);
+    Optional<Product> findByIdAndDeletedFalseAndPublishedTrue(UUID productId);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT p FROM Product p WHERE p.id = :productId AND p.deleted = false AND p.published = true")
-    Optional<Product> findByIdWithLock(UUID productId);
-
-    @Query(value = "SELECT * FROM products ORDER BY RANDOM() LIMIT :limit", nativeQuery = true)
-    List<Product> findRandomProducts(@Param("limit") int limit);
+    @Query(value = "SELECT * FROM products ORDER BY RANDOM()", nativeQuery = true)
+    List<Product> findRandomProducts(Pageable paging);
 
     boolean existsByIdAndDeleted(UUID id, boolean deleted);
 

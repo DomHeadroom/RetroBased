@@ -54,7 +54,7 @@ public class ProductSellerService {
     @Transactional(readOnly = true)
     public boolean existsProductForSeller(UUID productId, UUID sellerId) {
         return productSellerRepository.existsByIdProductIdAndIdSellerId(productId, sellerId)
-                && productRepository.existsByIdAndDeleted(productId,false);
+                && productRepository.existsByIdAndDeleted(productId, false);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

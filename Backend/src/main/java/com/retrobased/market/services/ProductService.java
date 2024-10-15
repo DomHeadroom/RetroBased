@@ -118,7 +118,7 @@ public class ProductService {
         Map<UUID, Long> productIds = productQuantities.stream()
                 .collect(Collectors.toMap(ProductQuantityDTO::productId, ProductQuantityDTO::quantity, Long::sum));
 
-        List<Product> products = productRepository.findByIdInWithLock(productIds.keySet());
+        List<Product> products = productRepository.findByIdIn(productIds.keySet());
 
         if (products.size() != productIds.size())
             throw new ProductNotFoundException();
@@ -160,7 +160,7 @@ public class ProductService {
     }
 
     public Product findProductWithLock(UUID productId) throws ProductNotFoundException {
-        return productRepository.findByIdWithLock(productId)
+        return productRepository.findByIdAndDeletedFalseAndPublishedTrue(productId)
                 .orElseThrow(ProductNotFoundException::new);
     }
 
@@ -170,11 +170,13 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean existSlug(String slug){return productRepository.findBySlug(slug).isPresent();}
+    public Boolean existSlug(String slug) {
+        return productRepository.findBySlug(slug).isPresent();
+    }
 
     @Transactional(readOnly = true)
     public List<Product> get(Set<UUID> ids) {
-        return productRepository.findByIdIn(ids);
+        return productRepository.findByIdInAndDeletedFalse(ids);
     }
 
     @Transactional(readOnly = true)
@@ -203,8 +205,9 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductDTO> getRandomProducts(int limit) {
-        List<Product> randomProducts = productRepository.findRandomProducts(limit);
+    public List<ProductDTO> getRandomProducts(int pageNumber) {
+        Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.desc("createdAt")));
+        List<Product> randomProducts = productRepository.findRandomProducts(paging);
 
         return randomProducts.stream()
                 .map(ProductMapper::toDTO)
