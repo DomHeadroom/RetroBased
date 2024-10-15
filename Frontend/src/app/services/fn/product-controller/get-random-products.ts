@@ -10,14 +10,14 @@ import { RequestBuilder } from '../../request-builder';
 
 
 export interface GetRandomProducts$Params {
-  limit?: number;
+  page?: number;
 }
 
 export function getRandomProducts(http: HttpClient, rootUrl: string, params?: GetRandomProducts$Params, context?: HttpContext): Observable<StrictHttpResponse<{
 }>> {
   const rb = new RequestBuilder(rootUrl, getRandomProducts.PATH, 'get');
   if (params) {
-    rb.query('limit', params.limit, {});
+    rb.query('page', params.page, {});
   }
 
   return http.request(

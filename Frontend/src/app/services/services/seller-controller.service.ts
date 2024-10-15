@@ -13,42 +13,11 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { getSellerProducts } from '../fn/seller-controller/get-seller-products';
 import { GetSellerProducts$Params } from '../fn/seller-controller/get-seller-products';
-import { registerSeller } from '../fn/seller-controller/register-seller';
-import { RegisterSeller$Params } from '../fn/seller-controller/register-seller';
 
 @Injectable({ providedIn: 'root' })
 export class SellerControllerService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
-  }
-
-  /** Path part for operation `registerSeller()` */
-  static readonly RegisterSellerPath = '/seller/public';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `registerSeller()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  registerSeller$Response(params: RegisterSeller$Params, context?: HttpContext): Observable<StrictHttpResponse<{
-}>> {
-    return registerSeller(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `registerSeller$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  registerSeller(params: RegisterSeller$Params, context?: HttpContext): Observable<{
-}> {
-    return this.registerSeller$Response(params, context).pipe(
-      map((r: StrictHttpResponse<{
-}>): {
-} => r.body)
-    );
   }
 
   /** Path part for operation `getSellerProducts()` */
