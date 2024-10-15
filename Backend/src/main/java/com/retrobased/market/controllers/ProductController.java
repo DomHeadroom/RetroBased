@@ -192,7 +192,6 @@ public class ProductController {
     public ResponseEntity<?> addProduct(
             @RequestBody @Valid @NotNull ProductCategoryDTO productCategory
     ) throws CustomerNotFoundException, CategoryNotFoundException, ArgumentValueNotValidException, AttributeNotFoundException, TagNotFoundException, SellerNotFoundException {
-        // TODO cambiare gestione venditore a keycloak
         String keycloakUserId = authenticationService.extractUserId().orElseThrow(CustomerNotFoundException::new);
 
         Customer customer = customerService.findByKeycloakId(keycloakUserId);

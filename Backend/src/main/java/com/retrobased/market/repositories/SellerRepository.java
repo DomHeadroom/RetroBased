@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface SellerRepository extends JpaRepository<Seller, UUID>, JpaSpecificationExecutor<Seller> {
 
+    Seller findByKeycloakId(String id);
 }

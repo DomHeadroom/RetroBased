@@ -23,7 +23,6 @@ public class KeycloakService {
     }
 
     public void saveUserFromKeycloak(Map<String, Object> userClaims) throws UserSaveException {
-        System.out.println("MARADONA");
         String userId = (String) userClaims.get("sub");
         String email = (String) userClaims.get("email");
         String givenName = (String) userClaims.get("given_name");

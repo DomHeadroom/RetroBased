@@ -55,7 +55,7 @@ public class CartItemService {
      * The products are sorted in descending order based on their creation date.
      * Supports pagination with a page size of 20 items.
      *
-     * @param customerId The ID of the customer whose cart items are to be retrieved.
+     * @param keycloakId The keycloak ID of the customer whose cart items are to be retrieved.
      *                   This identifies the customer in the database and is used to fetch their cart.
      * @param pageNumber The page number to retrieve, with results paginated in sets of 20.
      *                   Must be a non-negative integer.

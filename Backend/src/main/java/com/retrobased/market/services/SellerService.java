@@ -22,7 +22,6 @@ public class SellerService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void registerSeller(SellerDTO seller) {
-
         sellerRepository.save(SellerMapper.toEntity(seller));
     }
 
@@ -36,12 +35,16 @@ public class SellerService {
         return sellerRepository.existsById(sellerId);
     }
 
-    public Seller findByKeycloakId(String userId) {
-        return null;
-        // TODO da completare
+    public Seller findByKeycloakId(String id) {
+        return sellerRepository.findByKeycloakId(id);
     }
 
     public void save(Seller seller) {
-        // TODO da completare
+        Seller sellerToSave = new Seller();
+        sellerToSave.setFirstName(seller.getFirstName());
+        sellerToSave.setLastName(seller.getLastName());
+        sellerToSave.setEmail(seller.getEmail());
+        sellerToSave.setKeycloakId(seller.getKeycloakId());
+        sellerRepository.save(sellerToSave);
     }
 }
