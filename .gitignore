@@ -27,7 +27,7 @@ Frontend/.vscode/
 Frontend/.history/*
 
 # Node
-Frontend/node_modules
+Frontend/node_modules/*
 Frontend/npm-debug.log
 Frontend/yarn-error.log
 
@@ -45,3 +45,4 @@ Frontend/coverage
 Frontend/libpeerconnection.log
 Frontend/testem.log
 Frontend/typings
+node_modules/
