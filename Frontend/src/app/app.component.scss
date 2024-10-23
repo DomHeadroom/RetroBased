@@ -1,0 +1,6 @@
+input, textarea {
+	cursor: url(cursors/text_select.cur), text;
+}
+a:hover, button:hover {
+	cursor: url(cursors/link_select.cur), pointer;
+}
