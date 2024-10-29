@@ -10,3 +10,10 @@
 	--aero-color: rgba(116, 184, 252, calc(0.7 * var(--intensity)));
 	--aero-accent: color-mix(in srgb, #000, color-mix(in srgb, var(--aero-color) var(--saturation), transparent) var(--brightness));
 }
+
+input:hover, textarea:hover {
+	cursor: url('/assets/cursors/text_select.cur'), text;
+}
+a:hover, button:hover {
+	cursor: url('/assets/cursors/link_select.cur'), pointer;
+}

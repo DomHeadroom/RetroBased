@@ -18,6 +18,7 @@ $background-color_1: var(--aero-accent);
 	width: 16px;
 	height: 16px;
 	margin-right: 12px;
+	cursor: url('/assets/cursors/link_select.cur'), pointer;
 }
 .tray-items {
 	display: flex;
