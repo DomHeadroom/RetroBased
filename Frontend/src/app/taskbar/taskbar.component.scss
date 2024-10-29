@@ -133,6 +133,7 @@ body {
 	gap: 3px;
 	margin-left: 58px;
 }
+
 .desktop {
 	position: fixed;
 	top: 0;
@@ -141,4 +142,8 @@ body {
 	height: 100vh;
 	z-index: -1;
 	pointer-events: none;
-}
+	background-image: url('/assets/taskbar/images/bg.jpg');
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+  }
