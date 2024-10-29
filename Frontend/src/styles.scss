@@ -1,2 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 @import "typeface-roboto/index.css";
+
+:root {
+	--aero-white: #ffffff7a;
+	--aero-black: #000000bd;
+	--saturation: 43%;
+	--brightness: 65%;
+	--intensity: 50%;
+	--aero-color: rgba(116, 184, 252, calc(0.7 * var(--intensity)));
+	--aero-accent: color-mix(in srgb, #000, color-mix(in srgb, var(--aero-color) var(--saturation), transparent) var(--brightness));
+}

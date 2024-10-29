@@ -1,5 +1,5 @@
-@import "7.css/dist/gui/searchbox.css";
-@import "7.css/dist/gui/button.css";
+@import '7.css/dist/gui/searchbox.css';
+@import '7.css/dist/gui/button.css';
 
 $color_1: #fff;
 $font-family_1: Segoe UI, sans-serif;
@@ -48,15 +48,7 @@ $background-color_1: var(--aero-accent);
 	font-size: 9pt;
 	cursor: url('/assets/cursors/default.cur'), auto;
 }
-:root {
-	--aero-white: #ffffff7a;
-	--aero-black: #000000bd;
-	--saturation: 43%;
-	--brightness: 65%;
-	--intensity: 50%;
-	--aero-color: rgba(116, 184, 252, calc(0.7 * var(--intensity)));
-	--aero-accent: color-mix(in srgb, #000, color-mix(in srgb, var(--aero-color) var(--saturation), transparent) var(--brightness));
-}
+
 body {
 	overflow: hidden;
 	margin: 0;
@@ -68,6 +60,7 @@ body {
 	z-index: 999999999999999999;
 	position: absolute;
 	top: 0;
+	left: 0;
 	height: 40px;
 	width: 100vw;
 }
