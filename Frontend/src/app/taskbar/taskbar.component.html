@@ -14,8 +14,8 @@
 	</div>
 	<div class="center">
 		<div class="searchbox">
-			<input type="search" placeholder="Search" style="border-right-width: 2px;"/>
-			<button aria-label="search"></button>
+			<input type="search" #searchInput placeholder="Search" style="border-right-width: 2px;" (keyup.enter)="onSearchClick(searchInput.value)"/>
+			<button aria-label="search" (click)="onSearchClick(searchInput.value)"></button>
 		</div>
 	</div>
 	<div class="right">

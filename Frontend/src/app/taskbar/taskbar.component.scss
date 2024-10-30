@@ -1,5 +1,4 @@
 @import '7.css/dist/gui/searchbox.css';
-@import '7.css/dist/gui/button.css';
 
 $color_1: #fff;
 $font-family_1: Segoe UI, sans-serif;
@@ -47,7 +46,7 @@ $background-color_1: var(--aero-accent);
 	user-select: none;
 	-webkit-user-drag: none;
 	font-size: 9pt;
-	cursor: url('/assets/cursors/default.cur'), auto;
+	
 }
 
 body {

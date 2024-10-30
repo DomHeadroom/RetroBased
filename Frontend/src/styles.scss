@@ -17,3 +17,7 @@ input:hover, textarea:hover {
 a:hover, button:hover {
 	cursor: url('/assets/cursors/link_select.cur'), pointer;
 }
+
+* {
+	cursor: url('/assets/cursors/default.cur'), auto;
+}
