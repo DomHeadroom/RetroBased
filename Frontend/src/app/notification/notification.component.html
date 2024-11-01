@@ -1,4 +1,5 @@
-<div [ngClass]="{'notification-fade': fadeClass}" style="right: 92.200px;" class="notificationPosition">
+@if(visible){
+  <div [ngClass]="{'notification-fade': fadeClass}" [style.right.px]="position" class="notificationPosition">
     <div class="notificationContainer">
       <img class="triangle" src="/assets/notification/images/triangle.png">
       <div class="notificationContent">
@@ -10,3 +11,4 @@
       </div>
     </div>
   </div>
+}

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 @Component({
@@ -9,13 +9,27 @@ import { NgClass } from '@angular/common';
   styleUrl: './notification.component.scss'
 })
 export class NotificationComponent {
-  header: string = '';
-  notificationText: string = '';
+  @Input() header: string = '';
+  @Input() notificationText: string = '';
   fadeClass: boolean = false;
+  visible: boolean = true;
+  position: number = 92.200;
+
 
   ngOnInit() {
+    this.visible = true;
     setTimeout(() => {
       this.fadeClass = true;
     }, 5000);
+    setTimeout(() => {
+      this.visible = false;
+      this.fadeClass = false;
+    }, 7100);
+  }
+
+  setVariable(header: string, notificationText: string, position: number){
+    this.header = header;
+    this.notificationText = notificationText;
+    this.position = position;
   }
 }
