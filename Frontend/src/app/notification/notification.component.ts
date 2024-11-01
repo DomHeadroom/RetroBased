@@ -14,9 +14,13 @@ export class NotificationComponent {
   fadeClass: boolean = false;
   visible: boolean = true;
   position: number = 92.200;
-
+  lock: boolean = false;
 
   ngOnInit() {
+    if(this.lock)
+      return;
+
+    this.lock = true;
     this.visible = true;
     setTimeout(() => {
       this.fadeClass = true;
@@ -24,10 +28,13 @@ export class NotificationComponent {
     setTimeout(() => {
       this.visible = false;
       this.fadeClass = false;
+      this.lock = false;
     }, 7100);
   }
 
   setVariable(header: string, notificationText: string, position: number){
+    if(this.lock)
+      return;
     this.header = header;
     this.notificationText = notificationText;
     this.position = position;
