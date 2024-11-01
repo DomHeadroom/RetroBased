@@ -9,6 +9,7 @@
 	--intensity: 50%;
 	--aero-color: rgba(116, 184, 252, calc(0.7 * var(--intensity)));
 	--aero-accent: color-mix(in srgb, #000, color-mix(in srgb, var(--aero-color) var(--saturation), transparent) var(--brightness));
+	font-family: Segoe UI, sans-serif;
 }
 
 input:hover, textarea:hover {

@@ -1,12 +1,12 @@
-<div style="right: 92.200px;" class="notificationPosition">
+<div [ngClass]="{'notification-fade': fadeClass}" style="right: 92.200px;" class="notificationPosition">
     <div class="notificationContainer">
-        <img class="triangle" src="/assets/notification/triangle.png">
-        <div class="notificationContent">
-            <img class="notificationIcon" src="icons/info.ico">
-            <div class="notificationText">
-                <h2 class="notificationHeader">{{header}}</h2>
-                <div>{{notificationText}}</div>
-            </div>
+      <img class="triangle" src="/assets/notification/images/triangle.png">
+      <div class="notificationContent">
+        <img class="notificationIcon" src="/assets/notification/icons/info.ico">
+        <div class="notificationText">
+          <h2 class="notificationHeader">{{header}}</h2>
+          <div>{{notificationText}}</div>
         </div>
+      </div>
     </div>
-</div>
+  </div>

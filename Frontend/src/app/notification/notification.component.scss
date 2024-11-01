@@ -56,4 +56,18 @@
     top: -18px;
     right: 12px;
 }
-  
+
+h2 {
+	font-size: 12pt;
+	color: #039;
+	letter-spacing: -0.2px;
+	font-family: Segoe UI;
+	font-weight: 400;
+}
+
+* {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    font-size: 9pt;
+}
