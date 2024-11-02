@@ -21,7 +21,7 @@ export class TaskbarComponent {
   updateTime() {
     const now = new Date();
     this.currentTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    this.currentDate = now.toLocaleDateString();
+    this.currentDate = now.toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' });
   }
 
   onSearchClick(searchValue: string) {
