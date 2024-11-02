@@ -2,12 +2,10 @@
 <div class="taskbar bg"></div>
 <div class="taskbar fg">
 	<div class="left">
-		<a routerLink="/">
-			<div class="start start-button">
+		<div class="start start-button" [routerLink]="['/home']">
 				<img class="start start-normal" src="assets/taskbar/images/start-normal.png">
 				<img class="start start-hover" src="assets/taskbar/images/start-hover.png">
-			</div>
-		</a>
+		</div>
 		<div class="taskbar-icons">
 			<div class="taskbar-icon"><img src="assets/taskbar/icons/buy.ico"></div>
 		</div>
@@ -20,7 +18,7 @@
 	</div>
 	<div class="right">
 		<div class="tray-items">
-			<img title="Recycle Bin" class="tray-icons" src="assets/taskbar/icons/recycle_bin.ico" alt="Recycle Bin">
+			<img title="Recycle Bin" class="tray-icons" src="assets/taskbar/icons/recycle_bin.ico" alt="Recycle Bin" (click)="navigateTo('bin')">
 			<img title="User Account" class="tray-icons" src="assets/taskbar/icons/user.ico" alt="User Account">
 			<div class="time-container">
 				<div>{{ currentTime }}</div>

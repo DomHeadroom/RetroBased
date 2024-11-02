@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-taskbar',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './taskbar.component.html',
   styleUrl: './taskbar.component.scss'
 })
@@ -11,7 +12,11 @@ export class TaskbarComponent {
   currentTime: string = '';
   currentDate: string = '';
 
-  constructor() {}
+  constructor(private router: Router) {}
+
+  navigateTo(path: string) {
+    this.router.navigate([path]);
+  }
 
   ngOnInit(): void {
     this.updateTime();
