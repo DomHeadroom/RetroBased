@@ -1,12 +1,10 @@
-<a href="" class="product-link">
-    <div class="card">
-        <img src="logo.png" alt="Product Image" class="card-image">
-        <div class="card-content">
-            <h2 class="card-title">{{ title }}</h2>
-            <div class="card-details">
-                <p class="product-price">€{{ price | number: '1.2-2' }}</p>
-                <p class="product-seller">by {{ seller }}</p>
-            </div>
+<div class="card" style="z-index: 2000;" (click)="handleClick()">
+    <img src="/assets/window/images/icon.png" alt="Product Image" class="card-image">
+    <div class="card-content">
+        <h2 class="card-title">{{ title }}</h2>
+        <div class="card-details">
+            <p class="product-price">€{{ price | number: '1.2-2' }}</p>
+            <p class="product-seller">by {{ seller }}</p>
         </div>
     </div>
-</a>
+</div>

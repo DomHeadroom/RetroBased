@@ -1,3 +1,30 @@
+.product-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.card {
+    width: 120px;
+    padding: 15px;
+    border: 1px solid #d9d9d9;
+    background-color: #f8f8f8;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    text-align: center;
+    font-family: Segoe UI, Arial, sans-serif;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-image {
+    width: 100%;
+    height: auto;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
 .card-content {
     padding: 5px 0;
 }
@@ -19,7 +46,7 @@
 
 .product-price {
     font-size: 0.85rem;
-    color: #111;
+    color: #0078d4;
     font-weight: bold;
     margin-bottom: 2px;
 }

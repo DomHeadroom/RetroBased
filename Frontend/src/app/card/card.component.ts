@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-card',
@@ -12,4 +13,10 @@ export class CardComponent {
   title: string = "";
   seller: string = "";
   price: number = 0;
+
+  constructor(private notificationService: NotificationService) {}
+
+  handleClick() {
+    this.notificationService.showNotification('Recycle Bin', 'Product/s added to the recycle bin.', 117.200);
+  }
 }
