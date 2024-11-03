@@ -4,7 +4,7 @@ import { TaskbarComponent } from '../taskbar/taskbar.component'
 import { WindowComponent } from '../window/window.component'
 import { NotificationComponent } from '../notification/notification.component';
 import { CardComponent } from '../card/card.component';
-import { NotificationService } from '../services/notification.service';
+import { NotificationService } from '../services/services/notification.service';
 
 @Component({
   selector: 'app-home',
