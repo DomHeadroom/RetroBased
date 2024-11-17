@@ -38,9 +38,7 @@
               }
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/7.css/dist/gui/searchbox.css",
-              "node_modules/7.css/dist/gui/button.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
