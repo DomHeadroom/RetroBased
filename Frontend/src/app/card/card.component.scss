@@ -3,7 +3,7 @@
     color: inherit;
     display: block;
 }
-
+  
 .card {
     width: 120px;
     padding: 15px;
@@ -16,56 +16,57 @@
     transition: all 0.2s ease;
     position: relative;
     overflow: hidden;
+  
+    &:hover {
+      background-color: #e5f1fb;
+      border-color: #9ec9ef;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+  
+    &:active {
+      background-color: #cce3f6;
+      border-color: #7fb0e1;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+      transform: translateY(1px);
+    }
+  
+    .card-image {
+      width: 100%;
+      height: auto;
+      border-radius: 3px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+  
+    .card-content {
+      padding: 5px 0;
+    }
+  
+    .card-title {
+      font-size: 14px;
+      font-weight: normal;
+      color: #1a1a1a;
+      margin: 5px 0;
+      text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
+    }
+  
+    .card-details {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 3px;
+    }
+  
+    .product-price {
+      font-size: 0.85rem;
+      color: #0078d4;
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+  
+    .product-seller {
+      font-size: 0.7rem;
+      color: #666;
+      font-style: italic;
+    }
 }
-
-.card-image {
-    width: 100%;
-    height: auto;
-    border-radius: 3px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-}
-
-.card-content {
-    padding: 5px 0;
-}
-
-.card-title {
-    font-size: 14px;
-    font-weight: normal;
-    color: #1a1a1a;
-    margin: 5px 0;
-    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
-}
-
-.card-details {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 3px;
-}
-
-.product-price {
-    font-size: 0.85rem;
-    color: #0078d4;
-    font-weight: bold;
-    margin-bottom: 2px;
-}
-
-.product-seller {
-    font-size: 0.7rem;
-    color: #666;
-    font-style: italic;
-}
-
-.card:hover {
-    background-color: #e5f1fb;
-    border-color: #9ec9ef;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.card:active {
-    background-color: #cce3f6;
-    border-color: #7fb0e1;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-    transform: translateY(1px);
-}
+  
