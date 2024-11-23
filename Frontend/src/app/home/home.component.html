@@ -1,4 +1,8 @@
 <app-taskbar></app-taskbar>
 <app-window></app-window>
-<app-card></app-card>
+<div style="display: grid; grid-template-columns: repeat(auto-fill,205px); grid-auto-rows: 274.8px; box-sizing: border-box; padding-left: 8px; padding-top: 72px;">
+    @for (product of getProducts(); track products?.name) {
+        <app-card [product]="product" style="display: flex;align-items: center; box-sizing: border-box;overflow: hidden;"></app-card>
+    }   
+</div>
 <app-notification></app-notification>

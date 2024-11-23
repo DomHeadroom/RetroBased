@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../services/services/notification.service';
+import {ProductDto } from '../services/models/product-dto';
 
 @Component({
   selector: 'app-card',
@@ -10,9 +11,7 @@ import { NotificationService } from '../services/services/notification.service';
   styleUrl: './card.component.scss'
 })
 export class CardComponent {
-  title: string = "";
-  seller: string = "";
-  price: number = 0;
+  @Input() product: ProductDto | undefined;
 
   constructor(private notificationService: NotificationService) {}
 
