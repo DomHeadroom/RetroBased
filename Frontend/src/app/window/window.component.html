@@ -13,7 +13,13 @@
     <div class="_windowFrameGradientRight"></div>
     <div class="_contentsContainer">
         <div class="_windowContents">
-            <div class="_window"></div>
+            <div class="_window">
+                <div style="display: grid; grid-template-columns: repeat(auto-fill,205px); grid-auto-rows: 274.8px; box-sizing: border-box; justify-content: center; align-items: center;gap: 16px;">
+                    @for (product of getProducts(); track getProducts) {
+                        <app-card [product]="product" style="display: flex;align-items: center; box-sizing: border-box;overflow: hidden;"></app-card>
+                    }   
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -183,7 +183,7 @@ body {
     font-style: italic;
   }
 
-  &:focus {
+  &:focus, &:not(:placeholder-shown) {
     background-color: #ffffff !important;
     border: solid thin var(--aero-black) !important;
     outline: solid thin var(--aero-white) !important;

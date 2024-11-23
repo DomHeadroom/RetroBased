@@ -207,7 +207,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<ProductDTO> getRandomProducts(int pageNumber) {
         // TODO molto probabilmente non serve la page perchè li prende sempre random
-        Pageable paging = PageRequest.of(pageNumber, 14, Sort.by(Sort.Order.desc("created_at")));
+        Pageable paging = PageRequest.of(pageNumber, 12, Sort.by(Sort.Order.desc("created_at")));
         List<Product> randomProducts = productRepository.findRandomProducts(paging);
 
         return randomProducts.stream()
