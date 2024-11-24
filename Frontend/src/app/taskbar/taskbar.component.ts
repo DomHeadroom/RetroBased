@@ -38,7 +38,8 @@ export class TaskbarComponent {
 
   onSearchClick(searchValue: string) {
     this.productService.searchProducts({
-      k:searchValue
+      k:searchValue,
+      page: 0
     }).subscribe(
       (response: any) => {
         const products = response as ProductDto[];
