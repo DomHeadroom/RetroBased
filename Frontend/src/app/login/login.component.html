@@ -1,1 +1,11 @@
-<p>login works!</p>
+<div class="login-box">
+    <img class="frame" src="assets/login/pfp-container.png">
+    <div class="login-text">Login</div>
+    <div class="password-container">
+        <input type="email" placeholder="E-mail" class="password-input" [(ngModel)]="email">
+        <input type="password" placeholder="Password" class="password-input" [(ngModel)]="password">
+        <img class="arrow-button" src="assets/login/button.png" />
+        <img class="arrow-button button-hover" src="assets/login/button-hover.png" (click)="login()"  />
+    </div>
+    <button class="register-button">Register</button>
+</div>
