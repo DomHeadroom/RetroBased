@@ -1,1 +1,120 @@
-
+<app-taskbar></app-taskbar>
+<div class="_window-frame" style="width: 100vw; height: calc(100vh - 40px); z-index: 1013; top: 40px; left: 0;">
+    <div class="_title-bar">
+      <div class="_buttonContainer">
+        <div class="_window-buttons">
+          <div class="_window-button minimize"></div>
+          <div class="_window-button close"></div>
+        </div>
+      </div>
+    </div>
+    <div class="_windowFrameGradientLeft"></div>
+    <div class="_windowFrameGradientRight"></div>
+    <div class="_window">
+      <div class="_windowContent" style="margin-top: 56px; height: calc(100% - 58px);">
+        <div style="height: 58px; margin-top: -58px;" class="_titleBarExtension">
+          <div class="_titleBarElements">
+            <div class="_titleBarNavigation">
+              <div class="_titleBarNavigationButton"></div>
+              <div class="_titleBarNavigationButton"></div>
+            </div>
+            <div class="_searchContainer">
+              <img src="assets/recycle_bin_empty.ico" alt="Recycle Bin">
+              <span style="transform: rotate(-90deg); font-size: 15px;">▾</span>
+              <span style="padding-left: 5px;">Recycle Bin</span>
+            </div>
+            <input placeholder="Search Recycle Bin" class="_search_180ez_79" type="text">
+          </div>
+        </div>
+        <div class="_toolbarLarge">
+          <ul role="menubar">
+            <li role="menuitem" tabindex="0">Organize ⯆</li>
+            <li role="menuitem" tabindex="0">Empty the Recycle Bin</li>
+            <li role="menuitem" tabindex="0" (click)="emptyRecycleBin()">Restore all items</li>
+          </ul>
+        </div>
+        <div style="display: flex; width: 100%; height: calc(100% - 32px); flex-direction: row;">
+          <ul class="_sidebar">
+            <li>
+              <div class="_sidebarUlItem">
+                <img src="assets/favorites.ico" alt="Favorites">
+                <span>Favorites</span>
+              </div>
+              <ul class="sub-list">
+                <li>
+                  <img src="assets/desktop.ico" alt="Desktop">
+                  <span>Desktop</span>
+                </li>
+                <li>
+                  <img src="assets/recent_places.ico" alt="Recent Places">
+                  <span>Recent Places</span>
+                </li>
+                <li>
+                  <img src="assets/downloads.ico" alt="Downloads">
+                  <span>Downloads</span>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <div class="_sidebarUlItem">
+                <img src="assets/libraries.ico" alt="Libraries">
+                <span>Libraries</span>
+              </div>
+              <ul class="sub-list">
+                <li>
+                  <img src="assets/documents.ico" alt="Documents">
+                  <span>Documents</span>
+                </li>
+                <li>
+                  <img src="assets/music.ico" alt="Music">
+                  <span>Music</span>
+                </li>
+                <li>
+                  <img src="assets/pictures.ico" alt="Pictures">
+                  <span>Pictures</span>
+                </li>
+                <li>
+                  <img src="assets/videos.ico" alt="Videos">
+                  <span>Videos</span>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <div class="_sidebarUlItem">
+                <img src="assets/homegroup.ico" alt="Homegroup">
+                <span>Homegroup</span>
+              </div>
+            </li>
+            <li>
+              <div class="_sidebarUlItem">
+                <img src="assets/computer.ico" alt="Computer">
+                <span>Computer</span>
+              </div>
+            </li>
+            <li>
+              <div class="_sidebarUlItem">
+                <img src="assets/network.ico" alt="Network">
+                <span>Network</span>
+              </div>
+            </li>
+          </ul>
+          <div class="_programs">
+            <div class="pino" style="display: flex; margin-left: 10px; color: #4c6091;">
+              <div>Name</div>
+              <div style="position: relative; left: 200px;">Price</div>
+              <div style="position: relative; left: 400px;">Quantity</div>
+            </div>
+            @for (product of getProducts(); track getProducts) {
+                <div class="_program">
+                    <img [src]="'assets/product-images/' + product.product.slug" [alt]="product.product.productName">
+                    <div>{{ product.product.productName }}</div>
+                    <div class="price">{{ product.product.salePrice}}€</div>
+                    <input type="number" role="combobox" aria-owns="company" min="0" [max]="product.product.quantity" [value]="product.quantity" (change)="onQuantityChange($event, product.product?.id)"  style="margin-left: 465px; position: fixed; width: 50px;">
+                </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+  
