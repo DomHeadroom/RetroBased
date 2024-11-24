@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ProductQuantityDto } from './product-quantity-dto';
+import { ProductDtoQuantity } from './product-dto-quantity';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductCartService {
   private addressId: string = '';
-  private products: ProductQuantityDto[] = [];
+  private products: ProductDtoQuantity[] = [];
 
   setAddressId(address: string): void {
     this.addressId = address;
@@ -16,8 +16,8 @@ export class ProductCartService {
     return this.addressId;
   }
 
-  addProduct(product: ProductQuantityDto): void {
-    const existingProduct = this.products.find((p) => p.id === product.id);
+  addProduct(product: ProductDtoQuantity): void {
+    const existingProduct = this.products.find((p) => p.product.id === product.product.id);
 
     if (existingProduct) {
       existingProduct.quantity += product.quantity;
@@ -27,7 +27,7 @@ export class ProductCartService {
   }
 
   updateProductQuantity(productId: string, quantity: number): boolean {
-    const product = this.products.find((p) => p.id === productId);
+    const product = this.products.find((p) => p.product.id === productId);
 
     if (product) {
       if (quantity > 0) {
@@ -42,10 +42,10 @@ export class ProductCartService {
   }
 
   removeProduct(productId: string): void {
-    this.products = this.products.filter((p) => p.id !== productId);
+    this.products = this.products.filter((p) => p.product.id !== productId);
   }
 
-  getProducts(): ProductQuantityDto[] {
+  getProducts(): ProductDtoQuantity[] {
     return [...this.products];
   }
 
@@ -54,7 +54,7 @@ export class ProductCartService {
     this.products = [];
   }
 
-  getCartSummary(): { addressId: string; products: ProductQuantityDto[] } {
+  getCartSummary(): { addressId: string; products: ProductDtoQuantity[] } {
     return {
       addressId: this.addressId,
       products: [...this.products],
