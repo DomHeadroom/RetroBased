@@ -109,7 +109,7 @@
                     <img [src]="'assets/product-images/' + product.product.slug" [alt]="product.product.productName">
                     <div>{{ product.product.productName }}</div>
                     <div class="price">{{ product.product.salePrice}}€</div>
-                    <input type="number" role="combobox" aria-owns="company" min="0" [max]="product.product.quantity" [value]="product.quantity" (change)="onQuantityChange($event, product.product?.id)"  style="margin-left: 465px; position: fixed; width: 50px;">
+                    <input type="number" role="combobox" aria-owns="company" min="0" [max]="product.product.quantity" [value]="product.quantity" (change)="onQuantityChange($event, product.product.id)"  style="margin-left: 465px; position: fixed; width: 50px;">
                 </div>
             }
           </div>
