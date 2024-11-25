@@ -18,6 +18,16 @@ export class LoginComponent {
 
   constructor(private http: HttpClient) {}
 
+  ngOnInit() {
+    document.documentElement.classList.add('login');
+    document.body.classList.add('login-background');
+  }
+
+  ngOnDestroy() {
+    document.documentElement.classList.remove('login');
+    document.body.classList.remove('login-background');
+  }
+
   login() {
     const body = new URLSearchParams();
     body.set('client_id', this.clientId);
@@ -30,7 +40,6 @@ export class LoginComponent {
     this.http.post(this.keycloakUrl, body.toString(), { headers }).subscribe({
       next: (response: any) => {
         console.log('Login successful', response);
-        // Save tokens or perform further actions
         localStorage.setItem('accessToken', response.access_token);
         localStorage.setItem('refreshToken', response.refresh_token);
       },
