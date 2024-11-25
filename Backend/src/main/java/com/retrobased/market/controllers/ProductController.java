@@ -57,7 +57,6 @@ public class ProductController {
     private final ProductAttributeService productAttributeService;
     private final ProductTagService productTagService;
     private final AuthenticationService authenticationService;
-    private final CustomerService customerService;
     private final SellerService sellerService;
 
     public ProductController(
@@ -69,7 +68,7 @@ public class ProductController {
             ProductAttributeService productAttributeService,
             ProductTagService productTagService,
             AuthenticationService authenticationService,
-            CustomerService customerService, SellerService sellerService) {
+            SellerService sellerService) {
         this.productService = productService;
         this.productSellerService = productSellerService;
         this.productCategoryService = productCategoryService;
@@ -78,7 +77,6 @@ public class ProductController {
         this.productAttributeService = productAttributeService;
         this.productTagService = productTagService;
         this.authenticationService = authenticationService;
-        this.customerService = customerService;
         this.sellerService = sellerService;
     }
 
