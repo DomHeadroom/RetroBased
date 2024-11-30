@@ -99,18 +99,14 @@
             </li>
           </ul>
           <div class="_programs">
-            <div class="pino" style="display: flex; margin-left: 10px; color: #4c6091;">
-              <div>Name</div>
-              <div style="position: relative; left: 200px;">Price</div>
-              <div style="position: relative; left: 400px;">Quantity</div>
-            </div>
+            <div style="grid-column: 2; color: #4c6091;">Name</div>
+            <div style="grid-column: 3; color: #4c6091;">Price</div>
+            <div style="grid-column: 4; color: #4c6091;">Quantity</div>
             @for (product of getProducts(); track getProducts) {
-                <div class="_program">
-                    <img [src]="'assets/product-images/' + product.product.slug" [alt]="product.product.productName">
-                    <div>{{ product.product.productName }}</div>
-                    <div class="price">{{ product.product.salePrice}}€</div>
-                    <input type="number" role="combobox" aria-owns="company" min="0" [max]="product.product.quantity" [value]="product.quantity" (change)="onQuantityChange($event, product.product.id)"  style="margin-left: 465px; position: fixed; width: 50px;">
-                </div>
+              <img [src]="'assets/product-images/' + product.product.slug" [alt]="product.product.productName">
+              <div class="text">{{ product.product.productName }}</div>
+              <div class="price">{{ product.product.salePrice}}€</div>
+              <input type="number" role="combobox" aria-owns="company" min="0" [max]="product.product.quantity" [value]="product.quantity" (change)="onQuantityChange($event, product.product.id)" style="height: 20px;">
             }
           </div>
         </div>
