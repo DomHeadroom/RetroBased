@@ -40,6 +40,7 @@ $border-left-color_1: currentcolor;
 	left: 0;
 	-webkit-backdrop-filter: blur(3px);
 	backdrop-filter: blur(3px);
+	overflow: hidden;
 }
 ._windowFrameGradientLeft {
 	background: linear-gradient(139deg, rgba(255, 255, 255, 0.568) 0%, rgba(255, 255, 255, 0.192) 25%, rgba(0, 0, 0, 0) 50%);

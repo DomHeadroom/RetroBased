@@ -41,11 +41,11 @@ export class CartComponent {
       console.error('Product ID is null or undefined.');
       return;
     }
-  
+
     const inputElement = event.target as HTMLInputElement;
     const newQuantity = inputElement.valueAsNumber;
-  
-    if (isNaN(newQuantity)) {
+
+    if (isNaN(newQuantity) || newQuantity < 0) {
       console.error('Invalid quantity entered.');
       return;
     }
@@ -55,12 +55,12 @@ export class CartComponent {
     } else {
       this.productCartService.removeProduct(productId);
     }
-  
+
     this.loadProducts();
   }
 
   emptyRecycleBin(): void {
     this.productCartService.clearCart();
-    this.loadProducts(); // Refresh the products list in the UI
+    this.loadProducts();
   }
 }
