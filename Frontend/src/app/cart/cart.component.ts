@@ -43,13 +43,15 @@ export class CartComponent {
     }
 
     const inputElement = event.target as HTMLInputElement;
-    const newQuantity = inputElement.valueAsNumber;
+    const inputValue = inputElement.value;
 
-    if (isNaN(newQuantity) || newQuantity < 0) {
-      console.error('Invalid quantity entered.');
+    const newQuantity = parseInt(inputValue, 10);
+
+    if (isNaN(newQuantity) || newQuantity < 0 || inputValue !== newQuantity.toString()) {
+      console.error('Invalid quantity entered. Please enter a valid number.');
       return;
     }
-  
+
     if (newQuantity > 0) {
       this.productCartService.updateProductQuantity(productId, newQuantity);
     } else {
@@ -62,5 +64,9 @@ export class CartComponent {
   emptyRecycleBin(): void {
     this.productCartService.clearCart();
     this.loadProducts();
+  }
+
+  checkout(): void {
+    
   }
 }

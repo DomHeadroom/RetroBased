@@ -29,8 +29,10 @@
         <div class="_toolbarLarge">
           <ul role="menubar">
             <li role="menuitem" tabindex="0">Organize ⯆</li>
-            <li role="menuitem" tabindex="0">Empty the Recycle Bin</li>
-            <li role="menuitem" tabindex="0" (click)="emptyRecycleBin()">Restore all items</li>
+            @if (products.length > 0) {
+              <li role="menuitem" tabindex="0" (click)="checkout()">Empty the Recycle Bin</li>
+              <li role="menuitem" tabindex="0" (click)="emptyRecycleBin()">Restore all items</li>
+            }
           </ul>
         </div>
         <div style="display: flex; width: 100%; height: calc(100% - 32px); flex-direction: row;">
@@ -105,7 +107,7 @@
             @for (product of getProducts(); track getProducts) {
               <img [src]="'assets/product-images/' + product.product.slug" [alt]="product.product.productName">
               <div class="text">{{ product.product.productName }}</div>
-              <div class="price">{{ product.product.salePrice}}€</div>
+              <div class="price">{{ product.product.salePrice }}€</div>
               <input type="number" role="combobox" aria-owns="company" min="0" [max]="product.product.quantity" [value]="product.quantity" (change)="onQuantityChange($event, product.product.id)" style="height: 20px;">
             }
           </div>
