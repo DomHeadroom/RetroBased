@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 import { ProductControllerService } from '../services/services';
@@ -15,6 +15,7 @@ import { ProductDisplay } from '../services/models/product-display';
 export class TaskbarComponent {
   currentTime: string = '';
   currentDate: string = '';
+  @Input() taskbarIconSrc: string = 'assets/taskbar/icons/buy.ico';
 
   constructor(private router: Router, 
     private productService: ProductControllerService,
