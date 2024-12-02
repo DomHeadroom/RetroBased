@@ -1,4 +1,4 @@
-<app-taskbar [taskbarIconSrc]="'assets/taskbar/icons/recycle_bin.ico'"></app-taskbar>
+<app-taskbar [taskbarIconSrc]="taskbarIcon"></app-taskbar>
 <div class="_window-frame" style="width: 100vw; height: calc(100vh - 40px); z-index: 1013; top: 40px; left: 0;">
     <div class="_title-bar">
       <div class="_buttonContainer">
@@ -19,7 +19,7 @@
               <div class="_titleBarNavigationButton"></div>
             </div>
             <div class="_searchContainer">
-              <img src="/assets/cart/recycle_bin_empty.ico" alt="Recycle Bin">
+              <img [src]="titleBarIcon" alt="Recycle Bin">
               <span style="transform: rotate(-90deg); font-size: 15px;">▾</span>
               <span style="padding-left: 5px;">Recycle Bin</span>
             </div>
