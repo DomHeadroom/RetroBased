@@ -423,32 +423,40 @@ span {
 }
 ._programs {
 	display: grid;
-	grid-template-columns: 2fr 3fr 3fr 1fr;
-	gap: 4px;
+	grid-template-columns: 3.7fr 3fr 1fr;
+	row-gap: 10px;
+    column-gap: 4px;
 	box-sizing: border-box;
 	padding: 8px;
 	overflow: hidden;
 	align-items: start;
 	position: absolute;
 	left: 160px;
-	>img {
-		width: 48px;
-		margin-right: 8px;
-		grid-column: 1;
-		align-self: center;
-	}
-	>.text {
+	
+	>.price {
 		grid-column: 2;
 		align-self: center;
-		text-align: left;
+		color: #6d6d6d;
 	}
-	>.price {
+	> input {
 		grid-column: 3;
 		align-self: center;
 	}
-	> input {
-		grid-column: 4;
+}
+
+._rowItem {
+	display: flex;
+	grid-column: 1;
+
+	>img {
+		width: 48px;
+		margin-right: 8px;
 		align-self: center;
+	}
+
+	>.text {
+		align-self: center;
+		text-align: left;
 	}
 }
 

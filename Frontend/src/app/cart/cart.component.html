@@ -28,10 +28,10 @@
         </div>
         <div class="_toolbarLarge">
           <ul role="menubar">
-            <li role="menuitem" tabindex="0">Organize ⯆</li>
+            <li role="menuitem" tabindex="0" title="Organize this folder's contents.">Organize ⯆</li>
             @if (products.length > 0) {
-              <li role="menuitem" tabindex="0" (click)="checkout()">Empty the Recycle Bin</li>
-              <li role="menuitem" tabindex="0" (click)="emptyRecycleBin()">Restore all items</li>
+              <li role="menuitem" tabindex="0" title="Purchase all items in the Recycle Bin to complete your order and free up space." (click)="checkout()">Purchase the Recycle Bin</li>
+              <li role="menuitem" tabindex="0" title="Move all items from the Recycle Bin to their original locations on your computer." (click)="emptyRecycleBin()">Restore all items</li>
             }
           </ul>
         </div>
@@ -101,14 +101,17 @@
             </li>
           </ul>
           <div class="_programs">
-            <div style="grid-column: 2; color: #4c6091;">Name</div>
-            <div style="grid-column: 3; color: #4c6091;">Price</div>
-            <div style="grid-column: 4; color: #4c6091;">Quantity</div>
+            <div style="grid-column: 1; color: #4c6091;">Name</div>
+            <div style="grid-column: 2; color: #4c6091;">Price</div>
+            <div style="grid-column: 3; color: #4c6091;">Quantity</div>
             @for (product of getProducts(); track getProducts) {
-              <img [src]="'assets/product-images/' + product.product.slug" [alt]="product.product.productName">
-              <div class="text">{{ product.product.productName }}</div>
+              <div class="_rowItem">
+                <img [src]="'assets/product-images/' + product.product.slug" [alt]="product.product.productName">
+                <div class="text">{{ product.product.productName }}</div>
+              </div>
               <div class="price">{{ product.product.salePrice }}€</div>
               <input type="number" role="combobox" aria-owns="company" min="0" [max]="product.product.quantity" [value]="product.quantity" (change)="onQuantityChange($event, product.product.id)" style="height: 20px;">
+              
             }
           </div>
         </div>
