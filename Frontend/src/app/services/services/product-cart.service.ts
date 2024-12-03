@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ProductDtoQuantity } from './product-dto-quantity';
+import { ProductDtoQuantity } from '../models/product-dto-quantity';
 
 @Injectable({
   providedIn: 'root',
@@ -60,4 +60,11 @@ export class ProductCartService {
       products: [...this.products],
     };
   }
+
+  getTotalPrice(): number {
+    return this.products.reduce((total, product) => {
+      return total + product.quantity * product.product.salePrice;
+    }, 0);
+  }
+  
 }

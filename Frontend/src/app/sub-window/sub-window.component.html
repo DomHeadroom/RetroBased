@@ -1,0 +1,74 @@
+<div class="window active" style="max-width: 400px">
+    <div class="title-bar">
+      <div class="title-bar-text">Purchase Multiple Items</div>
+      <div class="title-bar-controls">
+        <button aria-label="Close"></button>
+      </div>
+    </div>
+    <div class="window-body has-space">
+      <menu role="tablist" aria-label="Window with Tabs">
+        <button role="tab" aria-controls="address" [attr.aria-selected]="activeTab === 'address'" (click)="switchTab('address')">Address</button>
+        <button role="tab" aria-controls="payment" [attr.aria-selected]="activeTab === 'payment'" (click)="switchTab('payment')">Payment</button>
+        <button role="tab" aria-controls="summary" [attr.aria-selected]="activeTab === 'summary'" (click)="switchTab('summary')" [disabled]="!isSummaryEnabled">Summary</button>
+      </menu>
+  
+      @if (activeTab === 'address') {
+        <article role="tabpanel" id="address">
+          <fieldset>
+            <legend>Your Addresses</legend>
+            @for (address of customerAddresses; track address.id; let idx = $index) {
+              <div class="field-row">
+                <input type="radio" id="radio{{idx}}" name="address-field" (change)="onAddressSelect(address)">
+                <label for="radio{{idx}}">{{address.city}}, {{address.postalCode}}, {{address.addressLine1}}</label>
+              </div>
+            }
+          </fieldset>
+        </article>
+      }
+  
+      @if (activeTab === 'payment') {
+        <article role="tabpanel" id="payment">
+          <form>
+            <fieldset>
+              <legend>Payment Method</legend>
+              <section class="field-row" style="justify-content: flex-start;">
+                <select required (change)="onCardSelect($event, cardNumber.value)">
+                  <option disabled selected>Card brand</option>
+                  <option>American Express</option>
+                  <option>JCB</option>
+                  <option>Mastercard</option>
+                  <option>Visa</option>
+                </select>
+              </section>
+              <section class="field-row">
+                <label for="card-number">Card number</label>
+                <input type="text" id="card-number" #cardNumber required pattern="^\d{16}$">
+              </section>
+            </fieldset>
+          </form>
+        </article>
+      }
+  
+      @if (activeTab === 'summary' && isSummaryEnabled) {
+        <article role="tabpanel" id="summary">
+          <p>Your shipping address:</p>
+          <ul>
+            <li>{{selectedAddress?.city}}, {{selectedAddress?.postalCode}}, {{selectedAddress?.addressLine1}}</li>
+          </ul>
+          <p>Your payment info:</p>
+          <ul>
+            <li>
+                <p>
+                    <b>{{ (selectedCard?.number ?? 'No card selected').slice(-4) }}</b>, {{ selectedCard?.brand }}
+                </p>
+            </li>
+          </ul>
+          
+        </article>
+        <div class="status-bar">
+            <p class="status-bar-field">Total Price: {{totalPrice}}</p>
+        </div>
+      }
+    </div>
+  </div>
+  

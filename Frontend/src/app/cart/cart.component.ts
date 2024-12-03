@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ProductCartService } from '../services/models/product-cart';
+import { Component } from '@angular/core';
+import { ProductCartService } from '../services/services/product-cart.service';
 import { ProductDtoQuantity } from '../services/models/product-dto-quantity';
 import { TaskbarComponent } from '../taskbar/taskbar.component';
 
@@ -15,7 +15,7 @@ export class CartComponent {
 
   constructor(private productCartService: ProductCartService) {}
 
-  ngOnInit(): void {
+  onInit(): void {
     this.loadProducts();
   }
 
