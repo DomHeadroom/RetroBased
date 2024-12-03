@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CustomerAddressControllerService } from '../services/services/customer-address-controller.service';
 import { ProductCartService } from '../services/services/product-cart.service';
 import { CustomerAddressDto } from '../services/models/customer-address-dto';
@@ -10,7 +10,7 @@ import { CustomerAddressDto } from '../services/models/customer-address-dto';
   templateUrl: './sub-window.component.html',
   styleUrl: './sub-window.component.scss'
 })
-export class SubWindowComponent {
+export class SubWindowComponent implements OnInit {
   activeTab: string = 'address';
   customerAddresses: CustomerAddressDto[] = [];
   selectedAddress: CustomerAddressDto | null = null;
@@ -23,7 +23,7 @@ export class SubWindowComponent {
   ){
   }
 
-  onInit(){
+  ngOnInit(){
     this.customerAddressController.getCustomerAddresses().subscribe({
       next: (response: any) => {
         this.customerAddresses = response as CustomerAddressDto[];

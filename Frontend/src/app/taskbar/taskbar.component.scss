@@ -72,7 +72,6 @@ body {
 }
 .taskbar {
   z-index: 999999999999999999;
-  position: absolute;
   top: 0;
   left: 0;
   height: 40px;
@@ -92,6 +91,7 @@ body {
   background-color: $background-color;
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
+  z-index: -1;
 }
 .left {
   position: absolute;

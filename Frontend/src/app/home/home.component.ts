@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TaskbarComponent } from '../taskbar/taskbar.component';
 import { WindowComponent } from '../window/window.component';
 import { NotificationComponent } from '../notification/notification.component';
@@ -25,6 +25,11 @@ export class HomeComponent implements OnInit {
     private productDisplay: ProductDisplay
   ) {}
 
+  ngOnInit(): void {
+    this.notificationService.showNotification(this.notificationHeader, this.notificationText, 92.200);
+    this.getRandomProducts();
+  }
+  
   getRandomProducts(): void {
     this.productService.getRandomProducts().subscribe(
       (response: any) => {
@@ -37,8 +42,4 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    this.notificationService.showNotification(this.notificationHeader, this.notificationText, 92.200);
-    this.getRandomProducts();
-  }
 }

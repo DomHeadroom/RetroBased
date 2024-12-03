@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { ProductCartService } from '../services/services/product-cart.service';
 import { ProductDtoQuantity } from '../services/models/product-dto-quantity';
 import { TaskbarComponent } from '../taskbar/taskbar.component';
+import { SubWindowComponent } from '../sub-window/sub-window.component';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [TaskbarComponent],
+  imports: [TaskbarComponent, SubWindowComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })
@@ -15,7 +16,7 @@ export class CartComponent {
 
   constructor(private productCartService: ProductCartService) {}
 
-  onInit(): void {
+  ngOnInit(): void {
     this.loadProducts();
   }
 

@@ -1,4 +1,5 @@
 <app-taskbar [taskbarIconSrc]="taskbarIcon"></app-taskbar>
+<app-sub-window></app-sub-window>
 <div class="_window-frame" style="width: 100vw; height: calc(100vh - 40px); z-index: 1013; top: 40px; left: 0;">
     <div class="_title-bar">
       <div class="_buttonContainer">
@@ -35,7 +36,7 @@
             }
           </ul>
         </div>
-        <div style="display: flex; width: 100%; height: calc(100% - 32px); flex-direction: row;">
+        <div style="display: flex; width: 100%; height: calc(100% - 32px); flex-direction: row; position: relative;">
           <ul class="_sidebar">
             <li>
               <div class="_sidebarUlItem">
@@ -100,20 +101,23 @@
               </div>
             </li>
           </ul>
+          <div style="display: block;overflow-y: auto;max-height: 100%;">
           <div class="_programs">
             <div style="grid-column: 1; color: #4c6091;">Name</div>
             <div style="grid-column: 2; color: #4c6091;">Price</div>
             <div style="grid-column: 3; color: #4c6091;">Quantity</div>
-            @for (product of getProducts(); track getProducts) {
-              <div class="_rowItem">
+          </div>
+          <div class="_programs">
+            @for (product of products; track product.product.id) {
+              <div style="grid-column: 1;" class="_rowItem">
                 <img [src]="'assets/product-images/' + product.product.slug" [alt]="product.product.productName">
                 <div class="text">{{ product.product.productName }}</div>
               </div>
-              <div class="price">{{ product.product.salePrice }}€</div>
-              <input type="number" role="combobox" aria-owns="company" min="0" [max]="product.product.quantity" [value]="product.quantity" (change)="onQuantityChange($event, product.product.id)" style="height: 20px;">
-              
+              <div style="grid-column: 2" class="price">{{ product.product.salePrice }}€</div>
+              <input style="grid-column: 3;" type="number" role="combobox" aria-owns="company" min="0" [max]="product.product.quantity" [value]="product.quantity" (change)="onQuantityChange($event, product.product.id)" style="height: 20px;">
             }
           </div>
+        </div>
         </div>
       </div>
     </div>
