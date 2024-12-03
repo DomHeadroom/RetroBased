@@ -2,6 +2,7 @@ package com.retrobased.market.authentications;
 
 import com.retrobased.market.services.KeycloakService;
 import lombok.SneakyThrows;
+import org.springframework.lang.NonNull;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -20,7 +21,7 @@ public class KeycloakAuthenticationSuccessListener implements ApplicationListene
 
     @SneakyThrows
     @Override
-    public void onApplicationEvent(AuthenticationSuccessEvent event) {
+    public void onApplicationEvent(@NonNull AuthenticationSuccessEvent event) {
         if (event.getAuthentication() instanceof JwtAuthenticationToken jwtToken) {
             Map<String, Object> claims = jwtToken.getTokenAttributes();
             keycloakService.saveUserFromKeycloak(claims);

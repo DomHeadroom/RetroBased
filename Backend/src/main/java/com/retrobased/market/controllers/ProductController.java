@@ -11,7 +11,6 @@ import com.retrobased.market.entities.Tag;
 import com.retrobased.market.mappers.ProductMapper;
 import com.retrobased.market.services.AttributeService;
 import com.retrobased.market.services.CategoryService;
-import com.retrobased.market.services.CustomerService;
 import com.retrobased.market.services.ProductAttributeService;
 import com.retrobased.market.services.ProductCategoryService;
 import com.retrobased.market.services.ProductSellerService;
