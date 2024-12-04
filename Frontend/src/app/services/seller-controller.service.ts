@@ -7,12 +7,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { BaseService } from '../base-service';
-import { ApiConfiguration } from '../api-configuration';
-import { StrictHttpResponse } from '../strict-http-response';
+import { BaseService } from './base-service';
+import { ApiConfiguration } from './api-configuration';
+import { StrictHttpResponse } from './strict-http-response';
 
-import { getSellerProducts } from '../fn/seller-controller/get-seller-products';
-import { GetSellerProducts$Params } from '../fn/seller-controller/get-seller-products';
+import { getSellerProducts } from './fn/seller-controller/get-seller-products';
+import { GetSellerProducts$Params } from './fn/seller-controller/get-seller-products';
 
 @Injectable({ providedIn: 'root' })
 export class SellerControllerService extends BaseService {

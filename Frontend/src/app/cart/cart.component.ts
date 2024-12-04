@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProductCartService } from '../services/services/product-cart.service';
+import { ProductCartService } from '../services/product-cart.service';
 import { ProductDtoQuantity } from '../services/models/product-dto-quantity';
 import { TaskbarComponent } from '../taskbar/taskbar.component';
 import { SubWindowComponent } from '../sub-window/sub-window.component';

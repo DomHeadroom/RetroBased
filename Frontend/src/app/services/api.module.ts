@@ -6,11 +6,11 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
-import { CustomerAddressControllerService } from './services/customer-address-controller.service';
-import { ProductControllerService } from './services/product-controller.service';
-import { OrderControllerService } from './services/order-controller.service';
-import { CartControllerService } from './services/cart-controller.service';
-import { SellerControllerService } from './services/seller-controller.service';
+import { CustomerAddressControllerService } from './customer-address-controller.service';
+import { ProductControllerService } from './product-controller.service';
+import { OrderControllerService } from './order-controller.service';
+import { CartControllerService } from './cart-controller.service';
+import { SellerControllerService } from './seller-controller.service';
 
 /**
  * Module that provides all services and configuration.

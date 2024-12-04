@@ -7,16 +7,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { BaseService } from '../base-service';
-import { ApiConfiguration } from '../api-configuration';
-import { StrictHttpResponse } from '../strict-http-response';
+import { BaseService } from './base-service';
+import { ApiConfiguration } from './api-configuration';
+import { StrictHttpResponse } from './strict-http-response';
 
-import { addProductsToCart } from '../fn/cart-controller/add-products-to-cart';
-import { AddProductsToCart$Params } from '../fn/cart-controller/add-products-to-cart';
-import { getCartProducts } from '../fn/cart-controller/get-cart-products';
-import { GetCartProducts$Params } from '../fn/cart-controller/get-cart-products';
-import { updateCartItemQuantity } from '../fn/cart-controller/update-cart-item-quantity';
-import { UpdateCartItemQuantity$Params } from '../fn/cart-controller/update-cart-item-quantity';
+import { addProductsToCart } from './fn/cart-controller/add-products-to-cart';
+import { AddProductsToCart$Params } from './fn/cart-controller/add-products-to-cart';
+import { getCartProducts } from './fn/cart-controller/get-cart-products';
+import { GetCartProducts$Params } from './fn/cart-controller/get-cart-products';
+import { updateCartItemQuantity } from './fn/cart-controller/update-cart-item-quantity';
+import { UpdateCartItemQuantity$Params } from './fn/cart-controller/update-cart-item-quantity';
 
 @Injectable({ providedIn: 'root' })
 export class CartControllerService extends BaseService {

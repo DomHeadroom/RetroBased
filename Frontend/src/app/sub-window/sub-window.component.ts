@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomerAddressControllerService } from '../services/services/customer-address-controller.service';
-import { ProductCartService } from '../services/services/product-cart.service';
+import { CustomerAddressControllerService } from '../services/customer-address-controller.service';
+import { ProductCartService } from '../services/product-cart.service';
 import { CustomerAddressDto } from '../services/models/customer-address-dto';
 
 @Component({

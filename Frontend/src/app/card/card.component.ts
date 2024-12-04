@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NotificationService } from '../services/services/notification.service';
+import { NotificationService } from '../services/notification.service';
 import { ProductDto } from '../services/models/product-dto';
-import { ProductCartService } from '../services/services/product-cart.service';
+import { ProductCartService } from '../services/product-cart.service';
 
 @Component({
   selector: 'app-card',

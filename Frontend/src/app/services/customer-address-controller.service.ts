@@ -7,16 +7,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { BaseService } from '../base-service';
-import { ApiConfiguration } from '../api-configuration';
-import { StrictHttpResponse } from '../strict-http-response';
+import { BaseService } from './base-service';
+import { ApiConfiguration } from './api-configuration';
+import { StrictHttpResponse } from './strict-http-response';
 
-import { addCustomerAddress } from '../fn/customer-address-controller/add-customer-address';
-import { AddCustomerAddress$Params } from '../fn/customer-address-controller/add-customer-address';
-import { getCustomerAddresses } from '../fn/customer-address-controller/get-customer-addresses';
-import { GetCustomerAddresses$Params } from '../fn/customer-address-controller/get-customer-addresses';
-import { removeCustomerAddress } from '../fn/customer-address-controller/remove-customer-address';
-import { RemoveCustomerAddress$Params } from '../fn/customer-address-controller/remove-customer-address';
+import { addCustomerAddress } from './fn/customer-address-controller/add-customer-address';
+import { AddCustomerAddress$Params } from './fn/customer-address-controller/add-customer-address';
+import { getCustomerAddresses } from './fn/customer-address-controller/get-customer-addresses';
+import { GetCustomerAddresses$Params } from './fn/customer-address-controller/get-customer-addresses';
+import { removeCustomerAddress } from './fn/customer-address-controller/remove-customer-address';
+import { RemoveCustomerAddress$Params } from './fn/customer-address-controller/remove-customer-address';
 
 @Injectable({ providedIn: 'root' })
 export class CustomerAddressControllerService extends BaseService {

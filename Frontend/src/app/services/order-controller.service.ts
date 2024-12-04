@@ -7,16 +7,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { BaseService } from '../base-service';
-import { ApiConfiguration } from '../api-configuration';
-import { StrictHttpResponse } from '../strict-http-response';
+import { BaseService } from './base-service';
+import { ApiConfiguration } from './api-configuration';
+import { StrictHttpResponse } from './strict-http-response';
 
-import { getOrder } from '../fn/order-controller/get-order';
-import { GetOrder$Params } from '../fn/order-controller/get-order';
-import { getProductsFromOrder } from '../fn/order-controller/get-products-from-order';
-import { GetProductsFromOrder$Params } from '../fn/order-controller/get-products-from-order';
-import { makeOrder } from '../fn/order-controller/make-order';
-import { MakeOrder$Params } from '../fn/order-controller/make-order';
+import { getOrder } from './fn/order-controller/get-order';
+import { GetOrder$Params } from './fn/order-controller/get-order';
+import { getProductsFromOrder } from './fn/order-controller/get-products-from-order';
+import { GetProductsFromOrder$Params } from './fn/order-controller/get-products-from-order';
+import { makeOrder } from './fn/order-controller/make-order';
+import { MakeOrder$Params } from './fn/order-controller/make-order';
 
 @Injectable({ providedIn: 'root' })
 export class OrderControllerService extends BaseService {

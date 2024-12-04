@@ -3,7 +3,7 @@ import { TaskbarComponent } from '../taskbar/taskbar.component';
 import { WindowComponent } from '../window/window.component';
 import { NotificationComponent } from '../notification/notification.component';
 
-import { NotificationService } from '../services/services/notification.service';
+import { NotificationService } from '../services/notification.service';
 import { ProductControllerService } from '../services/services';
 import { ProductDto } from '../services/models';
 import { ProductDisplay } from '../services/models/product-display';

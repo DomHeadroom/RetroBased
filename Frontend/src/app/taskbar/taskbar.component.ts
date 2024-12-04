@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
-import { ProductControllerService } from '../services/services';
+import { ProductControllerService } from '../services/product-controller.service';
 import { ProductDto } from '../services/models';
 import { ProductDisplay } from '../services/models/product-display';
 
