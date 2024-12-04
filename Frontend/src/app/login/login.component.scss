@@ -53,14 +53,12 @@ $border-color_4: #5586a3;
 	--button-border-color-hovered: #3c7fb1;
 	--button-border-color-active: #6d91ab;
 	--button-border-color-disabled: #aeb2b5;
-  --button-gradient-active:linear-gradient(to bottom,#e5f4fc,#c4e5f6 30% 50%,#98d1ef 50%,#68b3db);
+    --button-gradient-active:linear-gradient(to bottom,#e5f4fc,#c4e5f6 30% 50%,#98d1ef 50%,#68b3db);
 	--border-radius: 3px;
 	--font: 9pt "Segoe UI", "SegoeUI", "Noto Sans", sans-serif;
 	--button-highlight: #fff;
 	--button-border-color: #8e8f8f;
 	--border-radius: 3px;
-	--aero-black: #000000bd;
-	--aero-white: #ffffff7a;
 }
 [role=button] {
 	background: linear-gradient(to bottom,#f2f2f2 45%,#ebebeb 45%,#cfcfcf);

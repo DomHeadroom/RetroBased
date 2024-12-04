@@ -2,8 +2,7 @@
 $color_1: #fff;
 $font-family_1: Segoe UI, sans-serif;
 $background-color: var(--aero-accent);
-$search-icon: url("/assets/taskbar/svgs/lens.svg");
-$search-button: $search-icon no-repeat center;
+$search-button: var(--search-icon) no-repeat center;
 $font: 9pt "Segoe UI", "SegoeUI", "Noto Sans", sans-serif;
 
 
@@ -190,14 +189,14 @@ body {
   }
 
   &:-moz-placeholder-shown {
-    background-image: $search-icon;
+    background-image: var(--search-icon);
     background-position: calc(100% - 8px);
     background-repeat: no-repeat;
     background-size: 14px;
   }
 
   &:placeholder-shown {
-    background-image: $search-icon;
+    background-image: var(--search-icon);
     background-position: calc(100% - 8px);
     background-repeat: no-repeat;
     background-size: 14px;

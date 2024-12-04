@@ -8,7 +8,9 @@
 	--intensity: 50%;
 	--aero-color: rgba(116, 184, 252, calc(0.7 * var(--intensity)));
 	--aero-accent: color-mix(in srgb, #000, color-mix(in srgb, var(--aero-color) var(--saturation), transparent) var(--brightness));
+	--button-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.688) 0%, rgba(255, 255, 255, 0.357) 41%, rgba(124, 124, 124, 0.123) 41%, rgba(58, 58, 58, 0.185) 100%);
 	font-family: "Segoe UI","SegoeUI","Noto Sans",sans-serif;
+	--search-icon: url("/assets/taskbar/svgs/lens.svg");
 }
 
 input:hover, textarea:hover {
@@ -32,9 +34,6 @@ a:hover, button:hover {
 	background-size: cover;
 	background-position: center center;
 	background-attachment: fixed;
-	margin: 0;
-	padding: 0;
-	font-family: 'YourFontFamily', sans-serif;
 }
 
 .login {

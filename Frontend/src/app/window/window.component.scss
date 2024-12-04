@@ -149,8 +149,7 @@ $button-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.688) 0%, rgba(25
     background: linear-gradient(180deg, rgba(230, 152, 140, 1) 0%, rgba(215, 109, 93, 1) 41%, rgba(164, 25, 6, 1) 41%, rgba(230, 148, 47, 1) 94%, rgba(245, 232, 119, 1) 99%) !important;
 }
 ._window-button.close:after {
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAKBAMAAACdwMn3AAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAABtQTFRFU1ZlU1ZmAAAA////8PDw6Ojo4+Pj3t7e2traNidwgwAAAAl0Uk5Tlv8A////////HLvqUAAAAEdJREFUeJxjYBAUUBAUYGAQNDZkNDYEMoSNhY2BlBKjsbEhkwKDkoKIi4ASiBYNBdOMaWmJQHEG8XLxcpC+jkbGjkYQA2wOAFVICeO1m6GIAAAAAElFTkSuQmCC)
-        no-repeat center center;
+    background: url("/assets/window/images/close-button.png") no-repeat center center;
 }
 ._window-button:after {
     width: 100%;
@@ -162,8 +161,7 @@ $button-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.688) 0%, rgba(25
     background: $button-gradient;
 }
 ._window-button.minimize:after {
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAKBAMAAACdwMn3AAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAABVQTFRFAAAAUlZlU1Zm////7u7u5OTkUlZljjKpKAAAAAd0Uk5TAMb/////yUmwZQcAAAAlSURBVHicY2AgEggpgYAAg7IxCCgwqLiAgAKDaigIKDAkgeUTAH0gBwHMs1Q0AAAAAElFTkSuQmCC)
-        no-repeat center center;
+    background: url("/assets/window/images/minimize-button.png") no-repeat center center;
 }
 body {
     overflow: hidden;
