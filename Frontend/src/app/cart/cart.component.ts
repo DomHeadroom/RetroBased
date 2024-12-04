@@ -79,7 +79,7 @@ export class CartComponent {
 
   get titleBarIcon(): string {
     return this.products.length > 0 
-      ? '/assets/cart/recycle_bin_full.ico' 
-      : '/assets/cart/recycle_bin_empty.ico';
+      ? '/assets/cart/icons/recycle_bin_full.ico' 
+      : '/assets/cart/icons/recycle_bin_empty.ico';
   }
 }
