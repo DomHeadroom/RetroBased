@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { ProductCartService } from '../services/product-cart.service';
 import { ProductDtoQuantity } from '../services/models/product-dto-quantity';
 import { TaskbarComponent } from '../taskbar/taskbar.component';
-import { SubWindowComponent } from '../sub-window/sub-window.component';
+import { BuyFormComponent } from '../buy-form/buy-form.component';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [TaskbarComponent, SubWindowComponent],
+  imports: [TaskbarComponent, BuyFormComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })

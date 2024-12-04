@@ -4,13 +4,13 @@ import { ProductCartService } from '../services/product-cart.service';
 import { CustomerAddressDto } from '../services/models/customer-address-dto';
 
 @Component({
-  selector: 'app-sub-window',
+  selector: 'app-buy-form',
   standalone: true,
   imports: [],
-  templateUrl: './sub-window.component.html',
-  styleUrl: './sub-window.component.scss'
+  templateUrl: './buy-form.component.html',
+  styleUrl: './buy-form.component.scss'
 })
-export class SubWindowComponent implements OnInit {
+export class BuyFormComponent implements OnInit {
   activeTab: string = 'address';
   customerAddresses: CustomerAddressDto[] = [];
   selectedAddress: CustomerAddressDto | null = null;

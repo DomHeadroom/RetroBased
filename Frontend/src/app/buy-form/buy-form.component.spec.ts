@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SubWindowComponent } from './sub-window.component';
+import { BuyFormComponent } from './buy-form.component';
 
-describe('SubWindowComponent', () => {
-  let component: SubWindowComponent;
-  let fixture: ComponentFixture<SubWindowComponent>;
+describe('BuyFormComponent', () => {
+  let component: BuyFormComponent;
+  let fixture: ComponentFixture<BuyFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SubWindowComponent]
+      imports: [BuyFormComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(SubWindowComponent);
+    fixture = TestBed.createComponent(BuyFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
