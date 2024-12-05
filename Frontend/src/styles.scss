@@ -1,4 +1,4 @@
-@import "typeface-roboto/index.css";
+@import "app/shared/styles/_variables.scss";
 
 :root {
 	--aero-white: #ffffff7a;
@@ -11,9 +11,6 @@
 	--button-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.688) 0%, rgba(255, 255, 255, 0.357) 41%, rgba(124, 124, 124, 0.123) 41%, rgba(58, 58, 58, 0.185) 100%);
 	font-family: "Segoe UI","SegoeUI","Noto Sans",sans-serif;
 	--search-icon: url("/assets/taskbar/svgs/lens.svg");
-	--font: 9pt "Segoe UI","SegoeUI","Noto Sans",sans-serif;
-
-	--surface: #f0f0f0;
 	--window-spacing: 6px;
     --window-border: 1px solid;
     --window-border-radius: 6px;
@@ -116,77 +113,6 @@
 	--tab-border: 1px solid #888;
 	--tab-border-color: #888;
 	--tab-bg: #fff;
-
-	--button-highlight: #fff;
-	--button-face: #f2f2f2;
-	--button-face-hover: #eaf6fd;
-	--button-face-active: #c4e5f6;
-	--button-face-disabled: #f4f4f4;
-	--button-shade-light: #ebebeb;
-	--button-shade-light-default: #c3dcea;
-	--button-shade-light-hovered: #bee6fd;
-	--button-shade-light-active: #98d1ef;
-	--button-shade-dark: #cfcfcf;
-	--button-shadow: inset 0 0 0 1px #fffc;
-	--button-shadow-active: inset 1px 1px 0 #0003, inset -1px 1px 0 #0001;
-	--button-border: 1px solid;
-	--button-border-color: #8e8f8f;
-	--button-border-color-default: #5586a3;
-	--button-border-color-hovered: #3c7fb1;
-	--button-border-color-active: #6d91ab;
-	--button-border-color-disabled: #aeb2b5;
-	--button-text-color-disabled: #838383;
-	--button-gradient: linear-gradient(
-		to bottom,
-		var(--button-face) 45%,
-		var(--button-shade-light) 45%,
-		var(--button-shade-dark)
-	);
-	--button-gradient-hovered: linear-gradient(
-		to bottom,
-		var(--button-face-hover) 45%,
-		var(--button-shade-light-hovered) 45%,
-		#a7d9f5
-	);
-	--button-gradient-active: linear-gradient(
-		to bottom,
-		#e5f4fc,
-		var(--button-face-active) 30% 50%,
-		var(--button-shade-light-active) 50%,
-		#68b3db
-	);
-
-	--item-highlighted-border: #aaddfa;
-	--item-highlighted-background: linear-gradient(
-		to bottom,
-		#fff9,
-		#e6ecf5cc 90%,
-		#fffc
-	);
-
-	--element-spacing: 8px;
-	--grouped-element-spacing: 6px;
-
-	--border-radius: 3px;
-	--border-width: 1px;
-
-	--radio-width: 14px;
-	--radio-label-spacing: 6px;
-	--radio-total-width-precalc: var(--radio-width) + var(--radio-label-spacing);
-	--radio-total-width: calc(var(--radio-total-width-precalc));
-	--radio-dot-width: 8px;
-	--radio-dot-offset: calc(var(--radio-width) / 2);
-
-    --radio-total-width-precalc: var(--radio-width) + var(--radio-label-spacing);
-    --radio-total-width: calc(var(--radio-total-width-precalc));
-    --radio-dot-width: 8px;
-    --radio-dot-offset: calc(var(--radio-width) / 2);
-    --radio-dot-top: calc(var(--radio-dot-offset) - var(--radio-dot-width) / 2);
-    --radio-dot-left: calc(
-      -1 * (var(--radio-total-width)) + var(--radio-width) / 2 - var(
-          --radio-dot-width
-        ) / 2
-    );
 }
 
 input:hover, textarea:hover {
