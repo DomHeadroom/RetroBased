@@ -26,7 +26,7 @@
               </div>
             }
           </fieldset>
-          <form>
+          <form #addressForm="ngForm" (ngSubmit)="setAddress()">
             <section class="field-row">
                 <label for="address1">Address</label>
                 <label for="address2" style="margin-left: auto;">Address, line 2</label>
@@ -58,11 +58,11 @@
   
       @if (activeTab === 'payment') {
         <article role="tabpanel" id="payment">
-            <form>
+            <form #cardForm="ngForm" (ngSubmit)="setPayment()">
                 <fieldset>
                 <legend>Payment Method</legend>
                 <section class="field-row" style="justify-content: flex-start;">
-                    <select required>
+                    <select required [(ngModel)]="payment.cardBrand">
                         <option disabled selected>Card brand</option>
                         <option>American Express</option>
                         <option>JCB</option>
@@ -74,7 +74,7 @@
                     <label for="card-number">Card number</label>  
                 </section>
                 <section class="field-row">
-                    <input type="text" id="card-number" required pattern="^\d{16}$">
+                    <input type="text" id="card-number" required pattern="^\d{16}$" [(ngModel)]="payment.cardNumber">
                 </section>
                 <section class="field-row">
                     <label>Expiration date</label>
@@ -151,8 +151,8 @@
           <ul>
             <li>
                 <p>
-                  @if (selectedCard?.number) {
-                    <b>{{ '✱✱✱✱-✱✱✱✱-✱✱✱✱-' + (selectedCard?.number?.slice(-4) ?? '') }}</b>, {{ selectedCard?.brand ?? 'Unknown brand' }}
+                  @if (payment.cardNumber) {
+                    <b>{{ '✱✱✱✱-✱✱✱✱-✱✱✱✱-' + (payment.cardNumber.slice(-4)) }}</b>, {{ payment.cardBrand }}
                   }
                   @else {
                     No card selected
