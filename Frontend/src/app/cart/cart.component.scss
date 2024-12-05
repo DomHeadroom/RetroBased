@@ -5,7 +5,6 @@ $color_4: #1e395b;
 $color_5: inherit;
 $color_6: initial;
 $color_7: #0c12a1;
-$font-family_1: Segoe UI, sans-serif;
 $background-color_1: #ffffffab;
 $background-color_2: #fcfcfc;
 $background-color_3: #39f;
@@ -344,11 +343,10 @@ li {
 	list-style-type: none;
 }
 * {
-	font-family: $font-family_1;
 	-webkit-user-select: none;
 	user-select: none;
 	-webkit-user-drag: none;
-	font-size: 9pt;
+	font: var(--font);
 	&::selection {
 		background-color: $background-color_3;
 		color: $color_2;
