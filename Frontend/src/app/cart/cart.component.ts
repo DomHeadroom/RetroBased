@@ -74,7 +74,7 @@ export class CartComponent {
   get taskbarIcon(): string {
     return this.products.length > 0 
       ? 'assets/taskbar/icons/recycle_bin_full.ico' 
-      : 'assets/taskbar/icons/recycle_bin.ico';
+      : 'assets/taskbar/icons/recycle_bin_empty.ico';
   }
 
   get titleBarIcon(): string {
