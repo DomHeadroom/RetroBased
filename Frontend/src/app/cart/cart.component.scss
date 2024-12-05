@@ -74,7 +74,7 @@ $border-left-color_1: currentcolor;
 	position: relative;
 	height: 18px;
 	margin-top: 1px;
-	background: var(--button-gradient);
+	background: var(--button-gradient-minimize);
 	width: 28px;
 	border: solid thin var(--aero-black);
 	box-shadow: inset 0 0 0 1px var(--aero-white);
@@ -111,7 +111,7 @@ $border-left-color_1: currentcolor;
 	}
 }
 ._window-button.minimize {
-	background: var(--button-gradient);
+	background: var(--button-gradient-minimize);
 	&:after {
 		background: url("/assets/window/images/minimize-button.png") no-repeat center center;
 	}
