@@ -1,3 +1,6 @@
+@import "../shared/styles/radiobutton";
+@import "../shared/styles/window";
+
 $color_1: #000;
 $color_2: #fff;
 $color_3: #6d6d6d;
@@ -13,7 +16,6 @@ $border-color_1: #b8d6fb;
 $border-left-color_1: currentcolor;
 
 :root {
-	--surface: #f0f0f0;
 	--menu-padding: 2px;
 	--item-offset-left: 30px;
 	--item-hover-background: linear-gradient(180deg,#fff9,#e6ecf5cc 90%,#fffc);

@@ -139,22 +139,39 @@
         <article role="tabpanel" id="summary">
           <p>Your shipping address:</p>
           <ul>
-            <li>{{selectedAddress?.city}}, {{selectedAddress?.postalCode}}, {{selectedAddress?.addressLine1}}</li>
+            @if (selectedAddress){
+              <li>{{selectedAddress.city}}, {{selectedAddress.postalCode}}, {{selectedAddress.addressLine1}}</li>
+            }
+            @else{
+              <p>No address selected</p>
+            }
+            
           </ul>
           <p>Your payment info:</p>
           <ul>
             <li>
                 <p>
-                    <b>{{ (selectedCard?.number ?? 'No card selected').slice(-4) }}</b>, {{ selectedCard?.brand }}
+                  @if (selectedCard?.number) {
+                    <b>{{ '✱✱✱✱-✱✱✱✱-✱✱✱✱-' + (selectedCard?.number?.slice(-4) ?? '') }}</b>, {{ selectedCard?.brand ?? 'Unknown brand' }}
+                  }
+                  @else {
+                    No card selected
+                  }
                 </p>
             </li>
           </ul>
           
         </article>
-        <div class="status-bar">
-            <p class="status-bar-field">Total Price: {{totalPrice}}</p>
-        </div>
+        <section class="field-row" style="justify-content: flex-end">
+          <button class="default">OK</button>
+          <button>Cancel</button>
+        </section>
       }
     </div>
+    @if (activeTab === 'summary' && isSummaryEnabled) {
+      <div class="status-bar">
+        <p class="status-bar-field">Total Price: {{totalPrice}}€</p>
+      </div>
+    }
   </div>
   
