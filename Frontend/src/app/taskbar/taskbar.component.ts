@@ -49,4 +49,10 @@ export class TaskbarComponent {
     );
   }
 
+  switchToLogin(){
+    document.documentElement.classList.add('login');
+    document.body.classList.add('login-background');
+    this.navigateTo('login');
+  }
+
 }
