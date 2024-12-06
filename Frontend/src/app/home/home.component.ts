@@ -13,12 +13,12 @@ import { ProductDisplay } from '../services/models/product-display';
   standalone: true,
   imports: [NotificationComponent, TaskbarComponent, WindowComponent],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
   notificationHeader: string = 'Login';
   notificationText: string = 'If you want to login, click here.';
-  
+
   constructor(
     private productService: ProductControllerService,
     private notificationService: NotificationService,
@@ -26,10 +26,14 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.notificationService.showNotification(this.notificationHeader, this.notificationText, 92.200);
+    this.notificationService.showNotification(
+      this.notificationHeader,
+      this.notificationText,
+      92.2
+    );
     this.getRandomProducts();
   }
-  
+
   getRandomProducts(): void {
     this.productService.getRandomProducts().subscribe(
       (response: any) => {
@@ -41,5 +45,4 @@ export class HomeComponent implements OnInit {
       }
     );
   }
-
 }

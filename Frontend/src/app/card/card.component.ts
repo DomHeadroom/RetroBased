@@ -9,7 +9,7 @@ import { ProductCartService } from '../services/product-cart.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './card.component.html',
-  styleUrl: './card.component.scss'
+  styleUrl: './card.component.scss',
 })
 export class CardComponent {
   @Input() product: ProductDto | undefined;
@@ -27,26 +27,29 @@ export class CardComponent {
 
     const productCartService = this.productCartService;
 
-    const existingProduct = productCartService.getProducts().find(
-      (item) => item.product.id === this.product!.id 
-    );
+    const existingProduct = productCartService
+      .getProducts()
+      .find((item) => item.product.id === this.product!.id);
 
     if (existingProduct) {
       if (existingProduct.quantity + 1 > this.product.quantity) {
         this.notificationService.showNotification(
           'Recycle Bin',
           `Cannot add more of ${this.product.productName}. Available quantity is ${this.product.quantity}.`,
-          117.200
+          117.2
         );
         return;
       }
-      productCartService.updateProductQuantity(existingProduct.product.id!, existingProduct.quantity + 1);
+      productCartService.updateProductQuantity(
+        existingProduct.product.id!,
+        existingProduct.quantity + 1
+      );
     } else {
       if (this.product.quantity < 1) {
         this.notificationService.showNotification(
           'Recycle Bin',
           `Cannot add ${this.product.productName}. No stock available.`,
-          117.200
+          117.2
         );
         return;
       }
@@ -59,7 +62,7 @@ export class CardComponent {
     this.notificationService.showNotification(
       'Recycle Bin',
       'Product/s added to the recycle bin.',
-      117.200
+      117.2
     );
   }
 }

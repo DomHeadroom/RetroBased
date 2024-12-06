@@ -1,127 +1,193 @@
 <app-taskbar [taskbarIconSrc]="taskbarIcon"></app-taskbar>
 @if (isFormEnabled) {
-  <app-buy-form></app-buy-form>
+<app-buy-form></app-buy-form>
 }
-<div class="_window-frame" style="width: 100vw; height: calc(100vh - 40px); z-index: 1013; top: 40px; left: 0;">
-    <div class="_title-bar">
-      <div class="_buttonContainer">
-        <div class="_window-buttons">
-          <div class="_window-button minimize"></div>
-          <div class="_window-button close"></div>
-        </div>
+<div
+  class="_window-frame"
+  style="
+    width: 100vw;
+    height: calc(100vh - 40px);
+    z-index: 1013;
+    top: 40px;
+    left: 0;
+  "
+>
+  <div class="_title-bar">
+    <div class="_buttonContainer">
+      <div class="_window-buttons">
+        <div class="_window-button minimize"></div>
+        <div class="_window-button close"></div>
       </div>
     </div>
-    <div class="_windowFrameGradientLeft"></div>
-    <div class="_windowFrameGradientRight"></div>
-    <div class="_window">
-      <div class="_windowContent" style="margin-top: 56px; height: calc(100% - 58px);">
-        <div style="height: 58px; margin-top: -58px;" class="_titleBarExtension">
-          <div class="_titleBarElements">
-            <div style="background-image: url('assets/cart/images/buttons-background.png');width: 70px;height: 29px;display: flex;box-sizing: border-box;padding: 1px;">
-              <div class="_titleBarNavigationButton"></div>
-              <div class="_titleBarNavigationButton"></div>
-            </div>
-            <div class="_searchContainer">
-              <img [src]="titleBarIcon" alt="Recycle Bin">
-              <span style="transform: rotate(-90deg); font-size: 15px;">▾</span>
-              <span style="padding-left: 5px;">Recycle Bin</span>
-            </div>
-            <input placeholder="Search Recycle Bin" class="_search" type="text">
+  </div>
+  <div class="_windowFrameGradientLeft"></div>
+  <div class="_windowFrameGradientRight"></div>
+  <div class="_window">
+    <div
+      class="_windowContent"
+      style="margin-top: 56px; height: calc(100% - 58px)"
+    >
+      <div style="height: 58px; margin-top: -58px" class="_titleBarExtension">
+        <div class="_titleBarElements">
+          <div
+            style="
+              background-image: url('assets/cart/images/buttons-background.png');
+              width: 70px;
+              height: 29px;
+              display: flex;
+              box-sizing: border-box;
+              padding: 1px;
+            "
+          >
+            <div class="_titleBarNavigationButton"></div>
+            <div class="_titleBarNavigationButton"></div>
           </div>
+          <div class="_searchContainer">
+            <img [src]="titleBarIcon" alt="Recycle Bin" />
+            <span style="transform: rotate(-90deg); font-size: 15px">▾</span>
+            <span style="padding-left: 5px">Recycle Bin</span>
+          </div>
+          <input placeholder="Search Recycle Bin" class="_search" type="text" />
         </div>
-        <div class="_toolbarLarge">
-          <ul role="menubar">
-            <li role="menuitem" tabindex="0" title="Organize this folder's contents.">Organize ⯆</li>
-            @if (products.length > 0) {
-              <li role="menuitem" tabindex="0" title="Purchase all items in the Recycle Bin to complete your order and free up space." (click)="checkout()">Purchase the Recycle Bin</li>
-              <li role="menuitem" tabindex="0" title="Move all items from the Recycle Bin to their original locations on your computer." (click)="emptyRecycleBin()">Restore all items</li>
-            }
-          </ul>
-        </div>
-        <div style="display: flex; width: 100%; height: calc(100% - 32px); flex-direction: row; position: relative;">
-          <ul class="_sidebar">
-            <li>
-              <div class="_sidebarUlItem">
-                <img src="/assets/cart/icons/favorites.ico" alt="Favorites">
-                <span>Favorites</span>
-              </div>
-              <ul class="sub-list">
-                <li>
-                  <img src="/assets/cart/icons/desktop.ico" alt="Desktop">
-                  <span>Desktop</span>
-                </li>
-                <li>
-                  <img src="/assets/cart/icons/recent_places.ico" alt="Recent Places">
-                  <span>Recent Places</span>
-                </li>
-                <li>
-                  <img src="/assets/cart/icons/downloads.ico" alt="Downloads">
-                  <span>Downloads</span>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <div class="_sidebarUlItem">
-                <img src="/assets/cart/icons/libraries.ico" alt="Libraries">
-                <span>Libraries</span>
-              </div>
-              <ul class="sub-list">
-                <li>
-                  <img src="/assets/cart/icons/documents.ico" alt="Documents">
-                  <span>Documents</span>
-                </li>
-                <li>
-                  <img src="/assets/cart/icons/music.ico" alt="Music">
-                  <span>Music</span>
-                </li>
-                <li>
-                  <img src="/assets/cart/icons/pictures.ico" alt="Pictures">
-                  <span>Pictures</span>
-                </li>
-                <li>
-                  <img src="/assets/cart/icons/videos.ico" alt="Videos">
-                  <span>Videos</span>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <div class="_sidebarUlItem">
-                <img src="/assets/cart/icons/homegroup.ico" alt="Homegroup">
-                <span>Homegroup</span>
-              </div>
-            </li>
-            <li>
-              <div class="_sidebarUlItem">
-                <img src="/assets/cart/icons/computer.ico" alt="Computer">
-                <span>Computer</span>
-              </div>
-            </li>
-            <li>
-              <div class="_sidebarUlItem">
-                <img src="/assets/cart/icons/network.ico" alt="Network">
-                <span>Network</span>
-              </div>
-            </li>
-          </ul>
-          <div style="display: block;overflow-y: auto;max-height: 100%;">
+      </div>
+      <div class="_toolbarLarge">
+        <ul role="menubar">
+          <li
+            role="menuitem"
+            tabindex="0"
+            title="Organize this folder's contents."
+          >
+            Organize ⯆
+          </li>
+          @if (products.length > 0) {
+          <li
+            role="menuitem"
+            tabindex="0"
+            title="Purchase all items in the Recycle Bin to complete your order and free up space."
+            (click)="checkout()"
+          >
+            Purchase the Recycle Bin
+          </li>
+          <li
+            role="menuitem"
+            tabindex="0"
+            title="Move all items from the Recycle Bin to their original locations on your computer."
+            (click)="emptyRecycleBin()"
+          >
+            Restore all items
+          </li>
+          }
+        </ul>
+      </div>
+      <div
+        style="
+          display: flex;
+          width: 100%;
+          height: calc(100% - 32px);
+          flex-direction: row;
+          position: relative;
+        "
+      >
+        <ul class="_sidebar">
+          <li>
+            <div class="_sidebarUlItem">
+              <img src="/assets/cart/icons/favorites.ico" alt="Favorites" />
+              <span>Favorites</span>
+            </div>
+            <ul class="sub-list">
+              <li>
+                <img src="/assets/cart/icons/desktop.ico" alt="Desktop" />
+                <span>Desktop</span>
+              </li>
+              <li>
+                <img
+                  src="/assets/cart/icons/recent_places.ico"
+                  alt="Recent Places"
+                />
+                <span>Recent Places</span>
+              </li>
+              <li>
+                <img src="/assets/cart/icons/downloads.ico" alt="Downloads" />
+                <span>Downloads</span>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <div class="_sidebarUlItem">
+              <img src="/assets/cart/icons/libraries.ico" alt="Libraries" />
+              <span>Libraries</span>
+            </div>
+            <ul class="sub-list">
+              <li>
+                <img src="/assets/cart/icons/documents.ico" alt="Documents" />
+                <span>Documents</span>
+              </li>
+              <li>
+                <img src="/assets/cart/icons/music.ico" alt="Music" />
+                <span>Music</span>
+              </li>
+              <li>
+                <img src="/assets/cart/icons/pictures.ico" alt="Pictures" />
+                <span>Pictures</span>
+              </li>
+              <li>
+                <img src="/assets/cart/icons/videos.ico" alt="Videos" />
+                <span>Videos</span>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <div class="_sidebarUlItem">
+              <img src="/assets/cart/icons/homegroup.ico" alt="Homegroup" />
+              <span>Homegroup</span>
+            </div>
+          </li>
+          <li>
+            <div class="_sidebarUlItem">
+              <img src="/assets/cart/icons/computer.ico" alt="Computer" />
+              <span>Computer</span>
+            </div>
+          </li>
+          <li>
+            <div class="_sidebarUlItem">
+              <img src="/assets/cart/icons/network.ico" alt="Network" />
+              <span>Network</span>
+            </div>
+          </li>
+        </ul>
+        <div style="display: block; overflow-y: auto; max-height: 100%">
           <div class="_programs">
-            <div style="grid-column: 1; color: #4c6091;">Name</div>
-            <div style="grid-column: 2; color: #4c6091;">Price</div>
-            <div style="grid-column: 3; color: #4c6091;">Quantity</div>
+            <div style="grid-column: 1; color: #4c6091">Name</div>
+            <div style="grid-column: 2; color: #4c6091">Price</div>
+            <div style="grid-column: 3; color: #4c6091">Quantity</div>
           </div>
           <div class="_programs">
             @for (product of products; track product.product.id) {
-              <div style="grid-column: 1;" class="_rowItem">
-                <img [src]="'assets/product-images/' + product.product.slug" [alt]="product.product.productName">
-                <div class="text">{{ product.product.productName }}</div>
-              </div>
-              <div style="grid-column: 2" class="price">{{ product.product.salePrice }}€</div>
-              <input style="grid-column: 3;" type="number" role="combobox" aria-owns="company" min="0" [max]="product.product.quantity" [value]="product.quantity" (change)="onQuantityChange($event, product.product.id)" style="height: 20px;">
+            <div style="grid-column: 1" class="_rowItem">
+              <img
+                [src]="'assets/product-images/' + product.product.slug"
+                [alt]="product.product.productName"
+              />
+              <div class="text">{{ product.product.productName }}</div>
+            </div>
+            <div style="grid-column: 2" class="price">
+              {{ product.product.salePrice }}€
+            </div>
+            <input
+              style="grid-column: 3"
+              type="number"
+              role="combobox"
+              aria-owns="company"
+              min="0"
+              [max]="product.product.quantity"
+              [value]="product.quantity"
+              (change)="onQuantityChange($event, product.product.id)"
+              style="height: 20px"
+            />
             }
           </div>
         </div>
-        </div>
       </div>
     </div>
+  </div>
 </div>
-  

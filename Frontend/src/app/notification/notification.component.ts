@@ -6,9 +6,9 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-notification',
   standalone: true,
-  imports: [NgClass],  
+  imports: [NgClass],
   templateUrl: './notification.component.html',
-  styleUrl: './notification.component.scss'
+  styleUrl: './notification.component.scss',
 })
 export class NotificationComponent implements OnInit, OnDestroy {
   header: string = '';
@@ -21,11 +21,16 @@ export class NotificationComponent implements OnInit, OnDestroy {
   constructor(private notificationService: NotificationService) {}
 
   ngOnInit() {
-    this.notificationSubscription = this.notificationService.notification$.subscribe(notification => {
-      if (notification) {
-        this.showNotification(notification.header, notification.message, notification.position);
-      }
-    });
+    this.notificationSubscription =
+      this.notificationService.notification$.subscribe((notification) => {
+        if (notification) {
+          this.showNotification(
+            notification.header,
+            notification.message,
+            notification.position
+          );
+        }
+      });
   }
 
   showNotification(header: string, message: string, position: number) {

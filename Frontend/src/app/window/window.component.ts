@@ -8,19 +8,14 @@ import { ProductDisplay } from '../services/models/product-display';
   standalone: true,
   imports: [CardComponent],
   templateUrl: './window.component.html',
-  styleUrl: './window.component.scss'
+  styleUrl: './window.component.scss',
 })
 export class WindowComponent {
-  
-  constructor(
-    private productDisplay: ProductDisplay
-  ) {}
+  constructor(private productDisplay: ProductDisplay) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   getProducts() {
     return this.productDisplay.products();
   }
-
 }

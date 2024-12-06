@@ -1,179 +1,236 @@
-<div class="window active" style="max-width: 400px;z-index: 100000000000; margin-top: calc(12% - 50px); margin-left: calc(50% - 12%);">
-    <div class="title-bar">
-      <div class="title-bar-text">Purchase Multiple Items</div>
-      <div class="title-bar-controls">
-        <button aria-label="Close"></button>
-      </div>
+<div
+  class="window active"
+  style="
+    max-width: 400px;
+    z-index: 100000000000;
+    margin-top: calc(12% - 50px);
+    margin-left: calc(50% - 12%);
+  "
+>
+  <div class="title-bar">
+    <div class="title-bar-text">Purchase Multiple Items</div>
+    <div class="title-bar-controls">
+      <button aria-label="Close"></button>
     </div>
-    <div class="window-body has-space">
-      <menu role="tablist" aria-label="Window with Tabs">
-        <button role="tab" aria-controls="address" [attr.aria-selected]="activeTab === 'address'" (click)="switchTab('address')">Address</button>
-        <button role="tab" aria-controls="payment" [attr.aria-selected]="activeTab === 'payment'" (click)="switchTab('payment')">Payment</button>
-        <button role="tab" aria-controls="summary" [attr.aria-selected]="activeTab === 'summary'" (click)="switchTab('summary')" [disabled]="!isSummaryEnabled">Summary</button>
-      </menu>
-  
-      @if (activeTab === 'address') {
-        <article role="tabpanel" id="address">
-          <fieldset>
-            <legend>Your Addresses</legend>
-            @if (customerAddresses.length == 0){
-                <p>No saved addresses</p>
-            }
-            @for (address of customerAddresses; track address.id; let idx = $index) {
-              <div class="field-row">
-                <input type="radio" id="radio{{idx}}" name="address-field" (change)="onAddressSelect(address)">
-                <label for="radio{{idx}}">{{address.city}}, {{address.postalCode}}, {{address.addressLine1}}</label>
-              </div>
-            }
-          </fieldset>
-          <form #addressForm="ngForm" (ngSubmit)="setAddress()">
-            <section class="field-row">
-                <label for="address1">Address</label>
-                <label for="address2" style="margin-left: auto;">Address, line 2</label>
-            </section>
-            <section class="field-row">
-                <input type="text" id="address1" required>
-                <input type="text" id="address2" style="margin-left: auto;">
-            </section>
-            <section class="field-row">
-                <label for="city">City</label>
-                <label for="zip" style="margin-left: auto;">Zip or postal code</label>
-            </section>
-            <section class="field-row">
-                <input type="text" id="city" required>
-                <input type="text" id="zip" style="margin-left: auto;" pattern="^\d{5}$" required>
-            </section>
-            <section class="field-row" style="justify-content: flex-end;">
-                <select id="country" required>
-                    <option disabled selected>Country</option>
-                    <option>Italy</option>
-                </select>
-            </section>
-            <section class="field-row" style="justify-content: start;">
-                <button>Add Address</button>
-            </section>
-        </form>
-        </article>
-      }
-  
-      @if (activeTab === 'payment') {
-        <article role="tabpanel" id="payment">
-            <form #cardForm="ngForm" (ngSubmit)="setPayment()">
-                <fieldset>
-                <legend>Payment Method</legend>
-                <section class="field-row">
-                  <label for="card-brand">Card brand</label>  
-                </section>
-                <section class="field-row" style="justify-content: flex-start;">
-                    <select id="card-brand" required [(ngModel)]="payment.cardBrand" [ngModelOptions]="{standalone: true}">
-                        <option>American Express</option>
-                        <option>JCB</option>
-                        <option>Mastercard</option>
-                        <option>Visa</option>
-                    </select>
-                </section>
-                <section class="field-row">
-                    <label for="card-number">Card number</label>  
-                </section>
-                <section class="field-row">
-                    <input type="text" id="card-number" required pattern="^\d{16}$" [(ngModel)]="payment.cardNumber" [ngModelOptions]="{standalone: true}">
-                </section>
-                <section class="field-row">
-                    <label>Expiration date</label>
-                    <label for="security-code" style="margin-left: auto;">Security code</label>
-                </section>
-                <section class="field-row">
-                    <select required>
-                        <option value="" disabled selected>Month</option>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                        <option value="08">08</option>
-                        <option value="09">09</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                    </select>
-                    <select required>
-                        <option value="" disabled selected>Year</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                        <option value="2026">2026</option>
-                        <option value="2027">2027</option>
-                        <option value="2028">2028</option>
-                        <option value="2029">2029</option>
-                        <option value="2030">2030</option>
-                        <option value="2031">2031</option>
-                        <option value="2032">2032</option>
-                        <option value="2033">2033</option>
-                        <option value="2034">2034</option>
-                        <option value="2035">2035</option>
-                        <option value="2036">2036</option>
-                        <option value="2037">2037</option>
-                        <option value="2038">2038</option>
-                        <option value="2039">2039</option>
-                        <option value="2040">2040</option>
-                        <option value="2041">2041</option>
-                        <option value="2042">2042</option>
-                        <option value="2043">2043</option>
-                        <option value="2044">2044</option>
-                        <option value="2045">2045</option>
-                        <option value="2046">2046</option>
-                        <option value="2047">2047</option>
-                        <option value="2048">2048</option>
-                        <option value="2049">2049</option>
-                        <option value="2050">2050</option>
-                    </select>
-                    <input type="text" id="security-code" style="margin-left: auto;" required pattern="^\d{3}$">
-                </section>  
-                <section class="field-row" style="margin-top: 10px;"></section>
-                </fieldset>
-                <button>Add Payment Method</button>
-            </form> 
-        </article>
-      }
-  
-      @if (activeTab === 'summary' && isSummaryEnabled) {
-        <article role="tabpanel" id="summary">
-          <p>Your shipping address:</p>
-          <ul>
-            @if (selectedAddress){
-              <li>{{selectedAddress.city}}, {{selectedAddress.postalCode}}, {{selectedAddress.addressLine1}}</li>
-            }
-            @else{
-              <p>No address selected</p>
-            }
-            
-          </ul>
-          <p>Your payment info:</p>
-          <ul>
-            <li>
-                <p>
-                  @if (payment.cardNumber) {
-                    <b>{{ '✱✱✱✱-✱✱✱✱-✱✱✱✱-' + (payment.cardNumber.slice(-4)) }}</b>, {{ payment.cardBrand }}
-                  }
-                  @else {
-                    No card selected
-                  }
-                </p>
-            </li>
-          </ul>
-          
-        </article>
-        <section class="field-row" style="justify-content: flex-end">
-          <button class="default">OK</button>
-          <button>Cancel</button>
+  </div>
+  <div class="window-body has-space">
+    <menu role="tablist" aria-label="Window with Tabs">
+      <button
+        role="tab"
+        aria-controls="address"
+        [attr.aria-selected]="activeTab === 'address'"
+        (click)="switchTab('address')"
+      >
+        Address
+      </button>
+      <button
+        role="tab"
+        aria-controls="payment"
+        [attr.aria-selected]="activeTab === 'payment'"
+        (click)="switchTab('payment')"
+      >
+        Payment
+      </button>
+      <button
+        role="tab"
+        aria-controls="summary"
+        [attr.aria-selected]="activeTab === 'summary'"
+        (click)="switchTab('summary')"
+        [disabled]="!isSummaryEnabled"
+      >
+        Summary
+      </button>
+    </menu>
+
+    @if (activeTab === 'address') {
+    <article role="tabpanel" id="address">
+      <fieldset>
+        <legend>Your Addresses</legend>
+        @if (customerAddresses.length == 0){
+        <p>No saved addresses</p>
+        } @for (address of customerAddresses; track address.id; let idx =
+        $index) {
+        <input
+          type="radio"
+          id="radio{{ idx }}"
+          name="address-field"
+          (change)="onAddressSelect(address)"
+        />
+        <label for="radio{{ idx }}"
+          >{{ address.city }}, {{ address.postalCode }},
+          {{ address.addressLine1 }}</label
+        >
+        }
+      </fieldset>
+      <form #addressForm="ngForm" (ngSubmit)="setAddress()">
+        <section class="field-row">
+          <label for="address1">Address</label>
+          <label for="address2" style="margin-left: auto"
+            >Address, line 2</label
+          >
         </section>
-      }
-    </div>
-    @if (activeTab === 'summary' && isSummaryEnabled) {
-      <div class="status-bar">
-        <p class="status-bar-field">Total Price: {{totalPrice}}€</p>
-      </div>
+        <section class="field-row">
+          <input type="text" id="address1" required />
+          <input type="text" id="address2" style="margin-left: auto" />
+        </section>
+        <section class="field-row">
+          <label for="city">City</label>
+          <label for="zip" style="margin-left: auto">Zip or postal code</label>
+        </section>
+        <section class="field-row">
+          <input type="text" id="city" required />
+          <input
+            type="text"
+            id="zip"
+            style="margin-left: auto"
+            pattern="^\d{5}$"
+            required
+          />
+        </section>
+        <section class="field-row" style="justify-content: flex-end">
+          <select id="country" required>
+            <option disabled selected>Country</option>
+            <option>Italy</option>
+          </select>
+        </section>
+        <section class="field-row" style="justify-content: start">
+          <button>Add Address</button>
+        </section>
+      </form>
+    </article>
+    } @if (activeTab === 'payment') {
+    <article role="tabpanel" id="payment">
+      <form #cardForm="ngForm" (ngSubmit)="setPayment()">
+        <fieldset>
+          <legend>Payment Method</legend>
+          <section class="field-row">
+            <label for="card-brand">Card brand</label>
+          </section>
+          <section class="field-row" style="justify-content: flex-start">
+            <select
+              id="card-brand"
+              required
+              [(ngModel)]="payment.cardBrand"
+              [ngModelOptions]="{ standalone: true }"
+            >
+              <option>American Express</option>
+              <option>JCB</option>
+              <option>Mastercard</option>
+              <option>Visa</option>
+            </select>
+          </section>
+          <section class="field-row">
+            <label for="card-number">Card number</label>
+          </section>
+          <section class="field-row">
+            <input
+              type="text"
+              id="card-number"
+              required
+              pattern="^\d{16}$"
+              [(ngModel)]="payment.cardNumber"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </section>
+          <section class="field-row">
+            <label>Expiration date</label>
+            <label for="security-code" style="margin-left: auto"
+              >Security code</label
+            >
+          </section>
+          <section class="field-row">
+            <select required>
+              <option value="" disabled selected>Month</option>
+              <option value="01">01</option>
+              <option value="02">02</option>
+              <option value="03">03</option>
+              <option value="04">04</option>
+              <option value="05">05</option>
+              <option value="06">06</option>
+              <option value="07">07</option>
+              <option value="08">08</option>
+              <option value="09">09</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+            </select>
+            <select required>
+              <option value="" disabled selected>Year</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+              <option value="2028">2028</option>
+              <option value="2029">2029</option>
+              <option value="2030">2030</option>
+              <option value="2031">2031</option>
+              <option value="2032">2032</option>
+              <option value="2033">2033</option>
+              <option value="2034">2034</option>
+              <option value="2035">2035</option>
+              <option value="2036">2036</option>
+              <option value="2037">2037</option>
+              <option value="2038">2038</option>
+              <option value="2039">2039</option>
+              <option value="2040">2040</option>
+              <option value="2041">2041</option>
+              <option value="2042">2042</option>
+              <option value="2043">2043</option>
+              <option value="2044">2044</option>
+              <option value="2045">2045</option>
+              <option value="2046">2046</option>
+              <option value="2047">2047</option>
+              <option value="2048">2048</option>
+              <option value="2049">2049</option>
+              <option value="2050">2050</option>
+            </select>
+            <input
+              type="text"
+              id="security-code"
+              style="margin-left: auto"
+              required
+              pattern="^\d{3}$"
+            />
+          </section>
+          <section class="field-row" style="margin-top: 10px"></section>
+        </fieldset>
+        <button>Add Payment Method</button>
+      </form>
+    </article>
+    } @if (activeTab === 'summary' && isSummaryEnabled) {
+    <article role="tabpanel" id="summary">
+      <p>Your shipping address:</p>
+      <ul>
+        @if (selectedAddress){
+        <li>
+          {{ selectedAddress.city }}, {{ selectedAddress.postalCode }},
+          {{ selectedAddress.addressLine1 }}
+        </li>
+        } @else{
+        <p>No address selected</p>
+        }
+      </ul>
+      <p>Your payment info:</p>
+      <ul>
+        <li>
+          <p>
+            @if (payment.cardNumber) {
+            <b>{{ "✱✱✱✱-✱✱✱✱-✱✱✱✱-" + payment.cardNumber.slice(-4) }}</b
+            >, {{ payment.cardBrand }}
+            } @else { No card selected }
+          </p>
+        </li>
+      </ul>
+    </article>
+    <section class="field-row" style="justify-content: flex-end">
+      <button class="default">OK</button>
+      <button>Cancel</button>
+    </section>
     }
   </div>
-  
+  @if (activeTab === 'summary' && isSummaryEnabled) {
+  <div class="status-bar">
+    <p class="status-bar-field">Total Price: {{ totalPrice }}€</p>
+  </div>
+  }
+</div>

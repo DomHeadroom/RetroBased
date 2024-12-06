@@ -1,14 +1,18 @@
 @if(visible){
-  <div [ngClass]="{'notification-fade': fadeClass}" [style.right.px]="position" class="notificationPosition">
-    <div class="notificationContainer">
-      <img class="triangle" src="/assets/notification/images/triangle.png">
-      <div class="notificationContent">
-        <img class="notificationIcon" src="/assets/notification/icons/info.ico">
-        <div class="notificationText">
-          <h2 class="notificationHeader">{{header}}</h2>
-          <div>{{notificationText}}</div>
-        </div>
+<div
+  [ngClass]="{ 'notification-fade': fadeClass }"
+  [style.right.px]="position"
+  class="notificationPosition"
+>
+  <div class="notificationContainer">
+    <img class="triangle" src="/assets/notification/images/triangle.png" />
+    <div class="notificationContent">
+      <img class="notificationIcon" src="/assets/notification/icons/info.ico" />
+      <div class="notificationText">
+        <h2 class="notificationHeader">{{ header }}</h2>
+        <div>{{ notificationText }}</div>
       </div>
     </div>
   </div>
+</div>
 }

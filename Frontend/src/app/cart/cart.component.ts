@@ -9,7 +9,7 @@ import { BuyFormComponent } from '../buy-form/buy-form.component';
   standalone: true,
   imports: [TaskbarComponent, BuyFormComponent],
   templateUrl: './cart.component.html',
-  styleUrl: './cart.component.scss'
+  styleUrl: './cart.component.scss',
 })
 export class CartComponent {
   products: ProductDtoQuantity[] = [];
@@ -49,7 +49,11 @@ export class CartComponent {
 
     const newQuantity = parseInt(inputValue, 10);
 
-    if (isNaN(newQuantity) || newQuantity < 0 || inputValue !== newQuantity.toString()) {
+    if (
+      isNaN(newQuantity) ||
+      newQuantity < 0 ||
+      inputValue !== newQuantity.toString()
+    ) {
       console.error('Invalid quantity entered. Please enter a valid number.');
       return;
     }
@@ -74,14 +78,14 @@ export class CartComponent {
   }
 
   get taskbarIcon(): string {
-    return this.products.length > 0 
-      ? 'assets/taskbar/icons/recycle_bin_full.ico' 
+    return this.products.length > 0
+      ? 'assets/taskbar/icons/recycle_bin_full.ico'
       : 'assets/taskbar/icons/recycle_bin_empty.ico';
   }
 
   get titleBarIcon(): string {
-    return this.products.length > 0 
-      ? '/assets/cart/icons/recycle_bin_full.ico' 
+    return this.products.length > 0
+      ? '/assets/cart/icons/recycle_bin_full.ico'
       : '/assets/cart/icons/recycle_bin_empty.ico';
   }
 }

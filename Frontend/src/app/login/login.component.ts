@@ -9,7 +9,7 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent implements OnInit, OnDestroy{
+export class LoginComponent implements OnInit, OnDestroy {
   email: string = '';
   password: string = '';
   loginError: string | null = null;

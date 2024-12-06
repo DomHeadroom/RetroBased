@@ -10,14 +10,15 @@ import { ProductDisplay } from '../services/models/product-display';
   standalone: true,
   imports: [RouterModule],
   templateUrl: './taskbar.component.html',
-  styleUrl: './taskbar.component.scss'
+  styleUrl: './taskbar.component.scss',
 })
 export class TaskbarComponent {
   currentTime: string = '';
   currentDate: string = '';
   @Input() taskbarIconSrc: string = 'assets/taskbar/icons/buy.ico';
 
-  constructor(private router: Router, 
+  constructor(
+    private router: Router,
     private productService: ProductControllerService,
     private productDisplay: ProductDisplay
   ) {}
@@ -33,26 +34,32 @@ export class TaskbarComponent {
 
   updateTime() {
     const now = new Date();
-    this.currentTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    this.currentDate = now.toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' });
+    this.currentTime = now.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    this.currentDate = now.toLocaleDateString([], {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
   }
 
   onSearchClick(searchValue: string) {
-    this.productService.searchProducts({
-      k:searchValue,
-      page: 0
-    }).subscribe(
-      (response: any) => {
+    this.productService
+      .searchProducts({
+        k: searchValue,
+        page: 0,
+      })
+      .subscribe((response: any) => {
         const products = response as ProductDto[];
         this.productDisplay.setProducts(products);
-      }
-    );
+      });
   }
 
-  switchToLogin(){
+  switchToLogin() {
     document.documentElement.classList.add('login');
     document.body.classList.add('login-background');
     this.navigateTo('login');
   }
-
 }

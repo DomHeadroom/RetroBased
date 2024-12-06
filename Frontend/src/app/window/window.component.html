@@ -1,25 +1,46 @@
-<div class="_window-frame" style="width: 100vw; height: calc(100vh - 40px); z-index: 1013;">
-    <div class="_title-bar">
-        <img src="/assets/window/images/icon.png" class="window-icon">
-        <div class="_windowTitle" data-text="Window Text">RetroBased</div>
-        <div class="_buttonContainer">
-            <div class="_window-buttons">
-                <div class="_window-button minimize"></div>
-                <div class="_window-button close"></div>
-            </div>
-        </div>
+<div
+  class="_window-frame"
+  style="width: 100vw; height: calc(100vh - 40px); z-index: 1013"
+>
+  <div class="_title-bar">
+    <img src="/assets/window/images/icon.png" class="window-icon" />
+    <div class="_windowTitle" data-text="Window Text">RetroBased</div>
+    <div class="_buttonContainer">
+      <div class="_window-buttons">
+        <div class="_window-button minimize"></div>
+        <div class="_window-button close"></div>
+      </div>
     </div>
-    <div class="_windowFrameGradientLeft"></div>
-    <div class="_windowFrameGradientRight"></div>
-    <div class="_contentsContainer">
-        <div class="_windowContents">
-            <div class="_window">
-                <div style="display: grid; grid-template-columns: repeat(auto-fill,205px); grid-auto-rows: 274.8px; box-sizing: border-box; justify-content: center; align-items: center;gap: 16px;">
-                    @for (product of getProducts(); track getProducts) {
-                        <app-card [product]="product" style="display: flex;align-items: center; box-sizing: border-box;overflow: hidden;"></app-card>
-                    }   
-                </div>
-            </div>
+  </div>
+  <div class="_windowFrameGradientLeft"></div>
+  <div class="_windowFrameGradientRight"></div>
+  <div class="_contentsContainer">
+    <div class="_windowContents">
+      <div class="_window">
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 205px);
+            grid-auto-rows: 274.8px;
+            box-sizing: border-box;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+          "
+        >
+          @for (product of getProducts(); track getProducts) {
+          <app-card
+            [product]="product"
+            style="
+              display: flex;
+              align-items: center;
+              box-sizing: border-box;
+              overflow: hidden;
+            "
+          ></app-card>
+          }
         </div>
+      </div>
     </div>
+  </div>
 </div>

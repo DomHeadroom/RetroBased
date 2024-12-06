@@ -1,10 +1,8 @@
-
 $color_1: #fff;
 $font-family_1: Segoe UI, sans-serif;
 $background-color: var(--aero-accent);
 $search-button: var(--search-icon) no-repeat center;
 $font: 9pt "Segoe UI", "SegoeUI", "Noto Sans", sans-serif;
-
 
 @keyframes taskbar-icon-appear {
   0% {
@@ -178,11 +176,13 @@ body {
   border: solid thin var(--aero-black) !important;
   outline: solid thin var(--aero-white) !important;
 
-  &::placeholder, &::-moz-placeholder {
+  &::placeholder,
+  &::-moz-placeholder {
     font-style: italic;
   }
 
-  &:focus, &:not(:placeholder-shown) {
+  &:focus,
+  &:not(:placeholder-shown) {
     background-color: #ffffff !important;
     border: solid thin var(--aero-black) !important;
     outline: solid thin var(--aero-white) !important;
@@ -212,5 +212,3 @@ body {
     padding-right: 26px;
   }
 }
-
-

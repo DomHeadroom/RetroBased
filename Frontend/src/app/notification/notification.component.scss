@@ -1,73 +1,73 @@
 @keyframes notification-fade-out {
-    0% {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
+  0% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 @keyframes notification-fade-in {
-    0% {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+  0% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 .notificationHeader {
-    margin: 0;
+  margin: 0;
 }
 .notificationContainer {
-    position: relative;
-    animation: notification-fade-in 2s linear;
-    width: fit-content;
-    height: 56px;
-    box-sizing: border-box;
-    padding: 8px;
-    background-color: #e9e9f2;
-    border-radius: 6px;
-    outline: solid 1px black;
-    box-shadow: 4px 4px 4px #0000007d;
+  position: relative;
+  animation: notification-fade-in 2s linear;
+  width: fit-content;
+  height: 56px;
+  box-sizing: border-box;
+  padding: 8px;
+  background-color: #e9e9f2;
+  border-radius: 6px;
+  outline: solid 1px black;
+  box-shadow: 4px 4px 4px #0000007d;
 }
 .notificationContent {
-    display: flex;
-    align-items: center;
-    height: 100%;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 .notificationIcon {
-    align-self: center;
-    width: 32px;
-    height: 32px;
-    margin-right: 8px;
+  align-self: center;
+  width: 32px;
+  height: 32px;
+  margin-right: 8px;
 }
 .notificationText {
-    margin-top: 0;
+  margin-top: 0;
 }
 .notification-fade {
-    animation: notification-fade-out 2s linear forwards !important;
+  animation: notification-fade-out 2s linear forwards !important;
 }
 .notificationPosition {
-    position: absolute;
-    top: 48px;
-    z-index: 9999999999999999999;
+  position: absolute;
+  top: 48px;
+  z-index: 9999999999999999999;
 }
 .triangle {
-    position: absolute;
-    top: -18px;
-    right: 12px;
+  position: absolute;
+  top: -18px;
+  right: 12px;
 }
 
 h2 {
-	font-size: 12pt;
-	color: #039;
-	letter-spacing: -0.2px;
-	font-family: Segoe UI;
-	font-weight: 400;
+  font-size: 12pt;
+  color: #039;
+  letter-spacing: -0.2px;
+  font-family: Segoe UI;
+  font-weight: 400;
 }
 
 * {
-    -webkit-user-select: none;
-    user-select: none;
-    -webkit-user-drag: none;
-    font-size: 9pt;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  font-size: 9pt;
 }

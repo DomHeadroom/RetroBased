@@ -1,10 +1,14 @@
-<div class="card" style="z-index: 2000;" (click)="handleClick()">
-    <img [src]="'assets/product-images/' + product?.slug" alt="Product Image" class="card-image">
-    <div class="card-content">
-        <h2 class="card-title">{{ product?.productName }}</h2>
-        <div class="card-details">
-            <p class="product-price">€{{ product?.salePrice| number: '1.2-2' }}</p>
-            <p class="product-seller">Quantity: {{ product?.quantity }}</p>
-        </div>
+<div class="card" style="z-index: 2000" (click)="handleClick()">
+  <img
+    [src]="'assets/product-images/' + product?.slug"
+    alt="Product Image"
+    class="card-image"
+  />
+  <div class="card-content">
+    <h2 class="card-title">{{ product?.productName }}</h2>
+    <div class="card-details">
+      <p class="product-price">€{{ product?.salePrice | number : "1.2-2" }}</p>
+      <p class="product-seller">Quantity: {{ product?.quantity }}</p>
     </div>
+  </div>
 </div>

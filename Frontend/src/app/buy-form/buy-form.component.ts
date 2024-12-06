@@ -9,7 +9,7 @@ import { CustomerAddressDto } from '../services/models/customer-address-dto';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './buy-form.component.html',
-  styleUrl: './buy-form.component.scss'
+  styleUrl: './buy-form.component.scss',
 })
 export class BuyFormComponent implements OnInit {
   activeTab: string = 'address';
@@ -25,53 +25,55 @@ export class BuyFormComponent implements OnInit {
     address2: '',
     city: '',
     zip: '',
-    country: ''
+    country: '',
   };
 
   payment = {
     cardBrand: '',
-    cardNumber: ''
+    cardNumber: '',
   };
 
-  constructor(private customerAddressController: CustomerAddressControllerService,
+  constructor(
+    private customerAddressController: CustomerAddressControllerService,
     private cartService: ProductCartService
-  ){}
+  ) {}
 
-  ngOnInit(){
+  ngOnInit() {
     this.customerAddressController.getCustomerAddresses().subscribe({
       next: (response: any) => {
-        if(response != null){
+        if (response != null) {
           this.customerAddresses = response as CustomerAddressDto[];
         }
       },
       error: (err) => {
         console.error('Error fetching customer addresses', err);
-      }
+      },
     });
     this.totalPrice = this.cartService.getTotalPrice();
   }
 
-  setPayment(){
-    if(this.payment.cardBrand && this.payment.cardNumber){
+  setPayment() {
+    if (this.payment.cardBrand && this.payment.cardNumber) {
       this.isPaymentSet = true;
       this.checkSummaryAvailability();
-    }
-    else{
+    } else {
       this.isPaymentSet = false;
     }
   }
 
   setAddress() {
-    if(this.inputAddress.address1 && this.inputAddress.city &&
-      this.inputAddress.country && this.inputAddress.zip
-    ){
+    if (
+      this.inputAddress.address1 &&
+      this.inputAddress.city &&
+      this.inputAddress.country &&
+      this.inputAddress.zip
+    ) {
       this.isAddressSet = true;
-    }
-    else{
+    } else {
       this.isAddressSet = false;
     }
   }
-  
+
   switchTab(tab: string): void {
     this.activeTab = tab;
   }
