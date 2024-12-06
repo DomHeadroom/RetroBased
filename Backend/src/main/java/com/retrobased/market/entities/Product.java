@@ -33,7 +33,7 @@ public class Product {
     @Column(name = "sku")
     private String sku;
 
-    @Column(name = "sale_price", nullable = false)
+    @Column(name = "sale_price", nullable = false, updatable = false)
     private BigDecimal salePrice = BigDecimal.ZERO;
 
     @Column(name = "quantity", nullable = false)

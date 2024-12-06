@@ -13,6 +13,7 @@ import { BuyFormComponent } from '../buy-form/buy-form.component';
 })
 export class CartComponent {
   products: ProductDtoQuantity[] = [];
+  isFormEnabled: boolean = false;
 
   constructor(private productCartService: ProductCartService) {}
 
@@ -68,7 +69,7 @@ export class CartComponent {
   }
 
   checkout(): void {
-
+    this.isFormEnabled = true;
   }
 
   get taskbarIcon(): string {

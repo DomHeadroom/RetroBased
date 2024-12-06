@@ -62,8 +62,7 @@
                 <fieldset>
                 <legend>Payment Method</legend>
                 <section class="field-row" style="justify-content: flex-start;">
-                    <select required [(ngModel)]="payment.cardBrand">
-                        <option disabled selected>Card brand</option>
+                    <select required [(ngModel)]="payment.cardBrand" [ngModelOptions]="{standalone: true}">
                         <option>American Express</option>
                         <option>JCB</option>
                         <option>Mastercard</option>
@@ -74,7 +73,7 @@
                     <label for="card-number">Card number</label>  
                 </section>
                 <section class="field-row">
-                    <input type="text" id="card-number" required pattern="^\d{16}$" [(ngModel)]="payment.cardNumber">
+                    <input type="text" id="card-number" required pattern="^\d{16}$" [(ngModel)]="payment.cardNumber" [ngModelOptions]="{standalone: true}">
                 </section>
                 <section class="field-row">
                     <label>Expiration date</label>
