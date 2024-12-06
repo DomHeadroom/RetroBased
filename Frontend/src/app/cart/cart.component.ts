@@ -65,6 +65,7 @@ export class CartComponent {
 
   emptyRecycleBin(): void {
     this.productCartService.clearCart();
+    this.isFormEnabled = false;
     this.loadProducts();
   }
 

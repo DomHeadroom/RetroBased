@@ -40,7 +40,9 @@ export class BuyFormComponent implements OnInit {
   ngOnInit(){
     this.customerAddressController.getCustomerAddresses().subscribe({
       next: (response: any) => {
-        this.customerAddresses = response as CustomerAddressDto[];
+        if(response != null){
+          this.customerAddresses = response as CustomerAddressDto[];
+        }
       },
       error: (err) => {
         console.error('Error fetching customer addresses', err);
