@@ -61,8 +61,11 @@
             <form #cardForm="ngForm" (ngSubmit)="setPayment()">
                 <fieldset>
                 <legend>Payment Method</legend>
+                <section class="field-row">
+                  <label for="card-brand">Card brand</label>  
+                </section>
                 <section class="field-row" style="justify-content: flex-start;">
-                    <select required [(ngModel)]="payment.cardBrand" [ngModelOptions]="{standalone: true}">
+                    <select id="card-brand" required [(ngModel)]="payment.cardBrand" [ngModelOptions]="{standalone: true}">
                         <option>American Express</option>
                         <option>JCB</option>
                         <option>Mastercard</option>
