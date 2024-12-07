@@ -43,7 +43,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.loginError = 'Invalid credentials. Please try again.';
       },
     });
+  }
 
-
+  logout(){
+    this.auth.logout();
   }
 }

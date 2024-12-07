@@ -1,5 +1,5 @@
 <app-taskbar [taskbarIconSrc]="taskbarIcon"></app-taskbar>
-@if (isFormEnabled) {
+@if (isFormEnabled && products.length > 0) {
 <app-buy-form></app-buy-form>
 }
 <div
@@ -163,18 +163,17 @@
           </div>
           <div class="_programs">
             @for (product of products; track product.product.id) {
-            <div style="grid-column: 1" class="_rowItem">
+            <div class="_rowItem">
               <img
                 [src]="'assets/product-images/' + product.product.slug"
                 [alt]="product.product.productName"
               />
               <div class="text">{{ product.product.productName }}</div>
             </div>
-            <div style="grid-column: 2" class="price">
+            <div class="price">
               {{ product.product.salePrice }}€
             </div>
             <input
-              style="grid-column: 3"
               type="number"
               role="combobox"
               aria-owns="company"
