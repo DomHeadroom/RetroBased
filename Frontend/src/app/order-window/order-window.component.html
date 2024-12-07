@@ -1,7 +1,4 @@
-<app-taskbar [taskbarIconSrc]="taskbarIcon"></app-taskbar>
-@if (isFormEnabled) {
-<app-buy-form></app-buy-form>
-}
+<app-taskbar [taskbarIconSrc]="'assets/order-window/icons/recent_places_big.ico'"></app-taskbar>
 <div
   class="_window-frame"
   style="
@@ -43,11 +40,11 @@
             <div class="_titleBarNavigationButton"></div>
           </div>
           <div class="_searchContainer">
-            <img [src]="titleBarIcon" alt="Recycle Bin" />
+            <img [src]="'assets/order-window/icons/recent_places_small.ico'" alt="Recent Places" />
             <span style="transform: rotate(-90deg); font-size: 15px">▾</span>
-            <span style="padding-left: 5px">Recycle Bin</span>
+            <span style="padding-left: 5px">Recent Places</span>
           </div>
-          <input placeholder="Search Recycle Bin" class="_search" type="text" />
+          <input placeholder="Search Recent Places" class="_search" type="text" />
         </div>
       </div>
       <div class="_toolbarLarge">
@@ -59,24 +56,6 @@
           >
             Organize ⯆
           </li>
-          @if (products.length > 0) {
-          <li
-            role="menuitem"
-            tabindex="0"
-            title="Purchase all items in the Recycle Bin to complete your order and free up space."
-            (click)="checkout()"
-          >
-            Purchase the Recycle Bin
-          </li>
-          <li
-            role="menuitem"
-            tabindex="0"
-            title="Move all items from the Recycle Bin to their original locations on your computer."
-            (click)="emptyRecycleBin()"
-          >
-            @if(products.length>1) { Restore all items } @else { Restore item }
-          </li>
-          }
         </ul>
       </div>
       <div
@@ -99,7 +78,7 @@
                 <img src="/assets/cart/icons/desktop.ico" alt="Desktop" />
                 <span>Desktop</span>
               </li>
-              <li (click)="navigateTo('recent-places')">
+              <li>
                 <img
                   src="/assets/cart/icons/recent_places.ico"
                   alt="Recent Places"
@@ -157,21 +136,18 @@
         </ul>
         <div style="display: block; overflow-y: auto; max-height: 100%">
           <div class="_programs">
-            <div style="grid-column: 1; color: #4c6091">Name</div>
-            <div style="grid-column: 2; color: #4c6091">Price</div>
-            <div style="grid-column: 3; color: #4c6091">Quantity</div>
+            <div style="grid-column: 1; color: #4c6091">Date</div>
+            <div style="grid-column: 2; color: #4c6091">Address</div>
+            <div style="grid-column: 3; color: #4c6091">Price</div>
           </div>
           <div class="_programs">
-            @for (product of products; track product.product.id) {
             <div style="grid-column: 1" class="_rowItem">
               <img
-                [src]="'assets/product-images/' + product.product.slug"
-                [alt]="product.product.productName"
+                [src]="'assets/product-images/amiga-500.png'"
               />
-              <div class="text">{{ product.product.productName }}</div>
+              <div class="text">Pippo</div>
             </div>
             <div style="grid-column: 2" class="price">
-              {{ product.product.salePrice }}€
             </div>
             <input
               style="grid-column: 3"
@@ -179,15 +155,13 @@
               role="combobox"
               aria-owns="company"
               min="0"
-              [max]="product.product.quantity"
-              [value]="product.quantity"
-              (change)="onQuantityChange($event, product.product.id)"
               style="height: 20px"
             />
-            }
+
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+

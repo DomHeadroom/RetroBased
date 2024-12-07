@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   password: string = '';
   loginError: string | null = null;
 
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     document.documentElement.classList.add('login');
@@ -31,11 +34,16 @@ export class LoginComponent implements OnInit, OnDestroy {
       next: () => {
         console.log('User logged in successfully.');
         this.loginError = null;
+        const redirectUrl = localStorage.getItem('redirectUrl') || '/home';
+        localStorage.removeItem('redirectUrl');
+        this.router.navigateByUrl(redirectUrl);
       },
       error: (error) => {
         console.error('Login failed:', error);
         this.loginError = 'Invalid credentials. Please try again.';
       },
     });
+
+
   }
 }

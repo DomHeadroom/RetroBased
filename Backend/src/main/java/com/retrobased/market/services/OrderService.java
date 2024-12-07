@@ -79,7 +79,7 @@ public class OrderService {
      */
     @Transactional(readOnly = true)
     public List<OrderItemDTO> getOrderedItems(UUID orderId, int pageNumber) {
-        Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.asc("id")));
+        Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(Sort.Order.desc("created_at")));
         Page<OrderItem> orders = orderItemService.getOrderItem(orderId, paging);
 
         if (orders.hasContent())

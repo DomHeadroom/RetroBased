@@ -100,7 +100,7 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<ProductDTO> searchProduct(String data, int pageNumber, String sortBy) {
-        Pageable paging = PageRequest.of(pageNumber, 20, Sort.by(sortBy));
+        Pageable paging = PageRequest.of(pageNumber, 12, Sort.by(sortBy));
         Page<Product> pagedResult = productRepository.findByProductNameContainingIgnoreCaseOrProductDescriptionContainingIgnoreCase(data, data, paging);
 
         if (pagedResult.hasContent())

@@ -60,6 +60,8 @@ export class TaskbarComponent {
   switchToLogin() {
     document.documentElement.classList.add('login');
     document.body.classList.add('login-background');
+    const attemptedUrl = this.router.url;
+    localStorage.setItem('redirectUrl', attemptedUrl);
     this.navigateTo('login');
   }
 }

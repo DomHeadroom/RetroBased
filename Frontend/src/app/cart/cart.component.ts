@@ -3,6 +3,7 @@ import { ProductCartService } from '../services/product-cart.service';
 import { ProductDtoQuantity } from '../services/models/product-dto-quantity';
 import { TaskbarComponent } from '../taskbar/taskbar.component';
 import { BuyFormComponent } from '../buy-form/buy-form.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -15,7 +16,9 @@ export class CartComponent {
   products: ProductDtoQuantity[] = [];
   isFormEnabled: boolean = false;
 
-  constructor(private productCartService: ProductCartService) {}
+  constructor(private productCartService: ProductCartService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadProducts();
@@ -87,5 +90,9 @@ export class CartComponent {
     return this.products.length > 0
       ? '/assets/cart/icons/recycle_bin_full.ico'
       : '/assets/cart/icons/recycle_bin_empty.ico';
+  }
+
+  navigateTo(path: string) {
+    this.router.navigate([path]);
   }
 }
