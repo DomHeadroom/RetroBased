@@ -3,6 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { CustomerAddressControllerService } from '../services/customer-address-controller.service';
 import { ProductCartService } from '../services/product-cart.service';
 import { CustomerAddressDto } from '../services/models/customer-address-dto';
+import { AddCustomerAddress$Params } from '../services/fn/customer-address-controller/add-customer-address';
 
 @Component({
   selector: 'app-buy-form',
@@ -25,7 +26,7 @@ export class BuyFormComponent implements OnInit {
     address2: '',
     city: '',
     zip: '',
-    country: '',
+    country: 0,
   };
 
   payment = {
@@ -65,12 +66,10 @@ export class BuyFormComponent implements OnInit {
     if (
       this.inputAddress.address1 &&
       this.inputAddress.city &&
-      this.inputAddress.country &&
+      this.inputAddress.country > 0 &&
       this.inputAddress.zip
     ) {
-      this.isAddressSet = true;
-    } else {
-      this.isAddressSet = false;
+      this.sendAddress();
     }
   }
 
@@ -80,6 +79,7 @@ export class BuyFormComponent implements OnInit {
 
   onAddressSelect(address: CustomerAddressDto): void {
     this.selectedAddress = address;
+    this.isAddressSet = true;
     this.checkSummaryAvailability();
   }
 
@@ -89,5 +89,44 @@ export class BuyFormComponent implements OnInit {
     } else {
       this.isSummaryEnabled = false;
     }
+  }
+
+  sendAddress(){
+    const customerAddressDto: CustomerAddressDto = {
+      addressLine1: this.inputAddress.address1,
+      addressLine2: this.inputAddress.address2 || undefined,
+      city: this.inputAddress.city,
+      postalCode: this.inputAddress.zip,
+      country: this.inputAddress.country,
+    };
+
+    const params: AddCustomerAddress$Params = {
+      body: customerAddressDto,
+    };
+    console.log(customerAddressDto);
+
+    this.customerAddressController.addCustomerAddress(params).subscribe({
+      next: (response) => {
+        console.log('Address added successfully', response);
+  
+        this.customerAddresses.push(customerAddressDto);
+        
+        this.inputAddress = {
+          address1: '',
+          address2: '',
+          city: '',
+          zip: '',
+          country: 0,
+        };
+        
+        this.selectedAddress = customerAddressDto;
+        this.isAddressSet = true;
+        this.checkSummaryAvailability();
+      },
+      error: (err) => {
+        console.error('Error adding address', err);
+      },
+    });
+
   }
 }

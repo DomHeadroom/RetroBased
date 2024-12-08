@@ -54,6 +54,7 @@
           type="radio"
           id="radio{{ idx }}"
           name="address-field"
+          [checked]="selectedAddress?.id === address.id"
           (change)="onAddressSelect(address)"
         />
         <label for="radio{{ idx }}"
@@ -70,27 +71,32 @@
           >
         </section>
         <section class="field-row">
-          <input type="text" id="address1" required />
-          <input type="text" id="address2" style="margin-left: auto" />
+          <input type="text" id="address1" required [(ngModel)]="inputAddress.address1" [ngModelOptions]="{ standalone: true }"/>
+          <input type="text" id="address2" style="margin-left: auto" [(ngModel)]="inputAddress.address2" [ngModelOptions]="{ standalone: true }"/>
         </section>
         <section class="field-row">
           <label for="city">City</label>
           <label for="zip" style="margin-left: auto">Zip or postal code</label>
         </section>
         <section class="field-row">
-          <input type="text" id="city" required />
+          <input type="text" id="city" required [(ngModel)]="inputAddress.city" [ngModelOptions]="{ standalone: true }"/>
           <input
             type="text"
             id="zip"
             style="margin-left: auto"
             pattern="^\d{5}$"
             required
+            [(ngModel)]="inputAddress.zip"
+            [ngModelOptions]="{ standalone: true }"
           />
         </section>
+        <section class="field-row">
+          <label for="country" style="margin-left: auto">Country</label>
+        </section>
         <section class="field-row" style="justify-content: flex-end">
-          <select id="country" required>
+          <select id="country" required [(ngModel)]="inputAddress.country" [ngModelOptions]="{ standalone: true }">
             <option disabled selected>Country</option>
-            <option>Italy</option>
+            <option [value]="105">Italy</option>
           </select>
         </section>
         <section class="field-row" style="justify-content: start">
