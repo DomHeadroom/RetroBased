@@ -51,6 +51,7 @@ export class BuyFormComponent implements OnInit {
       },
     });
     this.totalPrice = this.cartService.getTotalPrice();
+    // TODO: fare che questo cambia a ogni cambia nel service
   }
 
   setPayment() {

@@ -26,19 +26,16 @@ export class ProductCartService {
     }
   }
 
-  updateProductQuantity(productId: string, quantity: number): boolean {
+  updateProductQuantity(productId: string, quantity: number): void {
     const product = this.products.find((p) => p.product.id === productId);
 
     if (product) {
       if (quantity > 0) {
         product.quantity = quantity;
-        return true;
       } else {
         this.removeProduct(productId);
-        return true;
       }
     }
-    return false;
   }
 
   removeProduct(productId: string): void {
