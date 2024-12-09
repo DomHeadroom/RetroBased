@@ -7,6 +7,7 @@ import { ProductDtoQuantity } from './models/product-dto-quantity';
 export class ProductCartService {
   private addressId: string = '';
   private products: ProductDtoQuantity[] = [];
+  public totalPrice: number = 0;
 
   setAddressId(address: string): void {
     this.addressId = address;
@@ -20,9 +21,11 @@ export class ProductCartService {
     const existingProduct = this.products.find((p) => p.product.id === product.product.id);
 
     if (existingProduct) {
+      this.totalPrice += product.quantity * product.product.salePrice;
       existingProduct.quantity += product.quantity;
     } else {
       this.products.push(product);
+      this.totalPrice += product.quantity * product.product.salePrice;
     }
   }
 
@@ -31,6 +34,8 @@ export class ProductCartService {
 
     if (product) {
       if (quantity > 0) {
+        const quantityDifference = quantity - product.quantity;
+        this.totalPrice += quantityDifference * product.product.salePrice;
         product.quantity = quantity;
       } else {
         this.removeProduct(productId);
@@ -39,7 +44,14 @@ export class ProductCartService {
   }
 
   removeProduct(productId: string): void {
-    this.products = this.products.filter((p) => p.product.id !== productId);
+    const productIndex = this.products.findIndex((p) => p.product.id === productId);
+
+    if (productIndex !== -1) {
+      const product = this.products[productIndex];
+      this.totalPrice -= product.quantity * product.product.salePrice;
+
+      this.products.splice(productIndex, 1);
+    }
   }
 
   getProducts(): ProductDtoQuantity[] {
@@ -49,19 +61,15 @@ export class ProductCartService {
   clearCart(): void {
     this.addressId = '';
     this.products = [];
+    this.totalPrice = 0;
   }
 
-  getCartSummary(): { addressId: string; products: ProductDtoQuantity[] } {
+  getCartSummary(): { addressId: string; products: ProductDtoQuantity[]; totalPrice: number } {
     return {
       addressId: this.addressId,
       products: [...this.products],
+      totalPrice: this.totalPrice,
     };
-  }
-
-  getTotalPrice(): number {
-    return this.products.reduce((total, product) => {
-      return total + product.quantity * product.product.salePrice;
-    }, 0);
   }
   
 }

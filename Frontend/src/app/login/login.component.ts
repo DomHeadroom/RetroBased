@@ -11,9 +11,12 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  email: string = '';
-  password: string = '';
-  loginError: string | null = null;
+  protected email: string = '';
+  protected password: string = '';
+  protected showErrorScreen: boolean = false;
+  private errorTimeout: any;
+
+  protected isLogged: boolean = false;
 
   constructor(private auth: AuthService,
     private router: Router
@@ -22,30 +25,52 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit() {
     document.documentElement.classList.add('login');
     document.body.classList.add('login-background');
+    if(localStorage.getItem('accessToken') || localStorage.getItem('refreshToken')){
+      this.isLogged = true;
+    }
+    else{
+      this.isLogged =  false;
+    }
   }
 
   ngOnDestroy() {
     document.documentElement.classList.remove('login');
     document.body.classList.remove('login-background');
+    if (this.errorTimeout) {
+      clearTimeout(this.errorTimeout);
+    }
   }
 
   login() {
+    if(!this.email || !this.password)
+      return ;
     this.auth.login(this.email, this.password).subscribe({
       next: () => {
         console.log('User logged in successfully.');
-        this.loginError = null;
+        this.showErrorScreen = false;
         const redirectUrl = localStorage.getItem('redirectUrl') || '/home';
         localStorage.removeItem('redirectUrl');
         this.router.navigateByUrl(redirectUrl);
       },
       error: (error) => {
         console.error('Login failed:', error);
-        this.loginError = 'Invalid credentials. Please try again.';
+        this.showErrorScreen = true;
+
+        if (this.errorTimeout) clearTimeout(this.errorTimeout);
+        this.errorTimeout = setTimeout(() => {
+          this.showErrorScreen = false;
+        }, 30000);
       },
     });
   }
 
+  handleErrorOk() {
+    if (this.errorTimeout) clearTimeout(this.errorTimeout);
+    this.showErrorScreen = false;
+  }
+
   logout(){
     this.auth.logout();
+    this.isLogged = false;
   }
 }

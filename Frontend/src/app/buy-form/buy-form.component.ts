@@ -16,6 +16,7 @@ export class BuyFormComponent implements OnInit {
   activeTab: string = 'address';
   customerAddresses: CustomerAddressDto[] = [];
   selectedAddress: CustomerAddressDto | null = null;
+  
   isSummaryEnabled: boolean = false;
   isAddressSet: boolean = false;
   isPaymentSet: boolean = false;
@@ -50,8 +51,10 @@ export class BuyFormComponent implements OnInit {
         console.error('Error fetching customer addresses', err);
       },
     });
-    this.totalPrice = this.cartService.getTotalPrice();
-    // TODO: fare che questo cambia a ogni cambia nel service
+  }
+
+  ngDoCheck(){
+    this.totalPrice = this.cartService.totalPrice;
   }
 
   setPayment() {
@@ -128,6 +131,10 @@ export class BuyFormComponent implements OnInit {
         console.error('Error adding address', err);
       },
     });
+
+  }
+
+  purchase(){
 
   }
 }
