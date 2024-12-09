@@ -1,6 +1,6 @@
 <div class="login-box">
   @if(!showErrorScreen){
-  <img class="frame" src="assets/login/pfp-container.png" />
+  <img class="frame" src="assets/login/images/pfp-container.png" />
   <div class="login-text">Login</div>
   <div class="password-container">
     <input
@@ -15,14 +15,25 @@
       class="password-input"
       [(ngModel)]="password"
     />
-    <img class="arrow-button" src="assets/login/button.png" />
+    <img class="arrow-button" src="assets/login/images/button.png" />
     <img
       class="arrow-button button-hover"
-      src="assets/login/button-hover.png"
+      src="assets/login/images/button-hover.png"
       (click)="login()"
     />
   </div>
   @if(isLogged){
   <button class="logout-button" (click)="logout()">Logout</button>
   } }
+  @else {
+    <div class="error-screen">
+      <div class="error-content">
+        <div class="error-container">
+          <img src="assets/login/icons/error.ico" alt="Error Icon" class="error-icon" />
+          <p class="error-message">The user name or password is incorrect</p>
+        </div>
+        <button (click)="handleErrorOk()">OK</button>
+      </div>
+    </div>
+  }
 </div>

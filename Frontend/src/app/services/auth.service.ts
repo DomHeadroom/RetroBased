@@ -7,10 +7,11 @@ import { catchError, map, switchMap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthService {
-  private keycloakUrl =
+  private keycloakUrl: string =
     'http://localhost:8080/realms/keycloak-psw/protocol/openid-connect/token';
-  private clientId = 'retrobased-rest-api';
-  private isRefreshing = false;
+  private clientId: string = 'retrobased-rest-api';
+  private isRefreshing: boolean = false;
+  public isLogged: boolean = false;
 
   constructor(private http: HttpClient) {}
 
@@ -69,9 +70,10 @@ export class AuthService {
       return throwError(() => new Error('Refresh token expired'));
     }
 
-    const body = `grant_type=${encodeURIComponent('refresh_token')}` +
-                 `&client_id=${encodeURIComponent(this.clientId)}` +
-                 `&refresh_token=${encodeURIComponent(refreshToken)}`;
+    const body =
+      `grant_type=${encodeURIComponent('refresh_token')}` +
+      `&client_id=${encodeURIComponent(this.clientId)}` +
+      `&refresh_token=${encodeURIComponent(refreshToken)}`;
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',

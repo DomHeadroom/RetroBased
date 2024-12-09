@@ -135,6 +135,12 @@ export class BuyFormComponent implements OnInit {
   }
 
   purchase(){
-
+    if (this.selectedAddress?.id) {
+      this.cartService.setAddressId(this.selectedAddress.id);
+    } else {
+      this.isAddressSet = false;
+      this.isSummaryEnabled = false;
+    }
+    this.cartService.order();
   }
 }

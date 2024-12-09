@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ProductDtoQuantity } from './models/product-dto-quantity';
+import { MakeOrder$Params } from '../services/fn/order-controller/make-order';
 
 @Injectable({
   providedIn: 'root',
@@ -70,6 +71,32 @@ export class ProductCartService {
       products: [...this.products],
       totalPrice: this.totalPrice,
     };
+  }
+
+  order(){
+    if(!this.addressId || this.products.length<=0){
+      return;
+    }
+
+    const mappedProducts = this.products.map(product => {
+      if (!product.product.id) {
+        throw new Error(`Product ID is missing for product with quantity: ${product.quantity}`);
+      }
+  
+      return {
+        id: product.product.id,
+        quantity: product.quantity,
+      };
+    });
+  
+    const mappedParams: MakeOrder$Params = {
+      body: {
+        address: this.addressId,
+        products: mappedProducts,
+      },
+    };
+
+    // TODO: aggiungere chiamata al backend e check per errori
   }
   
 }
