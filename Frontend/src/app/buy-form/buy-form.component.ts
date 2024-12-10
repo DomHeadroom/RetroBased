@@ -141,6 +141,12 @@ export class BuyFormComponent implements OnInit {
       this.isAddressSet = false;
       this.isSummaryEnabled = false;
     }
-    this.cartService.order();
+    const result: boolean = this.cartService.order();
+    if(result){
+      // window successo
+    }
+    else {
+      // window errore
+    }
   }
 }

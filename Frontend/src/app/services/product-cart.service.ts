@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ProductDtoQuantity } from './models/product-dto-quantity';
 import { MakeOrder$Params } from '../services/fn/order-controller/make-order';
+import { OrderControllerService } from './order-controller.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +10,8 @@ export class ProductCartService {
   private addressId: string = '';
   private products: ProductDtoQuantity[] = [];
   public totalPrice: number = 0;
+
+  constructor(private orderService: OrderControllerService){}
 
   setAddressId(address: string): void {
     this.addressId = address;
@@ -73,9 +76,9 @@ export class ProductCartService {
     };
   }
 
-  order(){
+  order(): boolean{
     if(!this.addressId || this.products.length<=0){
-      return;
+      return false;
     }
 
     const mappedProducts = this.products.map(product => {
@@ -95,8 +98,16 @@ export class ProductCartService {
         products: mappedProducts,
       },
     };
-
-    // TODO: aggiungere chiamata al backend e check per errori
+    this.orderService.makeOrder(mappedParams).subscribe({
+      next: (response: any) => {
+        this.clearCart();
+        return true;
+      },
+      error: (err) => {
+        return false;
+      },
+    });
+    return false;
   }
   
 }

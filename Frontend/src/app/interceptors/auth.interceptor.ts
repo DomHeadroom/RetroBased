@@ -2,9 +2,11 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { switchMap, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
+  const router = inject(Router);
 
   const isPublicRequest = req.url.includes('/public');
 
@@ -34,6 +36,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           },
         });
         return next(clonedRequest);
+      } else {
+        const attemptedUrl = router.url;
+        localStorage.setItem('redirectUrl', attemptedUrl);
+        router.navigate(['login']);
       }
       return next(req);
     }),
