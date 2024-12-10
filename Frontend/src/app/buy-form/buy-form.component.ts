@@ -21,6 +21,8 @@ export class BuyFormComponent implements OnInit {
   isAddressSet: boolean = false;
   isPaymentSet: boolean = false;
   totalPrice: number = 0;
+  statusWindow: boolean = false;
+  noError:boolean = true;
 
   inputAddress = {
     address1: '',
@@ -142,11 +144,16 @@ export class BuyFormComponent implements OnInit {
       this.isSummaryEnabled = false;
     }
     const result: boolean = this.cartService.order();
-    if(result){
-      // window successo
-    }
-    else {
-      // window errore
+    if(!result){
+      this.statusWindow = true;
     }
   }
+
+  statusWindowChange(){
+    this.statusWindow = false;
+    this.noError = false;
+    this.cartService.clearCart();
+  }
+
+  
 }

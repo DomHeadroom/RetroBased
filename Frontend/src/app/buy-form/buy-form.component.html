@@ -1,3 +1,52 @@
+@if(statusWindow){
+<div
+  class="window active"
+  style="
+    z-index: 100000000000;
+    max-width: 300px;
+    margin-top: calc(12% - 50px);
+    margin-left: calc(50% - 12%);
+  "
+>
+  <div class="title-bar">
+    <div class="title-bar-text">Error</div>
+    <div class="title-bar-controls">
+      <button aria-label="Close"></button>
+    </div>
+  </div>
+  <div class="window-body">
+    <article
+      role="tabpanel"
+      style="
+        display: flex;
+        border: none;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <img
+        src="assets/buy-form/icons/error.ico"
+        style="width: 32px; height: 32px; margin-right: 2px"
+      />
+      <p>Cannot complete: Order data not good.</p>
+    </article>
+
+    <section
+      class="field-row"
+      style="
+        justify-content: flex-end;
+        margin-bottom: 12px;
+        margin-top: 12px;
+        margin-right: 9px;
+        align-items: center;
+        display: flex;
+      "
+    >
+      <button (click)="statusWindowChange()">OK</button>
+    </section>
+  </div>
+</div>
+} @else if(noError) {
 <div
   class="window active"
   style="
@@ -252,7 +301,7 @@
     </article>
     <section class="field-row" style="justify-content: flex-end">
       <button class="default" (click)="purchase()">OK</button>
-      <button >Cancel</button>
+      <button>Cancel</button>
     </section>
     }
   </div>
@@ -262,3 +311,4 @@
   </div>
   }
 </div>
+}

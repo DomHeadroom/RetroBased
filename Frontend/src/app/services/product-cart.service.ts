@@ -8,7 +8,7 @@ import { OrderControllerService } from './order-controller.service';
 })
 export class ProductCartService {
   private addressId: string = '';
-  private products: ProductDtoQuantity[] = [];
+  public products: ProductDtoQuantity[] = [];
   public totalPrice: number = 0;
 
   constructor(private orderService: OrderControllerService){}

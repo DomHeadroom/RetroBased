@@ -20,8 +20,8 @@ export class CartComponent {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.loadProducts();
+  ngDoCheck(){
+    this.products = this.productCartService.products;
   }
 
   loadProducts(): void {
