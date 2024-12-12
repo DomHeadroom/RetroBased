@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { TaskbarComponent } from '../taskbar/taskbar.component';
 import { OrderControllerService } from '../services/order-controller.service';
 import { OrderDTO } from '../services/models/order-dto';
@@ -6,16 +7,16 @@ import { OrderDTO } from '../services/models/order-dto';
 @Component({
   selector: 'app-order-window',
   standalone: true,
-  imports: [TaskbarComponent],
+  imports: [TaskbarComponent, CommonModule],
   templateUrl: './order-window.component.html',
-  styleUrl: './order-window.component.scss'
+  styleUrl: './order-window.component.scss',
 })
 export class OrderWindowComponent {
-  private orders: OrderDTO[] = [];
+  protected orders: OrderDTO[] = [];
 
-  constructor(private orderService: OrderControllerService){}
+  constructor(private orderService: OrderControllerService) {}
 
-  ngOnInit(){
+  ngOnInit() {
     this.orderService.getOrder().subscribe({
       next: (response: any) => {
         if (response != null) {
@@ -27,5 +28,4 @@ export class OrderWindowComponent {
       },
     });
   }
-
 }

@@ -1,6 +1,6 @@
 <app-taskbar [taskbarIconSrc]="taskbarIcon"></app-taskbar>
 @if (isFormEnabled && products.length > 0) {
-<app-buy-form></app-buy-form>
+<app-buy-form (clicked)="handleChildClick()"></app-buy-form>
 }
 <div
   class="_window-frame"

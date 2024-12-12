@@ -134,21 +134,28 @@
             </div>
           </li>
         </ul>
-        <div style="display: block; overflow-y: auto; max-height: 100%">
+        <div style="display: block; overflow-y: auto; max-height: 100%; overflow-x: hidden;">
           <div class="_programs">
             <div style="grid-column: 1; color: #4c6091">Date</div>
             <div style="grid-column: 2; color: #4c6091">Address</div>
-            <div style="grid-column: 3; color: #4c6091">Price</div>
+            <div style="grid-column: 3; color: #4c6091">Order State</div>
           </div>
-          <div class="_programs">
-            <div class="_rowItem">
-              <div class="text">07/12/2024, 19:52</div>
+          @for(order of orders; track order.id){
+            <div class="_programs">
+              <div class="_rowItem">
+                <div class="text">{{ order.createdAt| date: 'dd-MM-yyyy, HH:mm' }}</div>
+              </div>
+              <div>{{order.address.addressLine1}}, {{order.address.city}}</div>
+              <div class="price">
+                @if(order.orderApprovedAt!=""){
+                  Not Approved
+                }
+                @else{
+                  {{order.orderApprovedAt}}
+                }
+              </div>
             </div>
-            <div>Via di Pierino 32</div>
-            <div class="price">
-                98€
-            </div>
-          </div>
+          }
         </div>
       </div>
     </div>

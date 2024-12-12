@@ -95,4 +95,9 @@ export class CartComponent {
   navigateTo(path: string) {
     this.router.navigate([path]);
   }
+
+  handleChildClick(){
+    this.isFormEnabled = false;
+    console.log("madio");
+  }
 }

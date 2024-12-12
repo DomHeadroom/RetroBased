@@ -1,6 +1,6 @@
 @if(statusWindow){
 <div
-  class="window active"
+  class="window active glass"
   style="
     z-index: 100000000000;
     max-width: 300px;
@@ -301,7 +301,7 @@
     </article>
     <section class="field-row" style="justify-content: flex-end">
       <button class="default" (click)="purchase()">OK</button>
-      <button>Cancel</button>
+      <button (click)="notifyParent()">Cancel</button>
     </section>
     }
   </div>

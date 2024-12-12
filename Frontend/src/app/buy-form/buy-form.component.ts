@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { Component, OnInit, EventEmitter, Output  } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CustomerAddressControllerService } from '../services/customer-address-controller.service';
 import { ProductCartService } from '../services/product-cart.service';
 import { CustomerAddressDto } from '../services/models/customer-address-dto';
@@ -36,6 +36,8 @@ export class BuyFormComponent implements OnInit {
     cardBrand: '',
     cardNumber: '',
   };
+
+  @Output() clicked = new EventEmitter<void>();
 
   constructor(
     private customerAddressController: CustomerAddressControllerService,
@@ -155,5 +157,9 @@ export class BuyFormComponent implements OnInit {
     this.cartService.clearCart();
   }
 
+  notifyParent() {
+    console.log("dio rbando");
+    this.clicked.emit();
+  }
   
 }

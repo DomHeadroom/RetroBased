@@ -1,7 +1,7 @@
 export interface OrderDTO {
     id: string;
     address: {
-      street: string;
+      addressLine1: string;
       city: string;
     };
     createdAt: string;
