@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class AuthService {
   private isRefreshing: boolean = false;
   public isLogged: boolean = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   /**
    * Refresh the refresh token.
@@ -56,6 +57,11 @@ export class AuthService {
     if (!refreshToken) {
       console.warn('No refresh token found. User needs to log in again.');
       this.isRefreshing = false;
+      if (!this.isLogged) {
+        const redirectUrl = localStorage.getItem('redirectUrl') || '/home';
+        console.log(redirectUrl);
+        this.router.navigateByUrl('login');
+      }
       return throwError(() => new Error('No refresh token available'));
     }
 
@@ -67,6 +73,11 @@ export class AuthService {
     if (refreshTokenExpiry <= Date.now()) {
       console.error('Refresh token expired. User needs to log in again.');
       this.isRefreshing = false;
+      if (!this.isLogged) {
+        const redirectUrl = localStorage.getItem('redirectUrl') || '/home';
+        console.log(redirectUrl);
+        this.router.navigateByUrl('login');
+      }
       return throwError(() => new Error('Refresh token expired'));
     }
 
@@ -138,6 +149,9 @@ export class AuthService {
       map((response: any) => {
         console.log('Login successful', response);
         this.storeTokens(response);
+        const redirectUrl = localStorage.getItem('redirectUrl') || '/home';
+        console.log(redirectUrl);
+        this.router.navigateByUrl(redirectUrl);
       }),
       catchError((error) => {
         console.error('Login failed', error);

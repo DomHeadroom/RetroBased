@@ -20,6 +20,11 @@ export class CartComponent {
     private router: Router
   ) {}
 
+  ngOnInit(){
+    const attemptedUrl = this.router.url;
+    localStorage.setItem('redirectUrl', attemptedUrl);
+  }
+
   ngDoCheck(){
     this.products = this.productCartService.products;
   }

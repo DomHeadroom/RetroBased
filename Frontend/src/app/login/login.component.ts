@@ -48,9 +48,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       next: () => {
         console.log('User logged in successfully.');
         this.showErrorScreen = false;
-        const redirectUrl = localStorage.getItem('redirectUrl') || '/home';
-        localStorage.removeItem('redirectUrl');
-        this.router.navigateByUrl(redirectUrl);
       },
       error: (error) => {
         console.error('Login failed:', error);

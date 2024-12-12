@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TaskbarComponent } from '../taskbar/taskbar.component';
 import { OrderControllerService } from '../services/order-controller.service';
 import { OrderDTO } from '../services/models/order-dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-window',
@@ -14,9 +15,13 @@ import { OrderDTO } from '../services/models/order-dto';
 export class OrderWindowComponent {
   protected orders: OrderDTO[] = [];
 
-  constructor(private orderService: OrderControllerService) {}
+  constructor(private orderService: OrderControllerService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
+    const attemptedUrl = this.router.url;
+    localStorage.setItem('redirectUrl', attemptedUrl);
     this.orderService.getOrder().subscribe({
       next: (response: any) => {
         if (response != null) {

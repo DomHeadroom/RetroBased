@@ -22,10 +22,11 @@ export class HomeComponent implements OnInit {
   constructor(
     private productService: ProductControllerService,
     private notificationService: NotificationService,
-    private productDisplay: ProductDisplay
+    private productDisplay: ProductDisplay,
   ) {}
 
   ngOnInit(): void {
+    localStorage.removeItem('redirectUrl');
     this.notificationService.showNotification(
       this.notificationHeader,
       this.notificationText,
